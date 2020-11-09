@@ -14,7 +14,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.dlgaApp.entity.Delegado;
+import com.dlgaApp.entity.User;
 import com.dlgaApp.service.DelegadoService;
+import com.dlgaApp.service.UserDetailsServiceImpl;
 
 
 
@@ -23,6 +25,11 @@ public class IndexController {
 	
 	@Autowired
 	private DelegadoService delegadoService;
+	
+	@Autowired
+	private UserDetailsServiceImpl service;
+	
+	
 	
 	@RequestMapping("")
 	public String welcome (Model model) {
@@ -58,6 +65,24 @@ public class IndexController {
 		model.addAttribute("lista",l);
 		
 		return "lista";
+	}
+	
+	@RequestMapping(value = "/usuario")
+	public String inicioCrear(Model model) {
+		
+		User u = new User();
+		model.addAttribute("usuario",u);
+		
+		return "formUser";
+	}
+	
+	@RequestMapping(value = "/gUsuario")
+	public String guardarUsuario(User usuario) {
+		
+		service.guardarusuario(usuario);
+		
+		
+		return "redirect:listar";
 	}
 
 }

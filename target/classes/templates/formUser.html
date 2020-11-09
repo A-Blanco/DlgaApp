@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head >
+	<meta charset="UTF-8">
+</head>
+<body>
+	
+	
+	
+				<h3>Nuevo delegado</h3>
+			
+			
+				<form th:action="@{gUsuario}" th:object="${usuario}" method="post">
+					<input type="hidden" th:field="*{id}" />
+		
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">UserName</label>
+						<div class="col-sm-6">
+							<input type="text" th:field="*{username}">
+							
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">contraseña</label>
+						<div class="col-sm-6">
+							<input type="text" th:field="*{password}">
+							
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">enabled</label>
+						<div class="col-sm-6">
+							<input type="number" th:field="*{enabled}">
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-6">
+							<input type="submit" value="Añadir Usuario" class="btn btn-outline-primary">
+							<a th:href="@{/}" class="btn btn-outline-danger">Cancelar</a>
+						</div>
+					</div>
+				</form>
+			
+		
+	
+</body>
+</html>
