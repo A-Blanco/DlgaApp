@@ -13,9 +13,8 @@ public class DlgaAppApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DlgaAppApplication.class, args);
 		
-		PasswordEncoder p = new BCryptPasswordEncoder();
-		String s = p.encode("1234");
-		System.out.println(s);
+		
+		
 		
 	}
 

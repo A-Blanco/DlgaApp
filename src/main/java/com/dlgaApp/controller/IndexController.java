@@ -11,11 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.dlgaApp.entity.Delegado;
 import com.dlgaApp.entity.User;
-import com.dlgaApp.service.DelegadoService;
 import com.dlgaApp.service.UserDetailsServiceImpl;
 
 
@@ -23,8 +23,7 @@ import com.dlgaApp.service.UserDetailsServiceImpl;
 @Controller
 public class IndexController {
 	
-	@Autowired
-	private DelegadoService delegadoService;
+	
 	
 	@Autowired
 	private UserDetailsServiceImpl service;
@@ -38,48 +37,38 @@ public class IndexController {
 		return "index";
 	}
 	
-	@RequestMapping("/crear")
-	public String crear(Model model) {
-		
-		Delegado delegado = new Delegado();
-		model.addAttribute("delegado", delegado);
-		
-		return "formDelegado";
-	}
 	
-	@RequestMapping(value="/guardar")
-	public String guardar(@Valid Delegado delegado, BindingResult result) {
-		if(result.hasErrors()) {
-			return "formDelegado";
-		}
-		delegadoService.guardarDelegado(delegado);
-		
-		return "redirect:listar";
-	}
+	
 	
 	@RequestMapping(value="/listar")
 	public String listar(Model model) {
 		
-		List<Delegado> l = new ArrayList<>();
-		l = delegadoService.getAllDelegados();
+		List<com.dlgaApp.entity.User> l = new ArrayList<>();
+		l = service.findAllUsers();
 		model.addAttribute("lista",l);
 		
 		return "lista";
 	}
 	
-	@RequestMapping(value = "/usuario")
+	@RequestMapping(value = "/crear")
 	public String inicioCrear(Model model) {
 		
 		User u = new User();
+		
 		model.addAttribute("usuario",u);
 		
 		return "formUser";
 	}
 	
 	@RequestMapping(value = "/gUsuario")
-	public String guardarUsuario(User usuario) {
+	public String guardarUsuario(@Valid @ModelAttribute("usuario") User us,BindingResult result,Model model) {
 		
-		service.guardarusuario(usuario);
+		if(result.hasErrors()) {
+			
+			model.addAttribute("usuario", us);
+			return "formUser";
+		}
+		service.guardarusuario(us);
 		
 		
 		return "redirect:listar";
