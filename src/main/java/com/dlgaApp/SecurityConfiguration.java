@@ -42,7 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
     	
-    	http.authorizeRequests().antMatchers("/**").hasAuthority("USER").and().formLogin().and().logout().logoutSuccessUrl("/");
+    	http.authorizeRequests().antMatchers("/**").hasRole("MIEMBRO").and().formLogin().and().logout().logoutSuccessUrl("/");
 
         http.csrf().ignoringAntMatchers("/h2-console/**");
 		http.headers().frameOptions().sameOrigin();
