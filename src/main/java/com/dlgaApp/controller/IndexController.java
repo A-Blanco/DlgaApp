@@ -12,10 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.dlgaApp.entity.User;
+import com.dlgaApp.entity.Alumno;
+import com.dlgaApp.entity.Usuario;
 import com.dlgaApp.service.UserDetailsServiceImpl;
 
 
@@ -43,7 +43,7 @@ public class IndexController {
 	@RequestMapping(value="/listar")
 	public String listar(Model model) {
 		
-		List<com.dlgaApp.entity.User> l = new ArrayList<>();
+		List<com.dlgaApp.entity.Usuario> l = new ArrayList<>();
 		l = service.findAllUsers();
 		model.addAttribute("lista",l);
 		
@@ -53,15 +53,36 @@ public class IndexController {
 	@RequestMapping(value = "/crear")
 	public String inicioCrear(Model model) {
 		
-		User u = new User();
+		Usuario u = new Usuario();
+		Alumno a = new Alumno();
+		
+		Alumno al = service.getAlumnoById((long) 1);
+		u.setAlumno(al);
 		
 		model.addAttribute("usuario",u);
+		
+		
 		
 		return "formUser";
 	}
 	
+	@RequestMapping(value = "/crearAl")
+	public String inicioCrearAL(Model model) {
+		
+		
+		Alumno a = new Alumno();
+		
+		
+		
+		model.addAttribute("alumno",a);
+		
+		
+		
+		return "formAlumno";
+	}
+	
 	@RequestMapping(value = "/gUsuario")
-	public String guardarUsuario(@Valid @ModelAttribute("usuario") User us,BindingResult result,Model model) {
+	public String guardarUsuario(@Valid @ModelAttribute("usuario") Usuario us,BindingResult result,Model model) {
 		
 		if(result.hasErrors()) {
 			
@@ -69,6 +90,20 @@ public class IndexController {
 			return "formUser";
 		}
 		service.guardarusuario(us);
+		
+		
+		return "redirect:listar";
+	}
+	
+	@RequestMapping(value = "/gAlumno")
+	public String guardarAlumno(@Valid @ModelAttribute("alumno") Alumno a,BindingResult result,Model model) {
+		
+		if(result.hasErrors()) {
+			
+			model.addAttribute("alumno", a);
+			return "formUser";
+		}
+		service.guardarAl(a);
 		
 		
 		return "redirect:listar";

@@ -9,8 +9,11 @@ import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.dlgaApp.entity.User;
-import com.dlgaApp.repository.UserRepository;
+import com.dlgaApp.entity.Alumno;
+import com.dlgaApp.entity.Roles;
+import com.dlgaApp.entity.Usuario;
+import com.dlgaApp.repository.AlumnoRepository;
+import com.dlgaApp.repository.UsuarioRepository;
  
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -19,38 +22,51 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	private BCryptPasswordEncoder passw;
 	
     @Autowired
-    private UserRepository userRepository;
+    private UsuarioRepository usuarioRepository;
+    
+    @Autowired
+    private AlumnoRepository aRepository;
      
     @Override
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
-        com.dlgaApp.entity.User user = userRepository.getUserByUsername(username);
+        Usuario usuario = usuarioRepository.findByUsername(username);
          
-        if (user == null) {
-            throw new UsernameNotFoundException("Could not find user");
+        if (usuario == null) {
+            throw new UsernameNotFoundException("No se puede encontrar el usuario");
         }
          
-        return new MyUserDetails(user);
+        return usuario;
     }
     
     
     @Transactional
-    public void guardarusuario(com.dlgaApp.entity.User u) {
+    public void guardarusuario(Usuario u) {
     	
     	u.setPassword(passw.encode(u.getPassword()));
     	
-    	u.setEnabled(true);
+    	u.setRol(Roles.ROLE_MIEMBRO);
     	
-    	userRepository.save(u);
     	
-    	userRepository.añadirRolUsuario(u.getId());
+    	usuarioRepository.save(u);
+    	
+    	
     }
     
-    public List<com.dlgaApp.entity.User> findAllUsers() {
+    public List<Usuario> findAllUsers() {
 		
     	
-    	return (List<User>) userRepository.findAll() ;
+    	return (List<Usuario>) usuarioRepository.findAll() ;
     	
+    }
+    
+    @Transactional
+    public void guardarAl(Alumno a) {
+    	aRepository.save(a);
+    }
+    
+    public Alumno getAlumnoById(Long i) {
+    	return aRepository.findById(i).get();
     }
    
 }
