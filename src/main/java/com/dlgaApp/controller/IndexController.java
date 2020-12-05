@@ -54,7 +54,7 @@ public class IndexController {
 	public String inicioCrear(Model model) {
 		
 		Usuario u = new Usuario();
-		Alumno a = new Alumno();
+		
 		
 		Alumno al = service.getAlumnoById((long) 1);
 		u.setAlumno(al);
