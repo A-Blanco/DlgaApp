@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.dlgaApp.entity.Alumno;
 import com.dlgaApp.entity.Usuario;
 import com.dlgaApp.service.UserDetailsServiceImpl;
 
@@ -53,10 +54,31 @@ public class IndexController {
 	public String inicioCrear(Model model) {
 		
 		Usuario u = new Usuario();
+		Alumno a = new Alumno();
+		
+		Alumno al = service.getAlumnoById((long) 1);
+		u.setAlumno(al);
 		
 		model.addAttribute("usuario",u);
 		
+		
+		
 		return "formUser";
+	}
+	
+	@RequestMapping(value = "/crearAl")
+	public String inicioCrearAL(Model model) {
+		
+		
+		Alumno a = new Alumno();
+		
+		
+		
+		model.addAttribute("alumno",a);
+		
+		
+		
+		return "formAlumno";
 	}
 	
 	@RequestMapping(value = "/gUsuario")
@@ -68,6 +90,20 @@ public class IndexController {
 			return "formUser";
 		}
 		service.guardarusuario(us);
+		
+		
+		return "redirect:listar";
+	}
+	
+	@RequestMapping(value = "/gAlumno")
+	public String guardarAlumno(@Valid @ModelAttribute("alumno") Alumno a,BindingResult result,Model model) {
+		
+		if(result.hasErrors()) {
+			
+			model.addAttribute("alumno", a);
+			return "formUser";
+		}
+		service.guardarAl(a);
 		
 		
 		return "redirect:listar";

@@ -4,9 +4,9 @@ import java.util.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,10 +16,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Table(name = "usuarios")
 public class Usuario implements UserDetails {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@Column(name = "user_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Integer id;
 
 	@Email
 	@Column(unique = true)
@@ -29,18 +34,20 @@ public class Usuario implements UserDetails {
 	@NotEmpty
 	private String password;
 	
-	@NotEmpty
-	private String nombre;
-
-	@NotEmpty
-	private String apellidos;
-	
 	@NotNull
-	@Min(value = 0)
-	private Integer edad;
-
+	@Pattern(regexp = "^[0-9]{6}$")
+	@Column(unique = true)
+	private String telefono;
+	
 	@Enumerated(EnumType.STRING)
+	@NotNull
 	private Roles rol;
+
+	@NotNull
+	@OneToOne
+	@JoinColumn(name = "alumno_id")
+	private Alumno alumno;
+	
 
 	 @Override
 	    public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -69,11 +76,11 @@ public class Usuario implements UserDetails {
 	        return true;
 	    }
 
-		public Long getId() {
+		public Integer getId() {
 			return id;
 		}
 
-		public void setId(Long id) {
+		public void setId(Integer id) {
 			this.id = id;
 		}
 
@@ -93,28 +100,13 @@ public class Usuario implements UserDetails {
 			this.password = password;
 		}
 
-		public String getNombre() {
-			return nombre;
+
+		public Alumno getAlumno() {
+			return alumno;
 		}
 
-		public void setNombre(String nombre) {
-			this.nombre = nombre;
-		}
-
-		public String getApellidos() {
-			return apellidos;
-		}
-
-		public void setApellidos(String apellidos) {
-			this.apellidos = apellidos;
-		}
-
-		public Integer getEdad() {
-			return edad;
-		}
-
-		public void setEdad(Integer edad) {
-			this.edad = edad;
+		public void setAlumno(Alumno alumno) {
+			this.alumno = alumno;
 		}
 
 		public Roles getRol() {
@@ -125,5 +117,13 @@ public class Usuario implements UserDetails {
 			this.rol = rol;
 		}
 
+		
+		public  String getTelefono() {
+			return telefono;
+		}
+
+		public void setTelefono(String telefono) {
+			this.telefono = telefono;
+		}
 	    
 }
