@@ -26,9 +26,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throws UsernameNotFoundException {
         Usuario usuario = usuarioRepository.findByUsername(username);
          
-        if (usuario == null) {
-            throw new UsernameNotFoundException("No se puede encontrar el usuario");
-        }
+       if (usuario == null) {
+           throw new UsernameNotFoundException("No se puede encontrar el usuario");
+    }
          
         return usuario;
     }
@@ -49,6 +49,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		
     	return (List<Usuario>) usuarioRepository.findAll() ;
     	
+    }
+    
+    public Long numeroUsuariosByUsername(String username) {
+    	
+    	long i = usuarioRepository.numeroUsuariosByUsername(username);
+    	
+    	
+    	return i;
     }
     
    

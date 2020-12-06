@@ -20,7 +20,7 @@ public class Profesor {
 	@Id
 	@Column(name = "profesor_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	
 	@NotEmpty
 	private String nombre;
@@ -43,11 +43,11 @@ public class Profesor {
     private Departamento departamento;
 	
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

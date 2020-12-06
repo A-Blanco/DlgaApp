@@ -24,7 +24,6 @@ public class AlumnoServiceImpl {
 	public Alumno getAlumnoById(Long id) {
 		return alumnoRepository.findById(id).get();
 		
-		
 	}
 	
 }

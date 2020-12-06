@@ -20,11 +20,18 @@ public class UserController {
 	@Autowired
 	private UserDetailsServiceImpl usuarioService;
 	
-	
+//	@InitBinder
+//	public void initPetBinder(final WebDataBinder dataBinder) {
+//		dataBinder.setValidator(new UsuarioValidator());
+//	}
+//	@Autowired
+//	private UsuarioValidator validator;
 	
 	@GetMapping(value = "/crearUsuario")
 	public String crearUsuarioForm(Model model, HttpServletRequest request) {
 	
+		
+		System.out.println();
 		Usuario usuario = new Usuario();
 		usuario.setRol(Roles.ROLE_REGISTRADO);
 		String tipo = "usuario";
@@ -38,6 +45,7 @@ public class UserController {
 	@PostMapping(value = "/crearUsuario")
 	public String crearusuario(@Valid @ModelAttribute("usuario") Usuario usuario,BindingResult result,Model model){
 		
+		validarUsuario(usuario, result);
 		if(result.hasErrors()) {		
 			model.addAttribute("usuario", usuario);
 			return "formUser";
@@ -47,6 +55,15 @@ public class UserController {
 		}
 		
 		return "redirect:";
+		
+	}
+	
+	public void validarUsuario(Usuario usuario,BindingResult result) {
+		
+		//validar que el username es único
+		if (usuarioService.numeroUsuariosByUsername(usuario.getUsername()) != 0) {
+			result.rejectValue("username", "username", "El usuario introducido ya existe");
+		}
 		
 	}
 	

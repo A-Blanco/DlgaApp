@@ -14,6 +14,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
+
 @Entity
 @Table(name = "alumnos")
 public class Alumno {
@@ -22,19 +24,20 @@ public class Alumno {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotEmpty
+	@NotEmpty(message = "Debes introducir el nombre del alumno")
+	@Length(max = 35,message = "La longitud no es válida")
 	private String nombre;
 	
-	@NotEmpty
+	@NotEmpty(message = "Debes introducir los apellidos del alumno")
+	@Length(max = 70,message = "La longitud de los apellidos no es válida")
 	private String apellidos;
 	
-	@NotNull
-	@Min(value = 0)
+	@NotNull(message = "Se debe introducir la edad del alumno")
+	@Min(value = 0,message = "Debe ser una edad válida")
 	private Integer edad;
 
-
-	@NotEmpty
-	@Email
+	@NotEmpty(message = "Debes introducir el email del alumno")
+	@Email(message = "El email debe ser vádilo")
 	@Column(unique = true)
 	private String email;
 	

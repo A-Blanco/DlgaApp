@@ -3,7 +3,6 @@ package com.dlgaApp.entity;
 import java.util.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -13,7 +12,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-@Table(name = "usuarios")
 public class Usuario implements UserDetails {
 
 	/**
@@ -24,18 +22,21 @@ public class Usuario implements UserDetails {
 	@Id
 	@Column(name = "user_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 
-	@Email
+	
 	@Column(unique = true)
-	@NotEmpty
+	@NotEmpty(message = "Se debe introducir su uvus")
 	private String username;
 	
-	@NotEmpty
+	@NotEmpty(message = "Debes escribir una contraseña")
+	@Pattern(regexp = "^(?=.{8,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$",
+	message = "La contraseña debe tener al menos 8 caracteres,un dígito,una minúscula y una mayúscula.")
 	private String password;
 	
-	@NotNull
-	@Pattern(regexp = "^[0-9]{6}$")
+	@NotNull(message = "Debes introducir su número de teléfono")
+	@Pattern(regexp = "(\\+34|0034|34)?[ -]*(6|7|8)[ -]*([0-9][ -]*){8}",
+	message = "Debe introducir un número de teléfono válido")
 	@Column(unique = true)
 	private String telefono;
 	
@@ -76,11 +77,11 @@ public class Usuario implements UserDetails {
 	        return true;
 	    }
 
-		public Integer getId() {
+		public Long getId() {
 			return id;
 		}
 
-		public void setId(Integer id) {
+		public void setId(Long id) {
 			this.id = id;
 		}
 
