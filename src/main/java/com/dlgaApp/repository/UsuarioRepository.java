@@ -16,13 +16,6 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
 
 
 	
-	
-//  @Query("SELECT u FROM Usuarios u WHERE u.username = :username")
-//  public Usuario getUserByUsername(@Param("username") String username);	
-	
-//@Modifying
-//@Query(value="INSERT INTO users_roles (user_id,role_id) values (:username_id,1)", nativeQuery = true)
-//public void añadirRolUsuario(@Param("username_id") Long username_id);
 
 
 	

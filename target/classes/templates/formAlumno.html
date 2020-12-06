@@ -1,42 +1,48 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head >
-	<meta charset="UTF-8">
+<head>
+<meta charset="UTF-8">
 </head>
 <body>
-	
-	
-	
-				<h3>Nuevo alumno</h3>
-			
-			
+
+
+
+	<h3>Nuevo alumno</h3>
+
+
+
+
+	<form  th:action="@{crearAlumno}" th:object="${alumno}" method="post">
+		<input type="hidden" th:field="*{id}" />
 		
-			
-				<form th:action="@{gAlumno}" th:object="${alumno}" method="post">
-					<input type="hidden" th:field="*{id}" />
-		
-					<div class="form-group row">
-						<label class="col-sm-2 col-form-label">Nombre</label>
-						<div class="col-sm-6">
-							<input type="text" th:field="*{nombre}">
-							<small class="form-text text-danger"  th:errors="*{nombre}">hola</small>
-							
-					
-					<div class="form-group">
-						<div class="col-sm-6">
-							<input type="submit" value="Añadir delegado" class="btn btn-outline-primary">
-							<a th:href="@{/}" class="btn btn-outline-danger">Cancelar</a>
-						</div>
-					</div>
-					</div>
-					</div>
-				</form>
-				
-				
-				
-			
-		
-	
+
+		<div>
+			<label>Nombre</label> <input type="text" th:field="*{nombre}">
+			<p  th:errors="*{nombre}"></p>
+		</div>
+		<div>
+			<label> Apellidos</label> <input type="text" th:field="*{apellidos}">
+			<p th:errors="*{apellidos}"></p>
+		</div>
+		<div>
+			<label> Edad</label> <input type="number" th:field="*{edad}">
+			<p th:errors="*{edad}"></p>
+		</div>
+		<div>
+			<label> Email</label> <input type="text" th:field="*{email}">
+			<p th:errors="*{email}"></p>
+		</div>
+		<div>
+			<input type="submit" value="Añadir Alumno"> <a th:href="@{/}"
+				class="btn btn-outline-danger">Cancelar</a>
+		</div>
+	</form>
+
+
+
+
+
+
 </body>
 </html>

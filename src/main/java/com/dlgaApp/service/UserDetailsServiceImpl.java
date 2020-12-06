@@ -9,10 +9,7 @@ import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.dlgaApp.entity.Alumno;
-import com.dlgaApp.entity.Roles;
 import com.dlgaApp.entity.Usuario;
-import com.dlgaApp.repository.AlumnoRepository;
 import com.dlgaApp.repository.UsuarioRepository;
  
 @Service
@@ -23,9 +20,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	
     @Autowired
     private UsuarioRepository usuarioRepository;
-    
-    @Autowired
-    private AlumnoRepository aRepository;
      
     @Override
     public UserDetails loadUserByUsername(String username)
@@ -41,11 +35,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     
     
     @Transactional
-    public void guardarusuario(Usuario u) {
+    public void saveUsuario(Usuario u) {
     	
     	u.setPassword(passw.encode(u.getPassword()));
-    	
-    	u.setRol(Roles.ROLE_MIEMBRO);
     	
     	
     	usuarioRepository.save(u);
@@ -55,18 +47,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     
     public List<Usuario> findAllUsers() {
 		
-    	
     	return (List<Usuario>) usuarioRepository.findAll() ;
     	
     }
     
-    @Transactional
-    public void guardarAl(Alumno a) {
-    	aRepository.save(a);
-    }
-    
-    public Alumno getAlumnoById(Long i) {
-    	return aRepository.findById(i).get();
-    }
    
 }
