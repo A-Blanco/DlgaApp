@@ -59,5 +59,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     	return i;
     }
     
+    public Long numeroUsuariosByTelefono(String telefono) {
+		return usuarioRepository.countByTelefono(telefono);
+    	
+    }
+    
    
 }

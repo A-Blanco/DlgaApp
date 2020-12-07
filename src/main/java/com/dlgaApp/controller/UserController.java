@@ -27,6 +27,8 @@ public class UserController {
 //	@Autowired
 //	private UsuarioValidator validator;
 	
+	
+	//HAY QUE HACER VALIDATORS AL EMAIL DEL ALUMNO Y TELEFONO DE USUARIOS
 	@GetMapping(value = "/crearUsuario")
 	public String crearUsuarioForm(Model model, HttpServletRequest request) {
 	
@@ -63,6 +65,11 @@ public class UserController {
 		//validar que el username es único
 		if (usuarioService.numeroUsuariosByUsername(usuario.getUsername()) != 0) {
 			result.rejectValue("username", "username", "El usuario introducido ya existe");
+		}
+		
+		//validar que el numero de telefono es único
+		if(usuarioService.numeroUsuariosByTelefono(usuario.getTelefono()) != 0) {
+			result.rejectValue("telefono", "telefono", "El telefono introducido ya está registrado");
 		}
 		
 	}

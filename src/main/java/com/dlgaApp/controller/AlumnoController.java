@@ -18,43 +18,55 @@ import com.dlgaApp.service.AlumnoServiceImpl;
 @Controller
 public class AlumnoController {
 
-	
 	@Autowired
 	private AlumnoServiceImpl alumnoService;
-	
+
 	@GetMapping(value = "/crearAlumno")
-	public String crearAlumnoForm(Model model){
-		
+	public String crearAlumnoForm(Model model) {
+
 		Alumno alumno = new Alumno();
 		model.addAttribute("alumno", alumno);
 		return "formAlumno";
-		
+
 	}
-	
+
 	@PostMapping(value = "/crearAlumno")
-	public String crearAlumno(@Valid @ModelAttribute("alumno") Alumno alumno,BindingResult result,Model model, HttpServletRequest request){
+	public String crearAlumno(@Valid @ModelAttribute("alumno") Alumno alumno, BindingResult result, Model model,
+			HttpServletRequest request) {
+
 		
-		if(result.hasErrors()) {		
+		validarAlumno(alumno, result);
+		
+		if (result.hasErrors()) {
 			model.addAttribute("alumno", alumno);
 			return "formAlumno";
-		}else {
-			
+		} else {
+
 			alumnoService.saveAlumno(alumno);
-			
-			if(request.getSession().getAttribute("tipo") == "usuario") {
-				
+
+			if (request.getSession().getAttribute("tipo") == "usuario") {
+
 				Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
 				usuario.setAlumno(alumno);
-				
+
 				model.addAttribute("usuario", usuario);
-				
+
 				request.getSession().removeAttribute("tipo");
 				request.getSession().removeAttribute("usuario");
 				return "formUser";
 			}
 		}
-		
+
 		return "redirect:";
-		
+
+	}
+
+	public void validarAlumno(Alumno alumno, BindingResult result) {
+
+		// validar que el username es único
+		if (alumnoService.numeroAlumnosByEmail(alumno.getEmail()) != 0) {
+			result.rejectValue("email", "email", "El email introducido ya está registrado");
+		}
+
 	}
 }

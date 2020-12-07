@@ -26,4 +26,8 @@ public class AlumnoServiceImpl {
 		
 	}
 	
+	public Long numeroAlumnosByEmail(String email) {
+		return alumnoRepository.countByEmail(email);
+	}
+	
 }

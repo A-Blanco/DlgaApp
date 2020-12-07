@@ -19,6 +19,8 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
 	@Query("SELECT COUNT(*) FROM Usuario WHERE USERNAME= :username")
 	public long numeroUsuariosByUsername(@Param("username") String username);
 	
+	public long countByTelefono(String telefono);
+	
 	
 
 
