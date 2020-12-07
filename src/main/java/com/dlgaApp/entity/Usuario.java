@@ -45,7 +45,7 @@ public class Usuario implements UserDetails {
 	private Roles rol;
 
 	@NotNull
-	@OneToOne()
+	@OneToOne
 	@JoinColumn(name = "alumno_id")
 	private Alumno alumno;
 	
