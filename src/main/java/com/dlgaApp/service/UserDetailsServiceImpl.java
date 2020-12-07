@@ -1,9 +1,11 @@
 package com.dlgaApp.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.aspectj.weaver.NewMethodTypeMunger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -63,6 +65,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		return usuarioRepository.countByTelefono(telefono);
     	
     }
+    
+    public List<Usuario> findAllUsuarios(){
+		
+    	List<Usuario> l = new ArrayList<Usuario>();
+    	l = (List<Usuario>) usuarioRepository.findAll();
+    	
+    	return l;
+		
+	}
     
    
 }

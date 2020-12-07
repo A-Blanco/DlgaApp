@@ -1,5 +1,8 @@
 package com.dlgaApp.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -74,6 +77,16 @@ public class UserController {
 		
 	}
 	
+	@GetMapping(value = "/listaUsuario")
+	public String listarUsuarios(Model model) {
+		
+		List<Usuario> l = new ArrayList<Usuario>();
+		l = usuarioService.findAllUsers();
+		
+		model.addAttribute("usuarios", l);
+		
+		return "listUsuario";
+	}
 	
 	
 	
