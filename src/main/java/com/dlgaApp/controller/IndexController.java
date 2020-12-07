@@ -24,89 +24,89 @@ import com.dlgaApp.service.UserDetailsServiceImpl;
 public class IndexController {
 	
 	
-	
-	@Autowired
-	private UserDetailsServiceImpl service;
-	
-	
-	
-	@RequestMapping("")
-	public String welcome (Model model) {
-		
-		
-		return "index";
-	}
+//	
+//	@Autowired
+//	private UserDetailsServiceImpl service;
 	
 	
+//	
+//	@RequestMapping("")
+//	public String welcome (Model model) {
+//		
+//		
+//		return "index";
+//	}
+//	
 	
 	
-	@RequestMapping(value="/listar")
-	public String listar(Model model) {
-		
-		List<com.dlgaApp.entity.Usuario> l = new ArrayList<>();
-		l = service.findAllUsers();
-		model.addAttribute("lista",l);
-		
-		return "lista";
-	}
+//	
+//	@RequestMapping(value="/listar")
+//	public String listar(Model model) {
+//		
+//		List<com.dlgaApp.entity.Usuario> l = new ArrayList<>();
+//		l = service.findAllUsers();
+//		model.addAttribute("lista",l);
+//		
+//		return "lista";
+//	}
+//	
+//	@RequestMapping(value = "/crear")
+//	public String inicioCrear(Model model) {
+//		
+//		Usuario u = new Usuario();
+//		
+//		
+//		Alumno al = service.getAlumnoById((long) 1);
+//		u.setAlumno(al);
+//		
+//		model.addAttribute("usuario",u);
+//		
+//		
+//		
+//		return "formUser";
+//	}
+//	
+//	@RequestMapping(value = "/crearAl")
+//	public String inicioCrearAL(Model model) {
+//		
+//		
+//		Alumno a = new Alumno();
+//		
+//		
+//		
+//		model.addAttribute("alumno",a);
+//		
+//		
+//		
+//		return "formAlumno";
+//	}
+//	
+//	@RequestMapping(value = "/gUsuario")
+//	public String guardarUsuario(@Valid @ModelAttribute("usuario") Usuario us,BindingResult result,Model model) {
+//		
+//		if(result.hasErrors()) {
+//			
+//			model.addAttribute("usuario", us);
+//			return "formUser";
+//		}
+//		service.guardarusuario(us);
+//		
+//		
+//		return "redirect:listar";
+//	}
 	
-	@RequestMapping(value = "/crear")
-	public String inicioCrear(Model model) {
-		
-		Usuario u = new Usuario();
-		
-		
-		Alumno al = service.getAlumnoById((long) 1);
-		u.setAlumno(al);
-		
-		model.addAttribute("usuario",u);
-		
-		
-		
-		return "formUser";
-	}
-	
-	@RequestMapping(value = "/crearAl")
-	public String inicioCrearAL(Model model) {
-		
-		
-		Alumno a = new Alumno();
-		
-		
-		
-		model.addAttribute("alumno",a);
-		
-		
-		
-		return "formAlumno";
-	}
-	
-	@RequestMapping(value = "/gUsuario")
-	public String guardarUsuario(@Valid @ModelAttribute("usuario") Usuario us,BindingResult result,Model model) {
-		
-		if(result.hasErrors()) {
-			
-			model.addAttribute("usuario", us);
-			return "formUser";
-		}
-		service.guardarusuario(us);
-		
-		
-		return "redirect:listar";
-	}
-	
-	@RequestMapping(value = "/gAlumno")
-	public String guardarAlumno(@Valid @ModelAttribute("alumno") Alumno a,BindingResult result,Model model) {
-		
-		if(result.hasErrors()) {
-			
-			model.addAttribute("alumno", a);
-			return "formUser";
-		}
-		service.guardarAl(a);
-		
-		
-		return "redirect:listar";
-	}
+//	@RequestMapping(value = "/gAlumno")
+//	public String guardarAlumno(@Valid @ModelAttribute("alumno") Alumno a,BindingResult result,Model model) {
+//		
+//		if(result.hasErrors()) {
+//			
+//			model.addAttribute("alumno", a);
+//			return "formUser";
+//		}
+//		service.guardarAl(a);
+//		
+//		
+//		return "redirect:listar";
+//	}
 
 }

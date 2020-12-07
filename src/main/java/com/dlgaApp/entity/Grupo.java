@@ -22,7 +22,7 @@ public class Grupo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "grupo_id")
-	private Integer id;
+	private Long id;
 	
 	@NotNull
 	private Integer numerogrupo;
@@ -42,11 +42,11 @@ public class Grupo {
     private Titulacion titulacion;
 
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

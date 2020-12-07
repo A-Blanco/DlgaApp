@@ -21,7 +21,7 @@ INSERT INTO asignaturas (nombre, caracter, duracion, creditos, titulacion_id, de
 INSERT INTO asignaturas (nombre, caracter, duracion, creditos, titulacion_id, departamento_id) VALUES ('pgpi','opcional','cuatrimestral',6,1,1);
 INSERT INTO asignaturas (nombre, caracter, duracion, creditos, titulacion_id, departamento_id) VALUES ('aii','opcional','cuatrimestral',6,2,2);
 
-INSERT INTO usuarios (username, password, telefono, rol,alumno_id) VALUES ('pepe@gmail.com', '$2a$10$TzjFYK0l572jpy7hkh3NBOlGqaCrP2FJARnG.wfzTXoJjSK5xQwcG','666355444','ROLE_MIEMBRO',1);
-INSERT INTO usuarios (username, password, telefono, rol,alumno_id) VALUES ('pepa@gmail.com', '$2a$10$TzjFYK0l572jpy7hkh3NBOlGqaCrP2FJARnG.wfzTXoJjSK5xQwcG','666555443','ROLE_MIEMBRO',2);
+INSERT INTO usuario (username, password, telefono, rol,alumno_id) VALUES ('pepe@gmail.com', '$2a$10$TzjFYK0l572jpy7hkh3NBOlGqaCrP2FJARnG.wfzTXoJjSK5xQwcG','666355444','ROLE_MIEMBRO',1);
+INSERT INTO usuario (username, password, telefono, rol,alumno_id) VALUES ('pepa@gmail.com', '$2a$10$TzjFYK0l572jpy7hkh3NBOlGqaCrP2FJARnG.wfzTXoJjSK5xQwcG','666555443','ROLE_MIEMBRO',2);
 
 
