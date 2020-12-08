@@ -12,9 +12,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.dlgaApp.entity.Roles;
 import com.dlgaApp.entity.Usuario;
+import com.dlgaApp.service.AlumnoServiceImpl;
 import com.dlgaApp.service.UserDetailsServiceImpl;
 
 @Controller
@@ -22,6 +24,9 @@ public class UserController {
 
 	@Autowired
 	private UserDetailsServiceImpl usuarioService;
+	
+	@Autowired
+	private AlumnoServiceImpl alumnoService;
 	
 //	@InitBinder
 //	public void initPetBinder(final WebDataBinder dataBinder) {
@@ -88,6 +93,16 @@ public class UserController {
 		return "listUsuario";
 	}
 	
+	@GetMapping(value = "/eliminarUsuario/{usuarioId}")
+	public String eliminaUsuario(@PathVariable("usuarioId") final long usuarioId, Model model) {
+		
+		Usuario usuario =this.usuarioService.findById(usuarioId);
+		
+		Long alumnoId = usuario.getAlumno().getId();
+		this.alumnoService.eliminaAlumnoById(alumnoId);
+		
+		return "redirect:/listaUsuario";
+	}
 	
 	
 }

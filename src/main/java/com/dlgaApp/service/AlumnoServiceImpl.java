@@ -32,6 +32,9 @@ public class AlumnoServiceImpl {
 		return alumnoRepository.countByEmail(email);
 	}
 	
-	
+	public void eliminaAlumnoById(Long id) {
+		
+		alumnoRepository.deleteById(id);
+	}
 	
 }
