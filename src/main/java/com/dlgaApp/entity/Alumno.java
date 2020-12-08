@@ -1,5 +1,6 @@
 package com.dlgaApp.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,7 +42,7 @@ public class Alumno {
 	@Column(unique = true)
 	private String email;
 	
-	@OneToOne(mappedBy = "alumno")
+	@OneToOne(mappedBy = "alumno",cascade = CascadeType.ALL)
 	private Usuario usuario;
 	
 	@ManyToOne
