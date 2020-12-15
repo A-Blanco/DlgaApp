@@ -104,5 +104,14 @@ public class UserController {
 		return "redirect:/listaUsuario";
 	}
 	
+	@GetMapping(value = "/usuario/{usuarioId}")
+	public String detallesUsuario(@PathVariable("usuarioId") final long usuarioId, Model model) {
+		
+		Usuario usuario =this.usuarioService.findById(usuarioId);
+		
+		model.addAttribute("usuario", usuario);
+		
+		return "detallesUsuario";
+	}
 	
 }

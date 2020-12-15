@@ -15,6 +15,7 @@
 				<th>Nombre</th>
 				<th>Apellidos</th>
 				<th>Borrar</th>
+				<th>Ver Detalles</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -25,7 +26,7 @@
 				<td th:text="${usuario.alumno.apellidos}"></td>
 				<td></td>
 				 <td><a th:href="@{eliminarUsuario/} + ${usuario.id}">Eliminar</a></td>
-
+				<td><a th:href="@{usuario/} + ${usuario.id}">Ver detalles</a></td>
 			</tr>
 			
 		</tbody>
