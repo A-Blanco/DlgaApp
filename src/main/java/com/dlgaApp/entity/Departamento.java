@@ -36,7 +36,7 @@ public class Departamento {
 	private String email;
 	
 	
-	@Column(unique = true)
+	
 	private String telefono;
 	
 	

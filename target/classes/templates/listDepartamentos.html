@@ -19,7 +19,7 @@
 
 			<tr th:each="departamento : ${departamentos}">
 				<td th:text="${departamento.nombre}"></td>
-				<td><a >Ver detalles</a></td>
+				<td><a th:href="@{detallesDepartamento/} + ${departamento.id}">Ver detalles</a></td>
 			</tr>
 			
 		</tbody>
