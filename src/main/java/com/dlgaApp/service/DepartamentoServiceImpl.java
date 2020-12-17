@@ -135,5 +135,15 @@ public class DepartamentoServiceImpl {
 		}
 
 	}
+	
+	
+	public List<Departamento> listaDepartamento(){
+		
+		
+		
+		return (List<Departamento>) this.departamentoRepository.findAll();
+		
+		
+	}
 
 }

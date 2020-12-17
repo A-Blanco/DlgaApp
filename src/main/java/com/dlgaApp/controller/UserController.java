@@ -28,15 +28,8 @@ public class UserController {
 	@Autowired
 	private AlumnoServiceImpl alumnoService;
 	
-//	@InitBinder
-//	public void initPetBinder(final WebDataBinder dataBinder) {
-//		dataBinder.setValidator(new UsuarioValidator());
-//	}
-//	@Autowired
-//	private UsuarioValidator validator;
+
 	
-	
-	//HAY QUE HACER VALIDATORS AL EMAIL DEL ALUMNO Y TELEFONO DE USUARIOS
 	@GetMapping(value = "/crearUsuario")
 	public String crearUsuarioForm(Model model, HttpServletRequest request) {
 	
