@@ -26,20 +26,20 @@ public class Departamento {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotEmpty
+	
 	private String nombre;
 	
-	@NotEmpty
+	
 	private String sede;
 	
-	@NotEmpty
+	
 	private String email;
 	
-	@NotNull
+	
 	@Column(unique = true)
 	private String telefono;
 	
-	@NotEmpty
+	
 	private String web;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "departamento")
