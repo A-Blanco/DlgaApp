@@ -139,11 +139,11 @@ public class DepartamentoServiceImpl {
 	
 	public List<Departamento> listaDepartamento(){
 		
-		
-		
 		return (List<Departamento>) this.departamentoRepository.findAll();
-		
-		
+	}
+	
+	public Departamento getDepartamentoById(Long id) {
+		return this.departamentoRepository.findById(id).orElse(null);
 	}
 
 }
