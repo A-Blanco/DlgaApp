@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "asignaturas")
@@ -38,6 +39,7 @@ public class Asignatura {
 	
 	@ManyToOne
     @JoinColumn(name = "departamento_id")
+	@NotNull
     private Departamento departamento;
 
 	

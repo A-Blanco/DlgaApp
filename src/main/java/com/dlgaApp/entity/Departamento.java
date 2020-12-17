@@ -27,33 +27,26 @@ public class Departamento {
 	private Long id;
 	
 	@NotEmpty
-	@Column(unique = true)
 	private String nombre;
 	
 	@NotEmpty
 	private String sede;
 	
 	@NotEmpty
-	@Email
-	@Column(unique = true)
 	private String email;
 	
 	@NotNull
 	@Column(unique = true)
-	@Pattern(regexp = "^[0-9]{6}$")
 	private String telefono;
 	
 	@NotEmpty
-	@URL
 	private String web;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "departamento")
-	@NotNull
 	private List<Asignatura> asignaturas;
 
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "departamento")
-	@NotNull
 	private List<Profesor> profesores;
 	
 	

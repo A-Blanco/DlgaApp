@@ -40,6 +40,7 @@ public class Profesor {
 
 	@ManyToOne
     @JoinColumn(name = "departamento_id")
+	@NotNull
     private Departamento departamento;
 	
 	
