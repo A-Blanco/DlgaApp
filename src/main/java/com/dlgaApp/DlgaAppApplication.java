@@ -12,8 +12,6 @@ public class DlgaAppApplication {
 		SpringApplication.run(DlgaAppApplication.class, args);
 		
 		
-		
-		
 	}
 
 }

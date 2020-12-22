@@ -39,7 +39,6 @@ public class Asignatura {
 	
 	@ManyToOne
     @JoinColumn(name = "departamento_id")
-	@NotNull
     private Departamento departamento;
 
 	
