@@ -1,31 +1,28 @@
 package com.dlgaApp.controller;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.dlgaApp.service.asignaturaServiceImpl;
+import com.dlgaApp.service.AsignaturaServiceImpl;
+import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 
 @Controller
 public class AsignaturaController {
 	
 	
 	@Autowired
-	private asignaturaServiceImpl asignaturaService;
+	private AsignaturaServiceImpl asignaturaService;
 	
 	
 	@GetMapping(value = "/asignaturas")
-	public String cargarAsignaturas(Model model) {
+	public String cargarAsignaturas(Model model) throws FailingHttpStatusCodeException, MalformedURLException, IOException {
 		
-		try {
-			asignaturaService.elancesAsignatura();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.asignaturaService.añadirAsignaturas();
 		
 		return "index";
 	}

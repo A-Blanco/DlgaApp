@@ -1,36 +1,21 @@
 package com.dlgaApp.service;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocket;
-
-import org.jboss.jandex.Main;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Document.OutputSettings;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 
 import com.dlgaApp.entity.Departamento;
 import com.dlgaApp.repository.DepartamentoRepository;
-import com.jaunt.ResponseException;
+import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
+import com.gargoylesoftware.htmlunit.WebClient;
 
 @Service
 public class DepartamentoServiceImpl {
@@ -40,116 +25,161 @@ public class DepartamentoServiceImpl {
 
 	private final String webDepartamentos = "https://www.us.es/centros/escuela-tecnica-superior-de-ingenieria-informatica";
 
-	public List<String> listaDepartamentos()
-			throws IOException, ResponseException, NoSuchAlgorithmException, KeyManagementException {
+	public List<String> listaDepartamentos() {
 
 		List<String> l = new ArrayList<String>();
 
-		Document doc = Jsoup.connect(webDepartamentos).userAgent(
-				"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36")
-				.timeout(0).ignoreHttpErrors(true).get();
+		WebClient webClient = new WebClient();
 
-		doc.getElementsByClass(
-				"field field--name-field-departamentos-que-imparten field--type-entity-reference field--label-hidden field--entity-reference-target-type-node clearfix")
-				.get(0).getElementsByTag("li").stream()
-				.forEach(x -> l.add(x.getElementsByTag("a").get(0).attr("href")));
+		webClient.getOptions().setSSLClientProtocols(new String[] { "TLSv1.3", "TLSv1.2", "TLSv1.1" });
+		webClient.getOptions().setCssEnabled(false);
+		webClient.getOptions().setJavaScriptEnabled(false);
+		webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
+		webClient.getOptions().setThrowExceptionOnScriptError(false);
 
-		System.out.println(l);
+		Document doc;
+		try {
+			doc = Jsoup.parse(webClient.getPage(webDepartamentos).getWebResponse().getContentAsString());
+			if (doc.getElementsByClass(
+					"field field--name-field-departamentos-que-imparten field--type-entity-reference field--label-hidden field--entity-reference-target-type-node clearfix")
+					.first() != null) {
+				Elements elementos = doc.getElementsByClass(
+						"field field--name-field-departamentos-que-imparten field--type-entity-reference field--label-hidden field--entity-reference-target-type-node clearfix")
+						.first().getElementsByTag("li");
+
+				for (Element e : elementos) {
+					if (l.contains(e.getElementsByTag("a").get(0).attr("href"))) {
+						webClient.close();
+						throw new IOException("Datos no encontrado");
+					} else {
+						l.add(e.getElementsByTag("a").get(0).attr("href"));
+					}
+				}
+			} else {
+				webClient.close();
+				throw new IOException("Datos no encontrado");
+			}
+
+			webClient.close();
+			System.out.println("encontrados los enlaces");
+			System.out.println(l.size());
+		} catch (FailingHttpStatusCodeException | IOException e) {
+
+			if (e.getMessage().equals("Datos no encontrado")) {
+				System.out.println("Reintentando lista");
+				l = listaDepartamentos();
+			}
+		}
 
 		return l;
 	}
 
-	public Map<String, String> datosDepartamento(String s)
-			throws IOException, KeyManagementException, NoSuchAlgorithmException {
-
-		SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
-		sslContext.init(null, null, null);
+	public Map<String, String> datosDepartamento(String s) {
 
 		Map<String, String> map = new HashMap<String, String>();
 
-		String url = "https://www.us.es" + s;
-
-		String sa = Jsoup.connect(url).userAgent(
-				"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36")
-				.timeout(0).ignoreHttpErrors(true).get().toString();
-
-		Document doc = Jsoup.parse(sa);
-
-		String nombre = null;
 		try {
-			nombre = doc.getElementsByClass("text-center noticia").text();
-		} catch (Exception e) {
+			String url = "https://www.us.es" + s;
 
-		}
+			WebClient webClient = new WebClient();
+			webClient.getOptions().setSSLClientProtocols(new String[] { "TLSv1.3", "TLSv1.2", "TLSv1.1" });
+			webClient.getOptions().setCssEnabled(false);
+			webClient.getOptions().setJavaScriptEnabled(false);
+			webClient.getOptions().setThrowExceptionOnScriptError(false);
+			webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
 
-		String sede = null;
-		try {
-			sede = doc.getElementsByClass(
+			Document doc;
+			String r;
+
+			r = webClient.getPage(url).getWebResponse().getContentAsString();
+
+			doc = Jsoup.parse(r);
+
+			String nombre = "";
+			Element e = doc.getElementsByClass("text-center noticia").first();
+			if (e != null) {
+				nombre = doc.getElementsByClass("text-center noticia").first().text();
+
+				System.out.println("nombre =" + nombre);
+				map.put("nombre", nombre);
+			} else {
+				webClient.close();
+				throw new IOException("Datos no encontrado");
+			}
+
+			String sede;
+			if (doc.getElementsByClass(
 					"field field--name-field-centro field--type-entity-reference field--label-hidden field--entity-reference-target-type-node clearfix")
-					.get(0).text();
-		} catch (Exception e) {
+					.first() != null) {
+				sede = doc.getElementsByClass(
+						"field field--name-field-centro field--type-entity-reference field--label-hidden field--entity-reference-target-type-node clearfix")
+						.first().text();
+				map.put("sede", sede);
+			} else {
+				sede = "Sede no disponible";
+				map.put("sede", sede);
+			}
 
+			String email;
+
+			if (doc.getElementsByClass(
+					"field field--name-field-correo-electronico field--type-email field--label-above")
+					.first() != null) {
+				email = doc
+						.getElementsByClass(
+								"field field--name-field-correo-electronico field--type-email field--label-above")
+						.first().getElementsByClass("field__item").get(0).text();
+				map.put("email", email);
+			} else {
+				email = "Email no disponible";
+				map.put("email", email);
+			}
+			String telefono;
+
+			if (doc.getElementsByClass("field field--name-field-telefono field--type-telephone field--label-inline")
+					.first() != null) {
+				telefono = doc
+						.getElementsByClass(
+								"field field--name-field-telefono field--type-telephone field--label-inline")
+						.first().getElementsByClass("field__item").get(0).text();
+				map.put("telefono", telefono);
+			} else {
+				telefono = "Telefono no disponible";
+				map.put("telefono", telefono);
+			}
+
+			String web;
+			if (doc.getElementsByClass("field field--name-field-pagina-web- field--type-link field--label-above")
+					.first() != null) {
+				web = doc.getElementsByClass("field field--name-field-pagina-web- field--type-link field--label-above")
+						.first().getElementsByClass("field__item").get(0).text();
+				map.put("web", web);
+			} else {
+				web = "Web no disponible";
+				map.put("web", web);
+			}
+
+			webClient.close();
+		} catch (IOException | RuntimeException e) {
+
+			if (e.getMessage().equals("java.net.SocketException: Connection reset")) {
+				System.out.println("Reconectando");
+				map = datosDepartamento(s);
+			}
+			if (e.getMessage().equals("Datos no encontrado")) {
+				System.out.println("Buscando datos");
+				map = datosDepartamento(s);
+			}
 		}
-		String email = null;
-		try {
-			email = doc
-					.getElementsByClass(
-							"field field--name-field-correo-electronico field--type-email field--label-above")
-					.get(0).getElementsByClass("field__item").get(0).text();
-		} catch (Exception e) {
-
-		}
-		String telefono = null;
-		try {
-			telefono = doc
-					.getElementsByClass("field field--name-field-telefono field--type-telephone field--label-inline")
-					.get(0).getElementsByClass("field__item").get(0).text();
-		} catch (Exception e) {
-
-		}
-
-		String web = null;
-		try {
-			web = doc.getElementsByClass("field field--name-field-pagina-web- field--type-link field--label-above")
-					.first().getElementsByClass("field__item").get(0).text();
-		} catch (Exception e) {
-		}
-
-		if (nombre == null) {
-			nombre = "Nombre no disponible";
-		}
-
-		if (sede == null) {
-			sede = "Sede no disponible";
-		}
-
-		if (email == null) {
-			email = "Email no disponible";
-		}
-
-		if (telefono == null) {
-			telefono = "Telefono no disponible";
-		}
-
-		if (web == null) {
-			web = "Web no disponible";
-		}
-
-		map.put("nombre", nombre);
-		map.put("sede", sede);
-		map.put("email", email);
-		map.put("telefono", telefono);
-		map.put("web", web);
 
 		return map;
 
 	}
 
-	public void añadirDepartamentos()
-			throws IOException, ResponseException, KeyManagementException, NoSuchAlgorithmException {
+	public void añadirDepartamentos() {
 
 		List<String> departamentos = listaDepartamentos();
-
+		Integer i = 0;
 		for (String s : departamentos) {
 
 			Departamento departamento = new Departamento();
@@ -162,9 +192,12 @@ public class DepartamentoServiceImpl {
 			departamento.setWeb(datos.get("web"));
 
 			departamentoRepository.save(departamento);
+			System.out.println("ok");
+
+			i++;
 
 		}
-
+		System.out.println("se han añadido" + i);
 	}
 
 	public List<Departamento> listaDepartamento() {

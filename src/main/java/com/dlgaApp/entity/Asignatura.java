@@ -20,18 +20,17 @@ public class Asignatura {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotEmpty
-	@Column(unique = true)
+
 	private String nombre;
 	
-	@NotEmpty
+	
 	private String caracter;
 	
-	@NotEmpty
+	
 	private String duracion;
 	
-	@NotEmpty
-	private Integer creditos;
+	
+	private String creditos;
 	
 	@ManyToOne
     @JoinColumn(name = "titulacion_id")
@@ -75,11 +74,11 @@ public class Asignatura {
 		this.duracion = duracion;
 	}
 
-	public Integer getCreditos() {
+	public String getCreditos() {
 		return creditos;
 	}
 
-	public void setCreditos(Integer creditos) {
+	public void setCreditos(String creditos) {
 		this.creditos = creditos;
 	}
 
