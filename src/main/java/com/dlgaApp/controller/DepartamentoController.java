@@ -2,6 +2,8 @@ package com.dlgaApp.controller;
 
 import java.io.IOException;
 import java.lang.annotation.Target;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.dlgaApp.entity.Departamento;
 import com.dlgaApp.service.DepartamentoServiceImpl;
+import com.jaunt.ResponseException;
 
 @Controller
 public class DepartamentoController {
@@ -20,9 +23,11 @@ public class DepartamentoController {
 	private DepartamentoServiceImpl departamentoService;
 	
 	@GetMapping(value = "/departamentos")
-	public String departamentos(Model model) throws IOException {
+	public String departamentos(Model model) throws IOException, ResponseException, KeyManagementException, NoSuchAlgorithmException{
 
+		departamentoService.deleteAllDepartamento();
 		departamentoService.añadirDepartamentos();
+		
 		return "index";
 
 	}
