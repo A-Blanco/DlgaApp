@@ -9,4 +9,5 @@ import com.dlgaApp.entity.Departamento;
 @Repository
 public interface DepartamentoRepository extends CrudRepository<Departamento, Long>{
 
+	public Departamento findByNombre(String nombre);
 }

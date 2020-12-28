@@ -1,7 +1,6 @@
 package com.dlgaApp.service;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dlgaApp.entity.Asignatura;
+import com.dlgaApp.entity.Departamento;
 import com.dlgaApp.repository.AsignaturaRepository;
+import com.dlgaApp.repository.DepartamentoRepository;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.WebClient;
 
@@ -33,8 +34,11 @@ public class AsignaturaServiceImpl {
 
 	@Autowired
 	private AsignaturaRepository asignaturaRepository;
+	
+	@Autowired
+	private DepartamentoRepository departamentoRepository;
 
-	public List<String> elancesAsignatura() {
+	public List<String> elancesAsignatura(String s) {
 
 		WebClient webClient = new WebClient();
 		webClient.getOptions().setSSLClientProtocols(new String[] { "TLSv1.3", "TLSv1.2", "TLSv1.1" });
@@ -44,43 +48,41 @@ public class AsignaturaServiceImpl {
 		webClient.getOptions().setThrowExceptionOnScriptError(false);
 
 		List<String> l = new ArrayList<String>();
-		l.add(enlaceDGInforMates);
-		l.add(enlaceGIngeComp);
-		l.add(enlaceGIngeSalud);
-		l.add(enlaceGIngeSoftw);
-		l.add(enlaceGIngeTecnol);
-		l.add(enlaceMIngeBioySalud);
-		l.add(enlaceMInfor);
-		l.add(enlaceMInteligencia);
 
-		List<String> listaEnlaces = new ArrayList<String>();
-
-		for (String enlace : l) {
+		try {
 
 			Document docGrados;
-			try {
-				docGrados = Jsoup.parse(webClient.getPage(enlace).getWebResponse().getContentAsString());
-				Elements elementos = docGrados.getElementsByClass(
-						"field field--name-field-tabla-de-asignaturas field--type-viewsreference field--label-hidden field__item")
-						.first().getElementsByTag("a");
+			docGrados = Jsoup.parse(webClient.getPage(s).getWebResponse().getContentAsString());
 
-				elementos.stream().forEach(x -> listaEnlaces.add(x.attr("href")));
+			Element lista = docGrados.getElementsByClass(
+					"field field--name-field-tabla-de-asignaturas field--type-viewsreference field--label-hidden field__item")
+					.first();
+			if (lista != null) {
+				Elements enlacesPagina = lista.getElementsByTag("a");
+
+				for (Element e : enlacesPagina) {
+					String enlaceAsig = e.attr("href");
+					if (enlaceAsig.isEmpty()) {
+						webClient.close();
+						throw new IOException();
+					} else {
+						l.add(enlaceAsig);
+					}
+				}
+			} else {
 				webClient.close();
-				// 282
-				System.out.println(listaEnlaces.size());
-			} catch (FailingHttpStatusCodeException e) {
-
-			} catch (MalformedURLException e) {
-
-			} catch (IOException e) {
-				System.out.println(e.getMessage());
-
+				throw new IOException();
 			}
 
-		}
+			webClient.close();
+			System.out.println(l.size());
 
-		
-		return listaEnlaces;
+		} catch (IOException e) {
+			System.out.println("reintentando");
+			l = elancesAsignatura(s);
+
+		}
+		return l;
 	}
 
 	public Map<String, String> datosAsignatura(String enlace) {
@@ -99,9 +101,12 @@ public class AsignaturaServiceImpl {
 		Document doc;
 		try {
 			doc = Jsoup.parse(webClient.getPage(url).getWebResponse().getContentAsString());
+			
+			
 			Element elemento = doc.getElementsByClass(
 					"clearfix text-formatted field field--name-field-cuerpo2 field--type-text-long field--label-hidden field__item")
 					.first();
+			
 			if (elemento != null) {
 
 				Elements filas = elemento.getElementsByTag("tr");
@@ -110,15 +115,18 @@ public class AsignaturaServiceImpl {
 
 					map.put(e.getElementsByTag("th").text(), e.getElementsByTag("td").text());
 				}
+				if(map.isEmpty()) {
+					webClient.close();
+					throw new IOException();
+				}else {
 				webClient.close();
 				System.out.println("encontrado");
+				}
 			}
 		} catch (FailingHttpStatusCodeException | IOException e1) {
 
-			System.out.println(e1.getCause());
+			map = datosAsignatura(enlace);
 		}
-
-		
 
 		return map;
 
@@ -127,28 +135,46 @@ public class AsignaturaServiceImpl {
 	public void añadirAsignaturas() {
 
 		List<String> l = new ArrayList<String>();
-		l = elancesAsignatura();
+		l.add(enlaceDGInforMates);
+		l.add(enlaceGIngeComp);
+		l.add(enlaceGIngeSalud);
+		l.add(enlaceGIngeSoftw);
+		l.add(enlaceGIngeTecnol);
+		l.add(enlaceMIngeBioySalud);
+		l.add(enlaceMInfor);
+		l.add(enlaceMInteligencia);
+
+		List<String> listaEnlaces = new ArrayList<String>();
+		
+		this.asignaturaRepository.deleteAll();
 
 		for (String enlace : l) {
+
+			listaEnlaces.addAll(elancesAsignatura(enlace));
+
+		}
+
+		Integer i = 0;
+		for (String enlaceAsig : listaEnlaces) {
 
 			Asignatura asignatura = new Asignatura();
 			Map<String, String> map = new HashMap<String, String>();
 
-			map = datosAsignatura(enlace);
+				map = datosAsignatura(enlaceAsig);
 
-			if (!map.isEmpty()) {
 				asignatura.setNombre(map.get("Asignatura"));
 				asignatura.setCaracter(map.get("Carácter"));
 				asignatura.setDuracion(map.get("Duración"));
 				asignatura.setCreditos(map.get("Créditos Totales"));
+				Departamento departamento = this.departamentoRepository.findByNombre(map.get("Departamento Responsable"));
+				
+		        asignatura.setDepartamento(departamento);
 
 				this.asignaturaRepository.save(asignatura);
-				System.out.println("ok");
+				i++;
+				System.out.println(i);
 			}
-
-		}
-		System.out.println("Finalizado");
-
+		//282
+		System.out.println("Se ha añadido"+i);
 	}
-
 }
