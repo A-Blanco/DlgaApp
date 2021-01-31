@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
 public class Grupo {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "grupo_id")
 	private Long id;
 	
