@@ -13,9 +13,9 @@ INSERT INTO alumnos (nombre, apellidos, email, edad, grupo_Es_Delegado) VALUES (
 INSERT INTO alumnos (nombre, apellidos, email, edad, grupo_Es_Delegado) VALUES ('a','blanco','pep0@gmail.com',23, 2);
 INSERT INTO alumnos (nombre, apellidos, email, edad, grupo_Es_Delegado) VALUES ('b','blanco','pepi@gmail.com',23, null);
 
-INSERT INTO profesores (nombre, apellidos, email, telefono, departamento_id) VALUES ('pedro', 'pere', 'oldva@gmail.com', '432594777',1);
-INSERT INTO profesores (nombre, apellidos, email, telefono, departamento_id) VALUES ('pedro', 'pere', 'olEGQWa@gmail.com', '432504777',1);
-INSERT INTO profesores (nombre, apellidos, email, telefono, departamento_id) VALUES ('pedro', 'pere', 'oFFa@gmail.com', '432565777',2);
+INSERT INTO profesores (nombre, email, telefono, departamento_id) VALUES ('pedro',  'oldva@gmail.com', '432594777',1);
+INSERT INTO profesores (nombre, email, telefono, departamento_id) VALUES ('pedro',  'olEGQWa@gmail.com', '432504777',1);
+INSERT INTO profesores (nombre,  email, telefono, departamento_id) VALUES ('pedro',  'oFFa@gmail.com', '432565777',2);
 
 INSERT INTO asignaturas (nombre, caracter, duracion, creditos, titulacion_id, departamento_id) VALUES ('di','opcional','cuatrimestral','6',1,1);
 INSERT INTO asignaturas (nombre, caracter, duracion, creditos, titulacion_id, departamento_id) VALUES ('pgpi','opcional','cuatrimestral','6',1,1);

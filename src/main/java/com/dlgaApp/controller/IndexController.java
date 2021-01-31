@@ -2,26 +2,43 @@ package com.dlgaApp.controller;
 
 
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.dlgaApp.entity.Alumno;
-import com.dlgaApp.entity.Usuario;
-import com.dlgaApp.service.UserDetailsServiceImpl;
+import com.dlgaApp.service.AsignaturaServiceImpl;
+import com.dlgaApp.service.DepartamentoServiceImpl;
+import com.dlgaApp.service.ProfesorService;
 
 
 
 @Controller
 public class IndexController {
+	
+	
+	
+	@Autowired
+	private DepartamentoServiceImpl departamentoService;
+	
+	@Autowired
+	private AsignaturaServiceImpl asignaturaService;
+	
+	@Autowired 
+	private ProfesorService profesorService;
+	
+	@RequestMapping(value = "/populateBd")
+	public String actualizaBd(Model model) {
+		
+		this.departamentoService.añadirDepartamentos();
+		this.asignaturaService.añadirAsignaturas();
+		this.profesorService.añadirProfesores();
+		
+		
+		return "index";
+		
+	}
+	
 	
 	
 //	

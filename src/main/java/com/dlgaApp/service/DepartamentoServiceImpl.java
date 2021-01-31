@@ -11,7 +11,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.dlgaApp.entity.Departamento;
 import com.dlgaApp.repository.DepartamentoRepository;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
@@ -176,7 +175,11 @@ public class DepartamentoServiceImpl {
 
 	}
 
+	
+	
 	public void añadirDepartamentos() {
+		
+		this.departamentoRepository.deleteAll();
 
 		List<String> departamentos = listaDepartamentos();
 		Integer i = 0;
@@ -198,6 +201,7 @@ public class DepartamentoServiceImpl {
 
 		}
 		System.out.println("se han añadido" + i);
+		this.departamentoRepository.limpiarTabla();
 	}
 
 	public List<Departamento> listaDepartamento() {
@@ -212,5 +216,6 @@ public class DepartamentoServiceImpl {
 	public void deleteAllDepartamento() {
 		this.departamentoRepository.deleteAll();
 	}
+	
 
 }

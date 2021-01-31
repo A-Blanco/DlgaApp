@@ -133,6 +133,8 @@ public class AsignaturaServiceImpl {
 	}
 
 	public void añadirAsignaturas() {
+		
+		this.asignaturaRepository.deleteAll();
 
 		List<String> l = new ArrayList<String>();
 		l.add(enlaceDGInforMates);
@@ -146,7 +148,7 @@ public class AsignaturaServiceImpl {
 
 		List<String> listaEnlaces = new ArrayList<String>();
 		
-		this.asignaturaRepository.deleteAll();
+		
 
 		for (String enlace : l) {
 
@@ -176,5 +178,6 @@ public class AsignaturaServiceImpl {
 			}
 		//282
 		System.out.println("Se ha añadido"+i);
+		this.asignaturaRepository.limpiarTabla();
 	}
 }

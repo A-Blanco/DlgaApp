@@ -8,42 +8,26 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "profesores")
 public class Profesor {
-	
+
 	@Id
 	@Column(name = "profesor_id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
-	@NotEmpty
+
 	private String nombre;
-	
-	@NotEmpty
-	private String apellidos;
-	
-	@NotEmpty
-	@Email
-	@Column(unique = true)
+
 	private String email;
-	
-	@NotNull
-	@Column(unique = true)
-	@Pattern(regexp = "^[0-9]{6}$")
+
 	private String telefono;
 
 	@ManyToOne
-    @JoinColumn(name = "departamento_id")
-	@NotNull
-    private Departamento departamento;
-	
-	
+	@JoinColumn(name = "departamento_id")
+	private Departamento departamento;
+
 	public Long getId() {
 		return id;
 	}
@@ -58,14 +42,6 @@ public class Profesor {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}
-
-	public String getApellidos() {
-		return apellidos;
-	}
-
-	public void setApellidos(String apellidos) {
-		this.apellidos = apellidos;
 	}
 
 	public String getEmail() {
@@ -91,7 +67,5 @@ public class Profesor {
 	public void setDepartamento(Departamento departamento) {
 		this.departamento = departamento;
 	}
-	
-	
 
 }

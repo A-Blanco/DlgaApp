@@ -22,7 +22,7 @@ import org.hibernate.validator.constraints.Length;
 public class Alumno {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	@NotEmpty(message = "Debes introducir el nombre del alumno")
