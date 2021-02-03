@@ -193,4 +193,15 @@ public class ProfesorService {
 		System.out.println("Se ha añadido" + i);
 		this.profesorRepository.limpiarTabla();
 	}
+	
+	public List<Profesor> profesorList(){
+		return (List<Profesor>) this.profesorRepository.findAll();
+	}
+	
+	public Profesor findById(Long id) {
+		
+		Profesor p = this.profesorRepository.findById(id).get();
+		
+		return p;
+	}
 }

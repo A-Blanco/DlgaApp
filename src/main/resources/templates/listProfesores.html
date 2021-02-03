@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+
+	<h2>Lista de Profesores</h2>
+
+	<table>
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+
+			<tr th:each="profesor : ${profesores}">
+				<td th:text="${profesor.nombre}"></td>
+				<td><a th:href="@{detallesProfesor/} + ${profesor.id}">Ver detalles</a></td>
+			</tr>
+			
+		</tbody>
+	</table>
+
+</body>
+</html>
