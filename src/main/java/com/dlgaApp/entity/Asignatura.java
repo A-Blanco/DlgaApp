@@ -1,45 +1,71 @@
 package com.dlgaApp.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "asignaturas")
 public class Asignatura {
-	
+
 	@Id
 	@Column(name = "asignatura_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
 
 	private String nombre;
-	
-	
+
 	private String caracter;
-	
-	
+
 	private String duracion;
-	
-	
+
 	private String creditos;
 	
-	@ManyToOne
-    @JoinColumn(name = "titulacion_id")
-    private Titulacion titulacion;
-	
-	@ManyToOne
-    @JoinColumn(name = "departamento_id")
-    private Departamento departamento;
+	private String año;
 
+	@ManyToOne
+	@JoinColumn(name = "titulacion_id")
+	private Titulacion titulacion;
+
+	@ManyToOne
+	@JoinColumn(name = "departamento_id")
+	private Departamento departamento;
+
+	@JoinTable(name = "rel_asig_prof", joinColumns = @JoinColumn(name = "FK_ASIGANTURA"), inverseJoinColumns = @JoinColumn(name = "FK_PROFESOR"))
+	@ManyToMany()
+	private List<Profesor> profesores;
+
+	public void addProfesor(Profesor profesor) {
+		if (this.profesores == null) {
+			this.profesores = new ArrayList<>();
+		}
+
+		this.profesores.add(profesor);
+	}
 	
-	
+
+	public List<Profesor> getProfesores() {
+		return profesores;
+	}
+
+
+	public void setProfesores(List<Profesor> profesores) {
+		this.profesores = profesores;
+	}
+
+
 	public Long getId() {
 		return id;
 	}
@@ -95,9 +121,15 @@ public class Asignatura {
 	public void setDepartamento(Departamento departamento) {
 		this.departamento = departamento;
 	}
-	
-	
-	
-	
+
+
+	public String getAño() {
+		return año;
+	}
+
+
+	public void setAño(String año) {
+		this.año = año;
+	}
 
 }
