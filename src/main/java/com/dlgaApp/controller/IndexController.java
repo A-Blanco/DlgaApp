@@ -30,9 +30,9 @@ public class IndexController {
 	@RequestMapping(value = "/populateBd")
 	public String actualizaBd(Model model) {
 		
-		this.departamentoService.añadirDepartamentos();
+		
 		this.asignaturaService.añadirAsignaturas();
-		this.profesorService.añadirProfesores();
+		
 		
 		
 		return "index";

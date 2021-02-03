@@ -1,11 +1,14 @@
 package com.dlgaApp.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -27,6 +30,19 @@ public class Profesor {
 	@ManyToOne
 	@JoinColumn(name = "departamento_id")
 	private Departamento departamento;
+
+	@ManyToMany(mappedBy = "profesores")
+	private List<Asignatura> asignaturas;
+	
+	
+
+	public List<Asignatura> getAsignaturas() {
+		return asignaturas;
+	}
+
+	public void setAsignaturas(List<Asignatura> asignaturas) {
+		this.asignaturas = asignaturas;
+	}
 
 	public Long getId() {
 		return id;

@@ -22,16 +22,14 @@ public class Titulacion {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@NotEmpty
+
 	@Column(unique = true)
 	private String nombre;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "titulacion")
-	@NotNull
 	private List<Grupo> grupos;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "titulacion")
-	@NotNull
 	private List<Asignatura> asignaturas;
 
 	public Long getId() {

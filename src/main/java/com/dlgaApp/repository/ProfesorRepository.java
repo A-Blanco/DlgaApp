@@ -14,5 +14,7 @@ public interface ProfesorRepository extends CrudRepository<Profesor, Long> {
 	@Modifying
 	@Query("delete FROM Profesor WHERE nombre = null")
 	public void limpiarTabla();
+	
+	public Profesor findByNombre(String nombre);
 
 }

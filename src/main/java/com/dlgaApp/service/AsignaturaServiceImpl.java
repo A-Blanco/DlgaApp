@@ -14,8 +14,12 @@ import org.springframework.stereotype.Service;
 
 import com.dlgaApp.entity.Asignatura;
 import com.dlgaApp.entity.Departamento;
+import com.dlgaApp.entity.Profesor;
+import com.dlgaApp.entity.Titulacion;
 import com.dlgaApp.repository.AsignaturaRepository;
 import com.dlgaApp.repository.DepartamentoRepository;
+import com.dlgaApp.repository.ProfesorRepository;
+import com.dlgaApp.repository.TitulacionRepository;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.WebClient;
 
@@ -34,9 +38,15 @@ public class AsignaturaServiceImpl {
 
 	@Autowired
 	private AsignaturaRepository asignaturaRepository;
-	
+
 	@Autowired
 	private DepartamentoRepository departamentoRepository;
+
+	@Autowired
+	private TitulacionRepository titulacionRepository;
+
+	@Autowired
+	private ProfesorRepository profesorRepository;
 
 	public List<String> elancesAsignatura(String s) {
 
@@ -101,12 +111,11 @@ public class AsignaturaServiceImpl {
 		Document doc;
 		try {
 			doc = Jsoup.parse(webClient.getPage(url).getWebResponse().getContentAsString());
-			
-			
+
 			Element elemento = doc.getElementsByClass(
 					"clearfix text-formatted field field--name-field-cuerpo2 field--type-text-long field--label-hidden field__item")
 					.first();
-			
+
 			if (elemento != null) {
 
 				Elements filas = elemento.getElementsByTag("tr");
@@ -115,12 +124,14 @@ public class AsignaturaServiceImpl {
 
 					map.put(e.getElementsByTag("th").text(), e.getElementsByTag("td").text());
 				}
-				if(map.isEmpty()) {
+				if (map.isEmpty() || map.containsValue(null) || map.containsKey(null) || map.get("Asignatura") == null
+						|| map.get("Asignatura") == "" || map.get("Departamento Responsable") == null
+						|| map.get("Departamento Responsable") == "") {
 					webClient.close();
 					throw new IOException();
-				}else {
-				webClient.close();
-				System.out.println("encontrado");
+				} else {
+					webClient.close();
+					System.out.println("encontrado");
 				}
 			}
 		} catch (FailingHttpStatusCodeException | IOException e1) {
@@ -132,9 +143,53 @@ public class AsignaturaServiceImpl {
 
 	}
 
+	public List<String> obtenerProfesores(String enlace) {
+
+		WebClient webClient = new WebClient();
+		webClient.getOptions().setSSLClientProtocols(new String[] { "TLSv1.3", "TLSv1.2", "TLSv1.1" });
+		webClient.getOptions().setCssEnabled(false);
+		webClient.getOptions().setJavaScriptEnabled(false);
+		webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
+		webClient.getOptions().setThrowExceptionOnScriptError(false);
+
+		String url = "https://www.us.es/" + enlace;
+
+		List<String> res = new ArrayList<String>();
+
+		Document doc;
+		try {
+			doc = Jsoup.parse(webClient.getPage(url).getWebResponse().getContentAsString());
+
+			Element elemento = doc.getElementsByClass(
+					"field field--name-field-profesores field--type-viewsreference field--label-hidden field__item")
+					.first();
+
+			if (elemento != null) {
+
+				Elements filas = elemento.getElementsByClass("views-row");
+
+				for (Element e : filas) {
+
+					res.add(e.text());
+				}
+
+				System.out.println("Profesores obtenidos");
+				webClient.close();
+			}
+
+		} catch (FailingHttpStatusCodeException | IOException e1) {
+
+			res = obtenerProfesores(enlace);
+		}
+
+		return res;
+
+	}
+
 	public void añadirAsignaturas() {
-		
+
 		this.asignaturaRepository.deleteAll();
+		this.titulacionRepository.deleteAll();
 
 		List<String> l = new ArrayList<String>();
 		l.add(enlaceDGInforMates);
@@ -147,8 +202,6 @@ public class AsignaturaServiceImpl {
 		l.add(enlaceMInteligencia);
 
 		List<String> listaEnlaces = new ArrayList<String>();
-		
-		
 
 		for (String enlace : l) {
 
@@ -161,23 +214,49 @@ public class AsignaturaServiceImpl {
 
 			Asignatura asignatura = new Asignatura();
 			Map<String, String> map = new HashMap<String, String>();
+			List<String> profesores = obtenerProfesores(enlaceAsig);
 
-				map = datosAsignatura(enlaceAsig);
+			map = datosAsignatura(enlaceAsig);
 
-				asignatura.setNombre(map.get("Asignatura"));
-				asignatura.setCaracter(map.get("Carácter"));
-				asignatura.setDuracion(map.get("Duración"));
-				asignatura.setCreditos(map.get("Créditos Totales"));
-				Departamento departamento = this.departamentoRepository.findByNombre(map.get("Departamento Responsable"));
-				
-		        asignatura.setDepartamento(departamento);
+			asignatura.setNombre(map.get("Asignatura"));
+			asignatura.setCaracter(map.get("Carácter"));
+			asignatura.setDuracion(map.get("Duración"));
+			asignatura.setCreditos(map.get("Créditos Totales"));
+			asignatura.setAño(map.get("Curso"));
+			Departamento departamento = this.departamentoRepository.findByNombre(map.get("Departamento Responsable"));
 
-				this.asignaturaRepository.save(asignatura);
-				i++;
-				System.out.println(i);
+			asignatura.setDepartamento(departamento);
+
+			if (map.get("Titulacion") != null || map.get("Titulacion") != "") {
+				if (!this.titulacionRepository.existsByNombre(map.get("Titulacion"))) {
+					Titulacion titulacion = new Titulacion();
+					titulacion.setNombre(map.get("Titulacion"));
+					this.titulacionRepository.save(titulacion);
+					asignatura.setTitulacion(titulacion);
+				} else {
+					asignatura.setTitulacion(this.titulacionRepository.findByNombre(map.get("Titulacion")));
+				}
 			}
-		//282
-		System.out.println("Se ha añadido"+i);
+
+			this.asignaturaRepository.save(asignatura);
+			for (String profesor : profesores) {
+
+				Profesor p = this.profesorRepository.findByNombre(profesor);
+				asignatura.addProfesor(p);
+
+			}
+
+			this.asignaturaRepository.save(asignatura);
+			i++;
+			System.out.println(i);
+		}
+		// 282
+		System.out.println("Se ha añadido" + i);
 		this.asignaturaRepository.limpiarTabla();
+	}
+
+	public void delete() {
+
+		this.asignaturaRepository.deleteById((long) 2223);
 	}
 }
