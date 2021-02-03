@@ -31,6 +31,8 @@ public class IndexController {
 	public String actualizaBd(Model model) {
 		
 		
+		this.departamentoService.añadirDepartamentos();
+		this.profesorService.añadirProfesores();
 		this.asignaturaService.añadirAsignaturas();
 		
 		
