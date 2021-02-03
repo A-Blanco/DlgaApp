@@ -222,7 +222,7 @@ public class AsignaturaServiceImpl {
 			asignatura.setCaracter(map.get("Carácter"));
 			asignatura.setDuracion(map.get("Duración"));
 			asignatura.setCreditos(map.get("Créditos Totales"));
-			asignatura.setAño(map.get("Curso"));
+			asignatura.setAno(map.get("Curso"));
 			Departamento departamento = this.departamentoRepository.findByNombre(map.get("Departamento Responsable"));
 
 			asignatura.setDepartamento(departamento);
@@ -258,5 +258,16 @@ public class AsignaturaServiceImpl {
 	public void delete() {
 
 		this.asignaturaRepository.deleteById((long) 2223);
+	}
+	
+	public List<Asignatura> asignaturaList(){
+		return (List<Asignatura>) this.asignaturaRepository.findAll();
+	}
+	
+	public Asignatura findById(Long id) {
+		
+		Asignatura a = this.asignaturaRepository.findById(id).get();
+		
+		return a;
 	}
 }
