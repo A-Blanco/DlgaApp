@@ -2,6 +2,8 @@ package com.dlgaApp.controller;
 
 
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,14 +50,18 @@ public class IndexController {
 //	private UserDetailsServiceImpl service;
 	
 	
-//	
-//	@RequestMapping("")
-//	public String welcome (Model model) {
-//		
-//		
-//		return "index";
-//	}
-//	
+	
+	@RequestMapping("")
+	public String welcome (Model model, HttpServletRequest request) {
+		
+		request.getSession().removeAttribute("op");
+		request.getSession().removeAttribute("grupoId");
+		
+		
+		
+		return "index";
+	}
+	
 	
 	
 //	

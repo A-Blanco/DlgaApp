@@ -15,6 +15,10 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
 @Entity
 @Table(name = "grupos")
 public class Grupo {
@@ -27,8 +31,8 @@ public class Grupo {
 	@NotNull
 	private Integer numerogrupo;
 	
-	@NotEmpty
-	private String curso;
+	@NotNull
+	private Integer curso;
 	
 	@NotNull
 	private Boolean esingles;
@@ -58,11 +62,11 @@ public class Grupo {
 		this.numerogrupo = numerogrupo;
 	}
 
-	public String getCurso() {
+	public Integer getCurso() {
 		return curso;
 	}
 
-	public void setCurso(String curso) {
+	public void setCurso(Integer curso) {
 		this.curso = curso;
 	}
 

@@ -1,5 +1,7 @@
 package com.dlgaApp.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,19 @@ public class AlumnoServiceImpl {
 	public void eliminaAlumnoById(Long id) {
 		
 		alumnoRepository.deleteById(id);
+	}
+	
+	public long numeroAlumnos() {
+		return this.alumnoRepository.count();
+		
+	}
+	
+	public List<Alumno> findAll(){
+		return (List<Alumno>) this.alumnoRepository.findAll();
+	}
+	
+	public Alumno findById(long id) {
+		return this.alumnoRepository.findById(id).get();
 	}
 	
 }

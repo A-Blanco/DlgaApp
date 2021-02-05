@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+
+	<h2>Lista de Grupos</h2>
+
+	<table>
+		<thead>
+			<tr>
+				<th>Titulacion</th>
+				<th>Curso</th>
+				<th>Grupo</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+
+			<tr th:each="grupo : ${grupos}">
+				<td th:text="${grupo.titulacion.nombre}"></td>
+				<td th:text="${grupo.curso}"></td>
+				<td th:text="${grupo.numerogrupo}"></td>
+				<td>
+				<a th:href="@{delegados/} + ${grupo.id}">Ver delegados</a>
+				
+				
+				</td>
+				<td></td>
+			</tr>
+			
+		</tbody>
+	</table>
+
+</body>
+</html>
