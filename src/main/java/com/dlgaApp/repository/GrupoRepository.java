@@ -6,7 +6,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.dlgaApp.entity.Grupo;
-import com.dlgaApp.entity.Titulacion;
 
 @Repository
 public interface GrupoRepository extends CrudRepository<Grupo, Long> {
