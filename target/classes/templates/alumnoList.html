@@ -13,17 +13,21 @@
 			<tr>
 				<th>Nombre</th>
 				<th></th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
 
 			<tr th:each="alumno : ${alumnos}">
 				<td th:text="${alumno.nombre}"></td>
-				<td><a th:if="${alumno.grupoDelegado == null}" th:href="@{/agregarDelegado/} + ${alumno.id}">Añadir</a>
-				<p th:if="${alumno.grupoDelegado != null}" >Este Alumno ya es delegado de un grupo</p>
-				</td>
+				<td><a th:if="${alumno.grupoDelegado == null}"
+					th:href="@{/agregarDelegado/} + ${alumno.id}">Añadir</a>
+					<p th:if="${alumno.grupoDelegado != null}">Este Alumno ya es
+						delegado de un grupo</p></td>
+				<td><a
+					th:href="@{/detallesAlumno/} + ${alumno.id}">Ver detalles Alumno</a></td>
 			</tr>
-			
+
 		</tbody>
 	</table>
 
