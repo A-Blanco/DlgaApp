@@ -39,4 +39,8 @@ public class GrupoServiceImpl {
 	public Grupo findById(long id) {
 		return this.grupoRepository.findById(id).get();
 	}
+	
+	public void deleteById(long id) {
+		this.grupoRepository.deleteById(id);
+	}
 }

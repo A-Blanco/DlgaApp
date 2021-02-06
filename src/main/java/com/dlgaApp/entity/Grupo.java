@@ -37,7 +37,7 @@ public class Grupo {
 	@NotNull
 	private Boolean esingles;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "grupoDelegado")
+	@OneToMany(mappedBy = "grupoDelegado")
 	private List<Alumno> delegados ;
 	
 	@ManyToOne
