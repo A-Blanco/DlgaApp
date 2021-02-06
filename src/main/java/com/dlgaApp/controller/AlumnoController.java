@@ -119,6 +119,17 @@ public class AlumnoController {
 		return "inicioGrupoAdd";
 
 	}
+	
+	@GetMapping(value = "/detallesAlumno/{alumnoId}")
+	public String alumnoDetails (Model model, @PathVariable("alumnoId") final long alumnoId) {
+		
+		Alumno alumno = this.alumnoService.findById(alumnoId);
+		
+		model.addAttribute("alumno", alumno);
+		
+		return "alumnoDetails";
+		
+	}
 
 	public void validarAlumno(Alumno alumno, BindingResult result) {
 
