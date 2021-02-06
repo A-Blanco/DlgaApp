@@ -15,6 +15,7 @@
 				<th>Curso</th>
 				<th>Grupo</th>
 				<th></th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -25,10 +26,10 @@
 				<td th:text="${grupo.numerogrupo}"></td>
 				<td>
 				<a th:href="@{delegados/} + ${grupo.id}">Ver delegados</a>
-				
-				
 				</td>
-				<td></td>
+				<td>
+				<a th:href="@{eliminarGrupo/} + ${grupo.id}">Eliminar grupo</a>
+				</td>
 			</tr>
 			
 		</tbody>
