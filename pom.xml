@@ -103,6 +103,7 @@
 			<artifactId>java-client</artifactId>
 			<version>7.0.0</version>
 		</dependency>
+		
 
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
@@ -118,7 +119,7 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			</dependency>
+		</dependency>
 
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>

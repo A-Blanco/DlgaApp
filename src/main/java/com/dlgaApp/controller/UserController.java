@@ -49,9 +49,10 @@ public class UserController {
 	public String crearusuario(@Valid @ModelAttribute("usuario") Usuario usuario,BindingResult result,Model model){
 		
 		validarUsuario(usuario, result);
+		
 		if(result.hasErrors()) {		
 			model.addAttribute("usuario", usuario);
-			return "formUser";
+			return "usuario/formUser";
 		}else {
 			
 			usuarioService.saveUsuario(usuario);;
@@ -83,7 +84,7 @@ public class UserController {
 		
 		model.addAttribute("usuarios", l);
 		
-		return "listUsuario";
+		return "usuario/listUsuario";
 	}
 	
 	@GetMapping(value = "/eliminarUsuario/{usuarioId}")
@@ -104,7 +105,7 @@ public class UserController {
 		
 		model.addAttribute("usuario", usuario);
 		
-		return "detallesUsuario";
+		return "usuario/detallesUsuario";
 	}
 	
 }

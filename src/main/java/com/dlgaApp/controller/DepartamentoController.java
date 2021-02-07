@@ -28,7 +28,7 @@ public class DepartamentoController {
 		departamentoService.deleteAllDepartamento();
 		departamentoService.añadirDepartamentos();
 		
-		return "index";
+		return "recursos/index";
 
 	}
 	
@@ -37,7 +37,7 @@ public class DepartamentoController {
 		
 		model.addAttribute("departamentos", departamentoService.listaDepartamento());
 		
-		return "listDepartamentos";
+		return "departamento/listDepartamentos";
 	}
 
 	@GetMapping(value = "/detallesDepartamento/{departamentoId}")
@@ -46,6 +46,6 @@ public class DepartamentoController {
 		Departamento departamento = this.departamentoService.getDepartamentoById(departamentoId);
 		
 		model.addAttribute("departamento", departamento);
-		return "detallesDepartamento";
+		return "departamento/detallesDepartamento";
 	}
 }

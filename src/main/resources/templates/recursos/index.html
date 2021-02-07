@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+
+<object th:replace="recursos/base :: boot"></object>
+
+
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
+</head>
+
+<body>
+
+	<header th:replace="recursos/base :: navbar"></header>
+
+	<h1>Esto es una página de Bienvenida</h1>
+
+	<a th:href="@{crearUsuario}">Crear</a>
+
+	<a th:href="@{listaUsuario}">Listar Usuarios</a>
+
+	<a th:href="@{logout}">Logout</a>
+
+	<a th:href="@{departamentos}">Departamentos</a>
+
+	<a th:href="@{listDepartamentos}">Listar Departamentos</a>
+
+	<a th:href="@{asignaturas}">Asignaturas</a>
+
+	<a th:href="@{populateBd}">Base de datos</a>
+
+	<a th:href="@{profesorList}">Lista Profesores</a>
+
+	<a th:href="@{asignaturaList}">Lista Asignaturas</a>
+
+	<a th:href="@{crearGrupo}">Crear Grupo</a>
+
+	<a th:href="@{grupoList}">Ver Grupos</a>
+
+</body>
+</html>

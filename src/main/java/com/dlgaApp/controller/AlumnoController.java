@@ -35,7 +35,7 @@ public class AlumnoController {
 
 		Alumno alumno = new Alumno();
 		model.addAttribute("alumno", alumno);
-		return "formAlumno";
+		return "alumno/formAlumno";
 
 	}
 
@@ -45,7 +45,7 @@ public class AlumnoController {
 		List<Alumno> alumnos = this.alumnoService.findAll();
 		model.addAttribute("alumnos", alumnos);
 
-		return "alumnoList";
+		return "alumno/alumnoList";
 
 	}
 
@@ -57,7 +57,7 @@ public class AlumnoController {
 
 		if (result.hasErrors()) {
 			model.addAttribute("alumno", alumno);
-			return "formAlumno";
+			return "alumno/formAlumno";
 		} else {
 
 			alumnoService.saveAlumno(alumno);
@@ -71,7 +71,7 @@ public class AlumnoController {
 
 				request.getSession().removeAttribute("tipo");
 				request.getSession().removeAttribute("usuario");
-				return "formUser";
+				return "usuario/formUser";
 			}
 
 			if (request.getSession().getAttribute("op") == "addDelegado") {
@@ -89,7 +89,7 @@ public class AlumnoController {
 					model.addAttribute("addDelegadoAgain", 0);
 					model.addAttribute("grupo", grupo);
 				}
-				return "inicioGrupoAdd";
+				return "grupo/inicioGrupoAdd";
 
 			}
 		}
@@ -116,7 +116,7 @@ public class AlumnoController {
 			model.addAttribute("grupo", grupo);
 		}
 
-		return "inicioGrupoAdd";
+		return "grupo/inicioGrupoAdd";
 
 	}
 	
@@ -127,7 +127,7 @@ public class AlumnoController {
 		
 		model.addAttribute("alumno", alumno);
 		
-		return "alumnoDetails";
+		return "alumno/alumnoDetails";
 		
 	}
 

@@ -5,6 +5,9 @@ package com.dlgaApp.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,15 +42,15 @@ public class IndexController {
 		
 		
 		
-		return "index";
+		return "recursos/index";
 		
 	}
 	
+	@RequestMapping(value = "/login")
+	public String login(Model model) {
+		return "recursos/login";
+	}
 	
-	
-//	
-//	@Autowired
-//	private UserDetailsServiceImpl service;
 	
 	
 	
@@ -59,8 +62,16 @@ public class IndexController {
 		
 		
 		
-		return "index";
+		return "recursos/index";
 	}
+	
+
+	@RequestMapping("/denegado")
+	public String denegado (Model model, HttpServletRequest request) {
+		
+		return "recursos/denegado";
+	}
+	
 	
 	
 	
