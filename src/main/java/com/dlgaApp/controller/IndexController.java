@@ -53,7 +53,6 @@ public class IndexController {
 	
 	
 	
-	
 	@RequestMapping("")
 	public String welcome (Model model, HttpServletRequest request) {
 		

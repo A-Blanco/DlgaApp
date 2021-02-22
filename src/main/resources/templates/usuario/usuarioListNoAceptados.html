@@ -3,10 +3,11 @@
 
 <head>
 <meta charset="UTF-8">
-
 <object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
 </head>
 <body>
+<header th:replace="recursos/base :: navbar"></header>
 
 	<h2>Lista de Usuarios</h2>
 
@@ -16,8 +17,7 @@
 				<th>Username</th>
 				<th>Nombre</th>
 				<th>Apellidos</th>
-				<th>Borrar</th>
-				<th>Ver Detalles</th>
+				<th>Opciones</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -26,9 +26,8 @@
 				<td th:text="${usuario.username}"></td>
 				<td th:text="${usuario.alumno.nombre}"></td>
 				<td th:text="${usuario.alumno.apellidos}"></td>
-				<td></td>
-				 <td><a th:href="@{eliminarUsuario/} + ${usuario.id}">Eliminar</a></td>
-				<td><a th:href="@{usuario/} + ${usuario.id}">Ver detalles</a></td>
+				 <td><a th:href="@{aceptarUsuario/} + ${usuario.id}"><img width="20" src="img/downDarkBlue.png"></a></td>
+				<td><a th:href="@{denegarUsuario/} + ${usuario.id}">Denegar</a></td>
 			</tr>
 			
 		</tbody>

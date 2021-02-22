@@ -2,6 +2,8 @@ package com.dlgaApp.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -106,6 +108,28 @@ public class UserController {
 		model.addAttribute("usuario", usuario);
 		
 		return "usuario/detallesUsuario";
+	}
+	
+	@GetMapping(value = "/usuariosNoAceptados")
+	public String usuariosNoAceptados(Model model) {
+		
+		List<Usuario> usuarios = this.usuarioService.findAllUsuarios().stream().filter(x->x.getRol().equals(Roles.ROLE_REGISTRADO))
+				.collect(Collectors.toList());
+		
+		model.addAttribute("usuarios", usuarios);
+		
+		return "usuario/usuarioListNoAceptados";
+	}
+	
+	@GetMapping(value = "/aceptarUsuario/{usuarioId}")
+	public String aceptarUsuario(@PathVariable("usuarioId") final long usuarioId, Model model) {
+		
+		Usuario usuario =this.usuarioService.findById(usuarioId);
+		
+		usuario.setRol(Roles.ROLE_MIEMBRO);
+		this.usuarioService.saveUsuario(usuario);
+		
+		return "redirect:/usuariosNoAceptados";
 	}
 	
 }
