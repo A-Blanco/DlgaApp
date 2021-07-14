@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.dlgaApp.entity.Departamento;
 import com.dlgaApp.service.DepartamentoServiceImpl;
-import com.jaunt.ResponseException;
+
 
 @Controller
 public class DepartamentoController {
@@ -23,7 +23,7 @@ public class DepartamentoController {
 	private DepartamentoServiceImpl departamentoService;
 	
 	@GetMapping(value = "/departamentos")
-	public String departamentos(Model model) throws IOException, ResponseException, KeyManagementException, NoSuchAlgorithmException{
+	public String departamentos(Model model) throws IOException,  KeyManagementException, NoSuchAlgorithmException{
 
 		departamentoService.deleteAllDepartamento();
 		departamentoService.añadirDepartamentos();

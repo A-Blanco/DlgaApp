@@ -5,8 +5,6 @@
 <meta charset="utf-8">
 
 <object th:replace="recursos/base :: boot"></object>
-
-
 <link rel="stylesheet" th:href="@{/estilos/base.css}" />
 </head>
 
@@ -14,29 +12,53 @@
 
 	<header th:replace="recursos/base :: navbar"></header>
 
-	<h1>Esto es una página de Bienvenida</h1>
+	<h1>Funciones</h1>
 
-	<a th:href="@{crearUsuario}">Crear</a>
+	<div class="funcionInicio">
+		<a class="funcion" th:href="@{crearUsuario}"><img
+			src="/img/anadir-amigo.png" width="150"> </a><br>
+		<p >Crear Usuario</p>
+	</div>
 
-	<a th:href="@{listaUsuario}">Listar Usuarios</a>
+	<div class="funcionInicio">
+		<a class="funcion" th:href="@{listaUsuario}"><img
+			src="/img/group.png" width="150"> </a><br>
+		<p>Listar Usuario</p>
+	</div>
 
-	<a th:href="@{logout}">Logout</a>
 
-	<a th:href="@{departamentos}">Departamentos</a>
+	<div class="funcionInicio">
+		<a class="funcion" th:href="@{listDepartamentos}"><img
+			src="/img/departament.png" width="150"> </a> <br>
+		<p>Listar Departamentos</p>
+	</div>
 
-	<a th:href="@{listDepartamentos}">Listar Departamentos</a>
 
-	<a th:href="@{asignaturas}">Asignaturas</a>
 
-	<a th:href="@{populateBd}">Base de datos</a>
 
-	<a th:href="@{profesorList}">Lista Profesores</a>
+	<div class="funcionInicio">
+		<a class="funcion" th:href="@{profesorList}"><img
+			src="/img/teacherOrange.png" width="150"></a> <br>
+		<p>Listar Profesores</p>
+	</div>
 
-	<a th:href="@{asignaturaList}">Lista Asignaturas</a>
+	<div class="funcionInicio">
+		<a class="funcion" th:href="@{asignaturaList}"><img
+			src="/img/subjectOrange.png" width="150"></a> <br>
+		<p>Listar Asignaturas</p>
+	</div>
 
-	<a th:href="@{crearGrupo}">Crear Grupo</a>
+	<div class="funcionInicio">
+		<a class="funcion" th:href="@{crearGrupo}"><img
+			src="/img/anadir-grupo.png" width="150"></a> <br>
+		<p>Crear Grupo</p>
+	</div>
 
-	<a th:href="@{grupoList}">Ver Grupos</a>
+	<div class="funcionInicio">
+		<a class="funcion" th:href="@{grupoList}"><img
+			src="/img/gruposalumnos.png" width="150"></a> <br>
+		<p>Listar Grupos</p>
+	</div>
 
 </body>
 </html>

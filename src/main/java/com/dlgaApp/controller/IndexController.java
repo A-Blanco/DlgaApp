@@ -23,31 +23,12 @@ public class IndexController {
 	
 	
 	
-	@Autowired
-	private DepartamentoServiceImpl departamentoService;
-	
-	@Autowired
-	private AsignaturaServiceImpl asignaturaService;
-	
-	@Autowired 
-	private ProfesorService profesorService;
-	
-	@RequestMapping(value = "/populateBd")
-	public String actualizaBd(Model model) {
-		
-		
-		this.departamentoService.añadirDepartamentos();
-		this.profesorService.añadirProfesores();
-		this.asignaturaService.añadirAsignaturas();
-		
-		
-		
-		return "recursos/index";
-		
-	}
 	
 	@RequestMapping(value = "/login")
-	public String login(Model model) {
+	public String login(Model model,HttpServletRequest request) {
+		if(request.getUserPrincipal() != null) {
+			return "403";
+		}
 		return "recursos/login";
 	}
 	
@@ -72,76 +53,6 @@ public class IndexController {
 	}
 	
 	
-	
-	
-//	
-//	@RequestMapping(value="/listar")
-//	public String listar(Model model) {
-//		
-//		List<com.dlgaApp.entity.Usuario> l = new ArrayList<>();
-//		l = service.findAllUsers();
-//		model.addAttribute("lista",l);
-//		
-//		return "lista";
-//	}
-//	
-//	@RequestMapping(value = "/crear")
-//	public String inicioCrear(Model model) {
-//		
-//		Usuario u = new Usuario();
-//		
-//		
-//		Alumno al = service.getAlumnoById((long) 1);
-//		u.setAlumno(al);
-//		
-//		model.addAttribute("usuario",u);
-//		
-//		
-//		
-//		return "formUser";
-//	}
-//	
-//	@RequestMapping(value = "/crearAl")
-//	public String inicioCrearAL(Model model) {
-//		
-//		
-//		Alumno a = new Alumno();
-//		
-//		
-//		
-//		model.addAttribute("alumno",a);
-//		
-//		
-//		
-//		return "formAlumno";
-//	}
-//	
-//	@RequestMapping(value = "/gUsuario")
-//	public String guardarUsuario(@Valid @ModelAttribute("usuario") Usuario us,BindingResult result,Model model) {
-//		
-//		if(result.hasErrors()) {
-//			
-//			model.addAttribute("usuario", us);
-//			return "formUser";
-//		}
-//		service.guardarusuario(us);
-//		
-//		
-//		return "redirect:listar";
-//	}
-	
-//	@RequestMapping(value = "/gAlumno")
-//	public String guardarAlumno(@Valid @ModelAttribute("alumno") Alumno a,BindingResult result,Model model) {
-//		
-//		if(result.hasErrors()) {
-//			
-//			model.addAttribute("alumno", a);
-//			return "formUser";
-//		}
-//		service.guardarAl(a);
-//		
-//		
-//		return "redirect:listar";
-//	}
+
 
 }

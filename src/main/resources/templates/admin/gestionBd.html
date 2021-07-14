@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Base de Datos</title>
+<object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
+</head>
+<body>
+<header th:replace="recursos/base :: navbar"></header>
+
+<h1>Administración de la Base de Datos</h1>
+
+
+
+	<div class="funcionInicio">
+		<a class="funcion" th:href="@{titulacionesMod}"><img
+			src="/img/recargar.png" width="150"> </a><br>
+		<p>Titulaciones</p>
+	</div>
+	
+	<div class="funcionInicio">
+		<a class="funcion" th:href="@{listaUsuario}"><img
+			src="/img/gestion-usuarios.png" width="150"> </a><br>
+		<p >Gestionar Usuarios</p>
+	</div>
+	
+	<div class="funcionInicio">
+		<a class="funcion" th:href="@{gestionBd}"><img
+			src="/img/base-datos.png" width="150"> </a><br>
+		<p >Gestionar Usuarios</p>
+	</div>
+
+</body>
+</html>

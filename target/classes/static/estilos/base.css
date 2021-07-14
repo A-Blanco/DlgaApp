@@ -2,3 +2,9 @@
 
 body{
 background-color: #ABDFFA}
+
+div.funcionInicio{
+	margin-left: 40px;
+	display:  inline-block;
+	width: 200px;
+}

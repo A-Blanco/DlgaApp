@@ -3,37 +3,54 @@
 
 <head>
 <meta charset="UTF-8">
+<object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#grupoList').DataTable({
+			"responsive" : true,
+			"language" : idioma
+		}).draw(true).columns.adjust();
+	});
+</script>
+<script th:replace="recursos/idiomaTable :: idiomaTable"
+	type="text/javascript"></script>
 </head>
 <body>
-
+	<header th:replace="recursos/base :: navbar"></header>
 	<h2>Lista de Grupos</h2>
 
-	<table>
-		<thead>
-			<tr>
-				<th>Titulacion</th>
-				<th>Curso</th>
-				<th>Grupo</th>
-				<th></th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
+	<div class="container">
+		<div class="mx-auto">
+			<div class="table-responsive">
+				<table id="grupoList"
+					class="table table-bordered table-hover table-striped">
+					<thead class="thead-light">
+						<tr>
+							<th>Titulacion</th>
+							<th>Curso</th>
+							<th>Grupo</th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
 
-			<tr th:each="grupo : ${grupos}">
-				<td th:text="${grupo.titulacion.nombre}"></td>
-				<td th:text="${grupo.curso}"></td>
-				<td th:text="${grupo.numerogrupo}"></td>
-				<td>
-				<a th:href="@{delegados/} + ${grupo.id}">Ver delegados</a>
-				</td>
-				<td>
-				<a th:href="@{eliminarGrupo/} + ${grupo.id}">Eliminar grupo</a>
-				</td>
-			</tr>
-			
-		</tbody>
-	</table>
+						<tr th:each="grupo : ${grupos}">
+							<td th:text="${grupo.titulacion.nombre}"></td>
+							<td th:text="${grupo.curso}"></td>
+							<td th:text="${grupo.numerogrupo}"></td>
+							<td><a th:href="@{delegados/} + ${grupo.id}">Ver
+									delegados</a></td>
+							<td><a th:href="@{eliminarGrupo/} + ${grupo.id}">Eliminar
+									grupo</a></td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 
 </body>
 </html>

@@ -3,9 +3,11 @@
 
 <head>
 <meta charset="UTF-8">
+<object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
 </head>
 <body>
-
+<header th:replace="recursos/base :: navbar"></header>
 	<h2
 		th:text="${'Delegados del grupo ' + grupo.numerogrupo + ' del año ' + grupo.curso + ' de ' + grupo.titulacion.nombre} "></h2>
 

@@ -57,7 +57,7 @@ public class UserController {
 			return "usuario/formUser";
 		}else {
 			
-			usuarioService.saveUsuario(usuario);;
+			usuarioService.creaUsuario(usuario);;
 		}
 		
 		return "redirect:";
@@ -126,10 +126,12 @@ public class UserController {
 		
 		Usuario usuario =this.usuarioService.findById(usuarioId);
 		
+		
 		usuario.setRol(Roles.ROLE_MIEMBRO);
-		this.usuarioService.saveUsuario(usuario);
+		this.usuarioService.save(usuario);
 		
 		return "redirect:/usuariosNoAceptados";
 	}
+	
 	
 }

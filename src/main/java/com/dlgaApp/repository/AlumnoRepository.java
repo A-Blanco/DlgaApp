@@ -13,7 +13,4 @@ public interface AlumnoRepository extends CrudRepository<Alumno, Long> {
 
 	public long countByEmail(String email);
 	
-	
-
-	
 }
