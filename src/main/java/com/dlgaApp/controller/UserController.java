@@ -76,6 +76,11 @@ public class UserController {
 			result.rejectValue("telefono", "telefono", "El telefono introducido ya está registrado");
 		}
 		
+		//validación de las 2 contraseñas
+		if(!usuario.getPassword().equals(usuario.getPassword2())) {
+			result.rejectValue("password", "password", "Las contraseñas no coinciden");
+		}
+		
 	}
 	
 	@GetMapping(value = "/listaUsuario")

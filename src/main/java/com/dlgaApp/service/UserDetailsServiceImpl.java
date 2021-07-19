@@ -39,7 +39,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public void creaUsuario(Usuario u) {
     	
     	u.setPassword(passw.encode(u.getPassword()));
-    	
+    	u.setPassword2(passw.encode(u.getPassword2()));
     	
     	usuarioRepository.save(u);
     	
