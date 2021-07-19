@@ -42,7 +42,7 @@ public class GrupoController {
 
 		model.addAttribute("grupo", grupo);
 		model.addAttribute("titulaciones", t);
-		return "grupoForm";
+		return "grupo/grupoForm";
 
 	}
 
@@ -57,7 +57,7 @@ public class GrupoController {
 
 			model.addAttribute("grupo", grupo);
 			model.addAttribute("titulaciones", t);
-			return "grupoForm";
+			return "grupo/grupoForm";
 		} else {
 
 			grupoService.save(grupo);
@@ -74,7 +74,7 @@ public class GrupoController {
 		List<Grupo> l = this.grupoService.findAll();
 		model.addAttribute("grupos", l);
 
-		return "grupoList";
+		return "grupo/grupoList";
 
 	}
 
@@ -89,7 +89,7 @@ public class GrupoController {
 		request.getSession().setAttribute("grupoId", grupoId);
 		request.getSession().setAttribute("op", "addDelegado");
 
-		return "inicioGrupoAdd";
+		return "grupo/inicioGrupoAdd";
 
 	}
 
@@ -103,9 +103,9 @@ public class GrupoController {
 			Integer check = (int) this.alumnoService.numeroAlumnos();
 
 			model.addAttribute("check", check);
-			return "inicioGrupoAdd";
+			return "grupo/inicioGrupoAdd";
 		} else {
-			return "index";
+			return "recursos/index";
 		}
 	}
 
@@ -115,7 +115,7 @@ public class GrupoController {
 		Grupo grupo = this.grupoService.findById(grupoId);
 		model.addAttribute("grupo", grupo);
 		model.addAttribute("update", 0);
-		return "updateDelegados";
+		return "delegado/updateDelegados";
 	}
 
 	@GetMapping(value = "modificarDelegados/{grupoId}")
@@ -125,7 +125,7 @@ public class GrupoController {
 		model.addAttribute("grupo", grupo);
 		model.addAttribute("update", 1);
 
-		return "updateDelegados";
+		return "delegado/updateDelegados";
 	}
 
 	@GetMapping(value = "eliminarDelegado/{grupoId}/{alumnoId}")

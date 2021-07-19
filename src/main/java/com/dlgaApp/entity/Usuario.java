@@ -34,6 +34,9 @@ public class Usuario implements UserDetails {
 	message = "La contraseña debe tener al menos 8 caracteres,un dígito,una minúscula y una mayúscula.")
 	private String password;
 	
+	
+	private String password2;
+	
 	@NotNull(message = "Debes introducir su número de teléfono")
 	@Pattern(regexp = "(\\+34|0034|34)?[ -]*(6|7|8)[ -]*([0-9][ -]*){8}",
 	message = "Debe introducir un número de teléfono válido")
@@ -126,5 +129,14 @@ public class Usuario implements UserDetails {
 		public void setTelefono(String telefono) {
 			this.telefono = telefono;
 		}
+
+		public String getPassword2() {
+			return password2;
+		}
+
+		public void setPassword2(String password2) {
+			this.password2 = password2;
+		}
 	    
+		
 }

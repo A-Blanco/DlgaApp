@@ -36,10 +36,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     
     
     @Transactional
-    public void saveUsuario(Usuario u) {
+    public void creaUsuario(Usuario u) {
     	
     	u.setPassword(passw.encode(u.getPassword()));
-    	
+    	u.setPassword2(passw.encode(u.getPassword2()));
     	
     	usuarioRepository.save(u);
     	
@@ -77,5 +77,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public Usuario findById(Long id) {
     	return usuarioRepository.findById(id).orElse(null);
     }
+    
+    public void save(Usuario u) {
+    	this.usuarioRepository.save(u);
+    }
+    
+    
    
 }

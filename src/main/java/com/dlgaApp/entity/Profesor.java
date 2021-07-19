@@ -28,7 +28,6 @@ public class Profesor {
 	private String telefono;
 
 	@ManyToOne
-	@JoinColumn(name = "departamento_id")
 	private Departamento departamento;
 
 	@ManyToMany(mappedBy = "profesores")

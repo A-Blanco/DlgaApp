@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head >
+	<meta charset="UTF-8">
+	<object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
+</head>
+<body>
+<header th:replace="recursos/base :: navbar"></header>
+
+<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Id</th>
+											
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="delegado: ${lista}">
+							<td th:text="${delegado.nombre}"></td>
+							<td th:text="${delegado.apellidos}"></td>
+							<td th:text="${delegado.edad}"></td>
+							
+						</tr>
+					</tbody>
+				
+				</table>
+</body>
+</html>

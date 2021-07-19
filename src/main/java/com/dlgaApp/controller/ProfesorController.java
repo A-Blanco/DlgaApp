@@ -23,7 +23,7 @@ public class ProfesorController {
 		
 		this.profesorService.añadirProfesores();
 		
-		return "index";
+		return "recursos/index";
 		
 	}
 	
@@ -31,7 +31,7 @@ public class ProfesorController {
 	public String profesorList(Model model) {
 		List<Profesor> profesores = this.profesorService.profesorList();
 		model.addAttribute("profesores", profesores);
-		return "listProfesores";
+		return "profesor/listProfesores";
 	}
 	
 	
@@ -41,6 +41,6 @@ public class ProfesorController {
 		Profesor profesor = this.profesorService.findById(profesorId);
 		
 		model.addAttribute("profesor", profesor);
-		return "profesorDetails";
+		return "profesor/profesorDetails";
 	}
 }

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
+</head>
+<body>
+<header th:replace="recursos/base :: navbar"></header>
+	<h2
+		th:text="${'Delegados del grupo ' + grupo.numerogrupo + ' del año ' + grupo.curso + ' de ' + grupo.titulacion.nombre} "></h2>
+
+	<table>
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th></th>
+				<th></th>
+
+			</tr>
+		</thead>
+		<tbody>
+
+			<tr th:each="delegado : ${grupo.delegados}">
+				<td th:text="${delegado.nombre}">
+				<td th:if="${update}"><a
+					th:href="@{/eliminarDelegado/} + ${grupo.id} +'/'+ ${delegado.id}">
+						Eliminar Delegado de este grupo</a></td>
+				<td><a
+					th:href="@{/detallesAlumno/} + ${delegado.id}">Ver detalles Alumno</a></td>
+			</tr>
+			
+
+		</tbody>
+	</table>
+	<a th:if="${update == 0}"
+		th:href="@{/modificarDelegados/} + ${grupo.id}"> Modificar
+		Delegados de este grupo</a>
+	<div th:if="${update == 1}">
+		<a th:href="@{/delegados/} + ${grupo.id}"> Finalizar Modificación</a>
+		<a th:if="${grupo.delegados.size() <4}"
+			th:href="@{/añadirDelegado/} + ${grupo.id}"> Añadir Delegado</a>
+	</div>
+
+</body>
+</html>

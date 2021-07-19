@@ -29,7 +29,7 @@ public class AsignaturaController {
 		
 		this.asignaturaService.añadirAsignaturas();
 		
-		return "index";
+		return "recursos/index";
 	}
 	
 	@RequestMapping(value = "/borra")
@@ -37,7 +37,7 @@ public class AsignaturaController {
 		
 		this.asignaturaService.delete();
 		
-		return "index";
+		return "recursos/index";
 	}
 	
 
@@ -45,7 +45,7 @@ public class AsignaturaController {
 	public String asignaturaList(Model model) {
 		List<Asignatura> asignaturas = this.asignaturaService.asignaturaList();
 		model.addAttribute("asignaturas", asignaturas);
-		return "asignaturaList";
+		return "asignatura/asignaturaList";
 	}
 	
 	
@@ -55,7 +55,7 @@ public class AsignaturaController {
 		Asignatura asignatura = this.asignaturaService.findById(asignaturaId);
 		
 		model.addAttribute("asignatura", asignatura);
-		return "asignaturaDetails";
+		return "asignatura/asignaturaDetails";
 	}
 
 }

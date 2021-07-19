@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
+</head>
+<body>
+<header th:replace="recursos/base :: navbar"></header>
+	<h1>Detalles Profesor</h1>
+
+
+	<table>
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Email</th>
+				<th>Teléfono</th>
+				<th>Departamento</th>
+				<th>Asignaturas que Imparte</th>
+			</tr>
+		</thead>
+		<tbody>
+
+			<tr>
+				<td th:text="${profesor.nombre}"></td>
+				<td th:text="${profesor.email}"></td>
+				<td th:text="${profesor.telefono}"></td>
+				<td th:text="${profesor.departamento.nombre}"></td>
+				<td>
+					<div th:each="asignatura : ${profesor.asignaturas}">
+					<p th:text="${asignatura.nombre}"></p>
+					</div>
+				</td>
+
+
+
+			</tr>
+
+		</tbody>
+	</table>
+
+</body>
+</html>

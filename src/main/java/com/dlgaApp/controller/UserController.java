@@ -2,6 +2,8 @@ package com.dlgaApp.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -49,12 +51,13 @@ public class UserController {
 	public String crearusuario(@Valid @ModelAttribute("usuario") Usuario usuario,BindingResult result,Model model){
 		
 		validarUsuario(usuario, result);
+		
 		if(result.hasErrors()) {		
 			model.addAttribute("usuario", usuario);
-			return "formUser";
+			return "usuario/formUser";
 		}else {
 			
-			usuarioService.saveUsuario(usuario);;
+			usuarioService.creaUsuario(usuario);;
 		}
 		
 		return "redirect:";
@@ -73,6 +76,11 @@ public class UserController {
 			result.rejectValue("telefono", "telefono", "El telefono introducido ya está registrado");
 		}
 		
+		//validación de las 2 contraseñas
+		if(!usuario.getPassword().equals(usuario.getPassword2())) {
+			result.rejectValue("password", "password", "Las contraseñas no coinciden");
+		}
+		
 	}
 	
 	@GetMapping(value = "/listaUsuario")
@@ -83,7 +91,7 @@ public class UserController {
 		
 		model.addAttribute("usuarios", l);
 		
-		return "listUsuario";
+		return "usuario/listUsuario";
 	}
 	
 	@GetMapping(value = "/eliminarUsuario/{usuarioId}")
@@ -104,7 +112,31 @@ public class UserController {
 		
 		model.addAttribute("usuario", usuario);
 		
-		return "detallesUsuario";
+		return "usuario/detallesUsuario";
 	}
+	
+	@GetMapping(value = "/usuariosNoAceptados")
+	public String usuariosNoAceptados(Model model) {
+		
+		List<Usuario> usuarios = this.usuarioService.findAllUsuarios().stream().filter(x->x.getRol().equals(Roles.ROLE_REGISTRADO))
+				.collect(Collectors.toList());
+		
+		model.addAttribute("usuarios", usuarios);
+		
+		return "usuario/usuarioListNoAceptados";
+	}
+	
+	@GetMapping(value = "/aceptarUsuario/{usuarioId}")
+	public String aceptarUsuario(@PathVariable("usuarioId") final long usuarioId, Model model) {
+		
+		Usuario usuario =this.usuarioService.findById(usuarioId);
+		
+		
+		usuario.setRol(Roles.ROLE_MIEMBRO);
+		this.usuarioService.save(usuario);
+		
+		return "redirect:/usuariosNoAceptados";
+	}
+	
 	
 }
