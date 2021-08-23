@@ -52,6 +52,7 @@ public class Usuario implements UserDetails {
 	@JoinColumn(name = "alumno_id")
 	private Alumno alumno;
 	
+	private String motivoRechazo;
 
 	 @Override
 	    public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -136,6 +137,14 @@ public class Usuario implements UserDetails {
 
 		public void setPassword2(String password2) {
 			this.password2 = password2;
+		}
+
+		public String getMotivoRechazo() {
+			return motivoRechazo;
+		}
+
+		public void setMotivoRechazo(String motivoRechazo) {
+			this.motivoRechazo = motivoRechazo;
 		}
 	    
 		

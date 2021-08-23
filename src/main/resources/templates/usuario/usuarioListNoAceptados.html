@@ -40,9 +40,38 @@
 				<td th:text="${usuario.username}"></td>
 				<td th:text="${usuario.alumno.nombre}"></td>
 				<td th:text="${usuario.alumno.apellidos}"></td>
-				 <td><a th:href="@{aceptarUsuario/} + ${usuario.id}"><img width="20" src="img/downDarkBlue.png"></a>
+				 <td> <a class="btn btn-success" th:href="@{aceptarUsuario/} + ${usuario.id}">Aceptar</a>
 				 &nbsp 
-				 <a th:href="@{denegarUsuario/} + ${usuario.id}">Denegar</a></td>
+				 <button type="button" class="btn btn-danger" data-toggle="modal" th:attr="data-target='#ModalDenegado'+*{usuario.id}">Rechazar</button>
+				 
+				 <div class="modal fade" th:id="*{'ModalDenegado'+{usuario.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalTitle">Motivo del rechazo</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+       <form action="/denegarUsuario" method="post">
+      <div class="modal-body">
+       
+          <div class="form-group">
+           <input type="hidden" th:value="*{usuario.id}" class="form-control" name="usuarioId">
+            <label for="recipient-name" class="col-form-label">Motivo:</label>
+            <textarea placeholder="Si dejas este campo vacío, el alumno no tendrá información respecto a su rechazo"  class="form-control" name="motivo"></textarea>
+          </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        	 <button type="submit" class="btn btn-primary">Enviar</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+				
 				
 			</tr>
 			

@@ -6,23 +6,81 @@
 <object th:replace="recursos/base :: boot"></object>
 <link rel="stylesheet" th:href="@{/estilos/base.css}" />
 
-<script type="text/javascript">
+<script onselect="filtro" type="text/javascript">
 	$(document).ready(function() {
 		$('#asignaturaList').DataTable({
 			"responsive" : true,
-			"language": idioma
+			"language" : idioma,
+			"destroy" : true,
+			"searching" : false,
+
 		}).draw(true).columns.adjust();
 	});
-	
+
+	function decideFiltro(val) {
+
+		if (val == "nombre") {
+			$(document).ready(function() {
+				$('#asignaturaList').DataTable({
+					"responsive" : true,
+					"language" : idioma,
+					"destroy" : true,
+					"columnDefs" :
+
+					[ {
+						"searchable" : false,
+						"targets" : 0
+					}, {
+						"searchable" : false,
+						"targets" : 2
+					},
+
+					]
+
+				}).draw(true).columns.adjust();
+			});
+		}
+
+		else if (val == "id") {
+			$(document).ready(function() {
+				$('#asignaturaList').DataTable({
+					"responsive" : true,
+					"language" : idioma,
+					"destroy" : true,
+					"columnDefs" :
+
+					[ {
+						"searchable" : false,
+						"targets" : 1
+					}, {
+						"searchable" : false,
+						"targets" : 2
+					},
+
+					]
+
+				}).draw(true).columns.adjust();
+			});
+		}
+	}
 </script>
-<script th:replace="recursos/idiomaTable :: idiomaTable" type="text/javascript"></script>
+<script th:replace="recursos/idiomaTable :: idiomaTable"
+	type="text/javascript"></script>
 </head>
 <body>
 	<header th:replace="recursos/base :: navbar"></header>
 	<h2 style="text-align: center;">Lista de Asignaturas</h2>
+
+
 	<div class="container">
 		<div class="mx-auto ">
 			<div class="table-responsive">
+				<select onchange="decideFiltro(this.value)" id="selectFiltro"
+					name="filtro">
+					<option disabled selected>Selecciona una opción</option>
+					<option value="nombre" id="selectNombre">Nombre</option>
+					<option value="id" id="selectId">Id</option>
+				</select>
 				<table id="asignaturaList"
 					class="table table-bordered table-hover table-striped">
 					<thead class="thead-light">

@@ -82,6 +82,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     	this.usuarioRepository.save(u);
     }
     
+    public Usuario findByUsername(String username) {
+    	return usuarioRepository.findByUsername(username);
+    }
     
    
 }
