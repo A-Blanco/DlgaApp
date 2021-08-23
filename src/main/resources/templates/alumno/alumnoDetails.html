@@ -33,6 +33,19 @@
 
 		</tbody>
 	</table>
+	
+	<div th:if="${siAlumno == 1}" >
+	<form action="/crearUsuarioRegistrado" method="post">
+             
+          <div class="form-group">
+           <input type="hidden" th:value="${alumno.id}" class="form-control" name="alumnoId">
+			</div>
+
+       	<button type="submit" class="btn btn-primary">Si, son mis datos</button>
+      
+      </form>
+              <a class="btn btn-success" th:href="@{/crearUsuario}">No son mis datos</a>
+</div>
 
 </body>
 </html>

@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -29,9 +30,11 @@ public class Grupo {
 	private Long id;
 	
 	@NotNull
+	@Min(value = 1)
 	private Integer numerogrupo;
 	
 	@NotNull
+	@Min(value = 1)
 	private Integer curso;
 	
 	@NotNull

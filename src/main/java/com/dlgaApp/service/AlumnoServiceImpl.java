@@ -1,6 +1,7 @@
 package com.dlgaApp.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -48,6 +49,10 @@ public class AlumnoServiceImpl {
 	
 	public Alumno findById(long id) {
 		return this.alumnoRepository.findById(id).get();
+	}
+	
+	public Alumno findByEmail(String email) {
+		return this.alumnoRepository.findByEmail(email);
 	}
 	
 }

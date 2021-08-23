@@ -6,9 +6,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +23,7 @@ import com.dlgaApp.entity.Grupo;
 import com.dlgaApp.entity.Usuario;
 import com.dlgaApp.service.AlumnoServiceImpl;
 import com.dlgaApp.service.GrupoServiceImpl;
+import com.dlgaApp.service.UserDetailsServiceImpl;
 
 @Controller
 public class AlumnoController {
@@ -29,12 +33,26 @@ public class AlumnoController {
 
 	@Autowired
 	private GrupoServiceImpl grupoService;
+	
+	@Autowired 
+	private UserDetailsServiceImpl usuarioService;
 
 	@GetMapping(value = "/crearAlumno")
-	public String crearAlumnoForm(Model model) {
+	public String crearAlumnoForm(Model model, HttpServletRequest request) {
 
+		if(request.getSession().getAttribute("noAlumno")!=null) {
+			model.addAttribute("noAlumno", 1);
+		}
+		
+		if(request.getSession().getAttribute("siUsuario")!=null) {
+			model.addAttribute("siUsuario", 1);
+		}
+		
 		Alumno alumno = new Alumno();
+		
 		model.addAttribute("alumno", alumno);
+		request.getSession().removeAttribute("noAlumno");
+		request.getSession().removeAttribute("siUsuario");
 		return "alumno/formAlumno";
 
 	}
@@ -56,6 +74,7 @@ public class AlumnoController {
 		validarAlumno(alumno, result);
 
 		if (result.hasErrors()) {
+			
 			model.addAttribute("alumno", alumno);
 			return "alumno/formAlumno";
 		} else {
@@ -121,11 +140,19 @@ public class AlumnoController {
 	}
 	
 	@GetMapping(value = "/detallesAlumno/{alumnoId}")
-	public String alumnoDetails (Model model, @PathVariable("alumnoId") final long alumnoId) {
+	public String alumnoDetails (Model model, @PathVariable("alumnoId") final long alumnoId,
+			HttpServletRequest request) {
 		
+		
+		if(request.getSession().getAttribute("siAlumno") != null) {
+
+			model.addAttribute("siAlumno", 1);
+			}
+	
 		Alumno alumno = this.alumnoService.findById(alumnoId);
 		
 		model.addAttribute("alumno", alumno);
+		request.getSession().removeAttribute("siAlumno");
 		
 		return "alumno/alumnoDetails";
 		
@@ -139,4 +166,6 @@ public class AlumnoController {
 		}
 
 	}
+	
+	
 }

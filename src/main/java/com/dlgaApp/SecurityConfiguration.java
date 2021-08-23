@@ -4,6 +4,7 @@ import org.springframework.context.annotation.*;
 import org.springframework.security.authentication.dao.*;
 import org.springframework.security.config.annotation.authentication.builders.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.*;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -41,13 +42,25 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http.authorizeRequests().antMatchers("/").hasAnyRole("MIEMBRO, ADMIN").and().formLogin().loginPage("/login")
-				.permitAll().defaultSuccessUrl("/").failureUrl("/login?error=true")
+		
+		http.authorizeRequests().antMatchers("/crearUsuario").permitAll().antMatchers("/crearAlumno").permitAll()
+		.antMatchers("/crearUsuarioRegistrado").permitAll()
+		.antMatchers("/detallesAlumno/**").permitAll()
+		.antMatchers("/**").hasAnyRole("MIEMBRO, ADMIN")
+		.and().formLogin().loginPage("/login")
+				.permitAll().defaultSuccessUrl("/",true).failureUrl("/login?error=true")
 				.usernameParameter("username").passwordParameter("password").and().logout().logoutSuccessUrl("/").and();
 
 		http.csrf().disable();
 		http.headers().frameOptions().sameOrigin();
 		
 		http.exceptionHandling().accessDeniedPage("/denegado");
+		
+
+	}
+	@Override
+	public void configure(WebSecurity web) {
+	    web.ignoring()
+	        .antMatchers("/**/*.{js,html,css}");
 	}
 }

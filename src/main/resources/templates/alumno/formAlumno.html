@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
 <object th:replace="recursos/base :: boot"></object>
@@ -42,10 +42,48 @@
                 <div class="col-12 forgot">
                     <a th:href="@{/}">Cancelar Registro</a>
                
+  <button type="button" class="btn btn-danger" data-toggle="modal"
+				 th:attr="data-target='#ModalAlumnoRegistrado'">¿Tus datos están ya registrados?</button>
+				 
+				          
             </div>
         </div>
     </div>
      </div>
+     
+     <div class="modal fade" th:id="ModalAlumnoRegistrado" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalTitle">Introduzca su email</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+       <form action="/crearUsuarioRegistrado" method="get">
+      <div class="modal-body">
+       
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Email</label>
+            <input required="required" type="text" class="form-control" name="email"></input>
+          </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        	 <button type="submit" class="btn btn-primary">Enviar</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>    
+     
+     <div th:if="${noAlumno == 1}" class="alert alert-danger" role="alert">
+  El email introducido no existe en la base de datos, por favor, comprueba los datos introducidos o rellene los daos como nuevo Alumno
+</div>
+ <div th:if="${siUsuario == 1}" class="alert alert-danger" role="alert">
+  El email introducido ya existe en la base de datos y tiene un usuario registrado.
+</div>
 
 </body>
 </html>
