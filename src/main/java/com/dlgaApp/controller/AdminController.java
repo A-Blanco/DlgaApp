@@ -1,5 +1,7 @@
 package com.dlgaApp.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +22,9 @@ public class AdminController {
 	private AsignaturaServiceImpl asignaturaService;
 
 	@Autowired
+	private FiltroMantenimiento filtroMantenimiento;
+	
+	@Autowired
 	private ProfesorService profesorService;
 
 	@GetMapping(value = "/administrador")
@@ -30,12 +35,23 @@ public class AdminController {
 
 	@RequestMapping(value = "/populateBd")
 	public String actualizaBd(Model model) {
+		
+		this.filtroMantenimiento.activarMantenimiento();
 
 		this.departamentoService.añadirDepartamentos();
 		this.profesorService.añadirProfesores();
 		this.asignaturaService.añadirAsignaturas();
-
+		
+		this.filtroMantenimiento.desactivarMantenimiento();
+		
 		return "recursos/index";
+
+	}
+	
+	@RequestMapping(value = "/mantenimiento")
+	public String vistaMantenimiento(Model model,HttpServletRequest request) {
+		
+		return "recursos/denegado";
 
 	}
 

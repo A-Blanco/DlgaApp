@@ -13,6 +13,12 @@
 	<header th:replace="recursos/base :: navbar"></header>
 
 	<h1>Funciones</h1>
+	
+	<div class="funcionInicio">
+		<a class="funcion" th:href="@{listAlumnos}"><img
+			src="/img/gruposalumnos.png" width="150"></a> <br>
+		<p>Listar Alumnos</p>
+	</div>
 
 	<div class="funcionInicio">
 		<a class="funcion" th:href="@{crearUsuario}"><img
@@ -20,11 +26,12 @@
 		<p >Crear Usuario</p>
 	</div>
 
-	<div class="funcionInicio">
-		<a class="funcion" th:href="@{listaUsuario}"><img
-			src="/img/group.png" width="150"> </a><br>
-		<p>Listar Usuario</p>
-	</div>
+	
+<!-- 	<div class="funcionInicio"> -->
+<!-- 		<a class="funcion" th:href="@{listaUsuario}"><img -->
+<!-- 			src="/img/group.png" width="150"> </a><br> -->
+<!-- 		<p>Listar Usuario</p> -->
+<!-- 	</div> -->
 
 
 	<div class="funcionInicio">
@@ -48,11 +55,11 @@
 		<p>Listar Asignaturas</p>
 	</div>
 
-	<div class="funcionInicio">
-		<a class="funcion" th:href="@{crearGrupo}"><img
-			src="/img/anadir-grupo.png" width="150"></a> <br>
-		<p>Crear Grupo</p>
-	</div>
+<!-- 	<div class="funcionInicio"> -->
+<!-- 		<a class="funcion" th:href="@{crearGrupo}"><img -->
+<!-- 			src="/img/anadir-grupo.png" width="150"></a> <br> -->
+<!-- 		<p>Crear Grupo</p> -->
+<!-- 	</div> -->
 
 	<div class="funcionInicio">
 		<a class="funcion" th:href="@{grupoList}"><img
