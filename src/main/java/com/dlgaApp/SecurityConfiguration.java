@@ -47,8 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/crearUsuario").permitAll().antMatchers("/crearAlumno").permitAll()
 		.antMatchers("/crearUsuarioRegistrado").permitAll()
 		.antMatchers("/detallesAlumno/**").permitAll()
-//		.antMatchers("/**").hasAnyRole("MIEMBRO, ADMIN")
-		.antMatchers("/**").permitAll()
+     	.antMatchers("/**").hasAnyRole("MIEMBRO, ADMIN")
 		.and().formLogin().loginPage("/login")
 				.permitAll().defaultSuccessUrl("/",true).failureUrl("/login?error=true")
 				.usernameParameter("username").passwordParameter("password").and().logout().logoutSuccessUrl("/").and();

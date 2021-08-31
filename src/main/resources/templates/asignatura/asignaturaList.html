@@ -75,8 +75,8 @@
 				<select title="Filtrar: " onchange="decideFiltro(this.value)" id="selectFiltro"
 					name="filtro">
 					<option disabled selected>Filtros de Búsqueda</option>
-					<option value="nombre" id="selectNombre">Nombre</option>
-					<option value="id" id="selectId">Id</option>
+					<option value="nombre" id="selectNombre">Titulación</option>
+					<option value="id" id="selectId">Nombre</option>
 				</select>
 				</div>
 
@@ -92,15 +92,17 @@
 					<thead class="thead-light">
 						
 						<tr>
-							<th scope="col">Id</th>
+							
 							<th scope="col">Nombre</th>
+							<th scope="col">Titulación</th>
 							<th></th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="asignatura : ${asignaturas}">
-							<th scope="row" th:text="${asignatura.id}"></th>
+							
 							<td th:text="${asignatura.nombre}"></td>
+							<th scope="row" th:text="${asignatura.departamento.nombre}"></th>
 							<td><a th:href="@{detallesAsignatura/} + ${asignatura.id}">Ver
 									detalles</a></td>
 						</tr>
