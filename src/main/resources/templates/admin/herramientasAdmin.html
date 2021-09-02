@@ -6,6 +6,16 @@
 <title>Administrador</title>
 <object th:replace="recursos/base :: boot"></object>
 <link rel="stylesheet" th:href="@{/estilos/base.css}" />
+<script type="text/javascript">
+
+function cargaModales() {
+	$('#ModalActualizacionBd').modal('hide');
+	$('#ModalCargandoBd').modal('show');
+	   }
+
+</script>
+
+
 </head>
 <body>
 <header th:replace="recursos/base :: navbar"></header>
@@ -13,9 +23,12 @@
 <h1>Administración de la plataforma</h1>
 
 	<div class="funcionInicio">
-		<a class="funcion" th:href="@{populateBd}"><img
-			src="/img/recargar.png" width="150"> </a><br>
+	<button type="button" class="funcion" data-toggle="modal"
+				 th:attr="data-target='#ModalActualizacionBd'">
+		<img
+			src="/img/recargar.png" width="150"> <br>
 		<p >Actualizar Base de Datos</p>
+		</button>
 	</div>
 	
 	<div class="funcionInicio">
@@ -29,6 +42,53 @@
 			src="/img/base-datos.png" width="150"> </a><br>
 		<p >Gestionar Base de Datos del Sistema</p>
 	</div>
+
+ <div class="modal fade" th:id="ModalActualizacionBd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalTitle">Aviso Importante</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+       <form action="/populateBd" method="get">
+      <div class="modal-body">
+       
+          <div >
+            <p>Usted va a realizar una actualización de lo datos del sistema, este proceso cerrará la aplicación por un tiempo (15 minutos aprox).
+            Tenga en cuenta que al finalizar el proceso es recomendable revisar los datos descargados.
+            </p>
+          </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        	 <button type="submit" class="btn btn-primary" onclick="cargaModales();" >Actualizar</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>    
+
+<div class="modal fade" th:id="ModalCargandoBd" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalTitle">La Base de Datos se está actualizando</h5>
+        
+      </div>
+      <div class="modal-body" s>
+       
+          <div >
+            <img
+			src="/img/cargando.gif" width="150">
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>    
 
 </body>
 </html>

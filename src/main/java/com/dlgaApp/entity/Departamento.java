@@ -40,8 +40,7 @@ public class Departamento {
 	private List<Asignatura> asignaturas;
 
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "departamento")
-	private List<Profesor> profesores;
+	
 	
 	
 	public Long getId() {

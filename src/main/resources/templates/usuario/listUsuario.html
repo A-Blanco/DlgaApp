@@ -42,7 +42,7 @@
 							<td th:text="${usuario.username}"></td>
 							<td th:text="${usuario.alumno.nombre}"></td>
 							<td th:text="${usuario.alumno.apellidos}"></td>
-							<td sec:authorize="hasRole('ADMIN')" th:text="${usuario.rol}"></td>
+							<td sec:authorize="hasRole('ADMIN')" th:text="${#strings.substringAfter(usuario.rol,'ROLE_')}"></td>
 							<td sec:authorize="hasRole('ADMIN')"><a th:href="@{eliminarUsuario/} + ${usuario.id}">Eliminar</a></td>
 							<td><a th:href="@{usuario/} + ${usuario.id}">Ver
 									detalles</a></td>

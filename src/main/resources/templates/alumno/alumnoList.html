@@ -5,20 +5,78 @@
 <meta charset="UTF-8">
 <object th:replace="recursos/base :: boot"></object>
 <link rel="stylesheet" th:href="@{/estilos/base.css}" />
-<script type="text/javascript">
+<script onselect="filtro" type="text/javascript">
 	$(document).ready(function() {
 		$('#alumnoList').DataTable({
 			"responsive" : true,
-			"language": idioma
+			"language" : idioma,
+			"destroy" : true,
+			"searching" : false,
+
 		}).draw(true).columns.adjust();
 	});
-	
+
+	function decideFiltro(val) {
+
+		if (val == "nombre") {
+			$(document).ready(function() {
+				$('#alumnoList').DataTable({
+					"responsive" : true,
+					"language" : idioma,
+					"destroy" : true,
+					"columnDefs" :
+
+					[ {
+						"searchable" : false,
+						"targets" : 1
+					}, {
+						"searchable" : false,
+						"targets" : 2
+					},
+
+					]
+
+				}).draw(true).columns.adjust();
+			});
+		}
+
+		else if (val == "email") {
+			$(document).ready(function() {
+				$('#alumnoList').DataTable({
+					"responsive" : true,
+					"language" : idioma,
+					"destroy" : true,
+					"columnDefs" :
+
+					[ {
+						"searchable" : false,
+						"targets" : 0
+					}, {
+						"searchable" : false,
+						"targets" : 2
+					},
+
+					]
+
+				}).draw(true).columns.adjust();
+			});
+		}
+	}
 </script>
 <script th:replace="recursos/idiomaTable :: idiomaTable" type="text/javascript"></script>
 </head>
 <body>
 <header th:replace="recursos/base :: navbar"></header>
 	<h2>Lista de Alumnos</h2>
+	
+	<div class="col-md-4 ml-auto" >
+				<select title="Filtrar: " onchange="decideFiltro(this.value)" id="selectFiltro"
+					name="filtro">
+					<option disabled selected>Filtros de Búsqueda</option>
+					<option value="nombre" id="selectNombre">Nombre</option>
+					<option value="email" id="selectId">Email</option>
+				</select>
+				</div>
 
 <div class="container">
 		<div class="mx-auto">
@@ -27,7 +85,9 @@
 					<thead class="thead-light">
 			<tr>
 				<th>Nombre</th>
-				<th></th>
+				<th>Email</th>
+				<th  th:if="${#session.getAttribute('grupoId') != null}"></th>
+				
 				<th></th>
 			</tr>
 		</thead>
@@ -35,9 +95,10 @@
 
 			<tr th:each="alumno : ${alumnos}">
 				<td th:text="${alumno.nombre}"></td>
-				<td><a th:if="${alumno.grupoDelegado == null}"
+				<td th:text="${alumno.email}"></td>
+				<td th:if="${#session.getAttribute('grupoId') != null}"><a th:if="${ alumno.grupoDelegado == null}"
 					th:href="@{/agregarDelegado/} + ${alumno.id}">Añadir</a>
-					<p th:if="${alumno.grupoDelegado != null}">Este Alumno ya es
+					<p th:if="${ alumno.grupoDelegado != null}">Este Alumno ya es
 						delegado de un grupo</p></td>
 				<td><a
 					th:href="@{/detallesAlumno/} + ${alumno.id}">Ver detalles Alumno</a></td>

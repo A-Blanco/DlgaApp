@@ -41,6 +41,7 @@ public class ProfesorController {
 		Profesor profesor = this.profesorService.findById(profesorId);
 		
 		model.addAttribute("profesor", profesor);
+		
 		return "profesor/profesorDetails";
 	}
 }
