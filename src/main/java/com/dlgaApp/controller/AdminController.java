@@ -42,12 +42,12 @@ public class AdminController {
 		this.filtroMantenimiento.activarMantenimiento();
 
 		this.departamentoService.añadirDepartamentos();
-		this.profesorService.añadirProfesores();
-		this.asignaturaService.añadirAsignaturas();
+//		this.profesorService.añadirProfesores();
+//		this.asignaturaService.añadirAsignaturas();
 		
 		this.filtroMantenimiento.desactivarMantenimiento();
 		
-		return "recursos/index";
+		return "redirect:";
 
 	}
 	

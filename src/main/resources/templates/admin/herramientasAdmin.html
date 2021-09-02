@@ -6,6 +6,16 @@
 <title>Administrador</title>
 <object th:replace="recursos/base :: boot"></object>
 <link rel="stylesheet" th:href="@{/estilos/base.css}" />
+<script type="text/javascript">
+
+function cargaModales() {
+	$('#ModalActualizacionBd').modal('hide');
+	$('#ModalCargandoBd').modal('show');
+	   }
+
+</script>
+
+
 </head>
 <body>
 <header th:replace="recursos/base :: navbar"></header>
@@ -54,9 +64,28 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        	 <button type="submit" class="btn btn-primary">Enviar</button>
+        	 <button type="submit" class="btn btn-primary" onclick="cargaModales();" >Actualizar</button>
       </div>
       </form>
+    </div>
+  </div>
+</div>    
+
+<div class="modal fade" th:id="ModalCargandoBd" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalTitle">La Base de Datos se está actualizando</h5>
+        
+      </div>
+      <div class="modal-body" s>
+       
+          <div >
+            <img
+			src="/img/cargando.gif" width="150">
+          </div>
+        
+      </div>
     </div>
   </div>
 </div>    

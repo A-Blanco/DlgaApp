@@ -32,7 +32,7 @@ public class FiltroMantenimiento implements Filter {
 		this.mantenimiento = false;
 	}
 	
-	private static final String MAINTENANCE_PAGE = "/denegado";
+	private static final String MAINTENANCE_PAGE = "/mantenimiento";
 	
 	
 	@Override
