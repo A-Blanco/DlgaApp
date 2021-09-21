@@ -141,15 +141,27 @@ public class UserController {
 		return "usuario/listUsuario";
 	}
 
-	@GetMapping(value = "/eliminarUsuario/{usuarioId}")
-	public String eliminaUsuario(@PathVariable("usuarioId") final long usuarioId, Model model) {
+	@PostMapping(value = "/eliminarUsuario")
+	public String eliminaUsuario(@RequestParam(defaultValue = "false",name = "checkbox") boolean checkbox,
+			@RequestParam(name = "usuarioId") long usuarioId, Model model) {
 
 		Usuario usuario = this.usuarioService.findById(usuarioId);
-
-		Long alumnoId = usuario.getAlumno().getId();
-		this.alumnoService.eliminaAlumnoById(alumnoId);
-
-		return "redirect:/listaUsuario";
+		Alumno alumno = usuario.getAlumno();
+		
+		if(checkbox) {
+			
+			alumno.setUsuario(null);
+			this.alumnoService.saveAlumno(alumno);
+			this.usuarioService.eliminarUsuario(usuario);
+			return "redirect:/listaUsuario";
+			
+		}else {
+			
+			
+			this.alumnoService.eliminaAlumnoById(alumno.getId());
+			return "redirect:/listaUsuario";
+		}
+		
 	}
 
 	@GetMapping(value = "/usuario/{usuarioId}")

@@ -42,7 +42,7 @@
                 <div class="col-12 forgot">
                     <a th:href="@{/}">Cancelar Registro</a>
                
-  <button type="button" class="btn btn-danger" data-toggle="modal"
+  <button th:if="${#session.getAttribute('usuario') != null}" type="button" class="btn btn-danger" data-toggle="modal"
 				 th:attr="data-target='#ModalAlumnoRegistrado'">¿Tus datos están ya registrados?</button>
 				 
 				          
