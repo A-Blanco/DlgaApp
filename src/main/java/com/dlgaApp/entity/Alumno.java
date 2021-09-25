@@ -42,6 +42,7 @@ public class Alumno {
 
 	@NotEmpty(message = "Debes introducir el email del alumno")
 	@Email(message = "El email debe ser vádilo")
+	@Column(unique = true)
 	private String email;
 	
 	@OneToOne(mappedBy = "alumno",cascade = CascadeType.ALL)

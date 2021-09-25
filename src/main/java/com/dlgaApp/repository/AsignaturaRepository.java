@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dlgaApp.entity.Asignatura;
+import com.dlgaApp.entity.Titulacion;
 
 @Repository
 public interface AsignaturaRepository extends CrudRepository<Asignatura	, Long> {
@@ -16,5 +17,9 @@ public interface AsignaturaRepository extends CrudRepository<Asignatura	, Long> 
 	@Modifying
 	@Query("delete FROM Asignatura WHERE nombre = null")
 	public void limpiarTabla();
+	
+	public long countByNombre(String nombre);
+	
+	public long countByTitulacion(Titulacion titulacion);
 
 }

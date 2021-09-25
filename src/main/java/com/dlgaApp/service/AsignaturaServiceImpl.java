@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.transaction.Transactional;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,6 +15,7 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dlgaApp.entity.Alumno;
 import com.dlgaApp.entity.Asignatura;
 import com.dlgaApp.entity.Departamento;
 import com.dlgaApp.entity.Profesor;
@@ -270,4 +274,29 @@ public class AsignaturaServiceImpl {
 		
 		return a;
 	}
+	
+	public void deleteAsignaturaByID(Long id) {
+		
+		this.asignaturaRepository.deleteById(id);
+		
+	}
+
+	public List<Asignatura> findAll(){
+		return (List<Asignatura>) this.asignaturaRepository.findAll();
+	}
+	
+	@Transactional
+	public void saveAsignatura(Asignatura asignatura) {
+		
+		asignaturaRepository.save(asignatura);
+	}
+	
+	public Long numeroAsignaturasByNombre(String nombre) {
+		return this.asignaturaRepository.countByNombre(nombre);
+	}
+	
+	public Long numeroAsignaturasByTitulacion(Titulacion titulacion) {
+		return this.asignaturaRepository.countByTitulacion(titulacion);
+	}
+	
 }
