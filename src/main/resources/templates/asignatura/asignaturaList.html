@@ -173,11 +173,8 @@ $( document ).ready(function() {
 					
 							<select 
 							th:field="*{caracter}" class="form-control" name="caracter">
-							<option th:value="'Optativa'" th:text="'Optativa'"></option>
-							<option th:value="'Formación Básica'" th:text="'Formación Básica'"></option>
-							<option th:value="'Obligatoria'" th:text="'Obligatoria'"></option>
-							<option th:value="'Trabajo fin de grado'" th:text="'Trabajo fin de grado'"></option>
-							<option th:value="'Trabajo fin de máster'" th:text="'Trabajo fin de máster'"></option>
+							<option th:each="opcionCaracter : ${opcionesCaracter}" th:value="${opcionCaracter}" 
+							th:text="${opcionCaracter}" ></option>
 						</select>
 						<p class="alert alert-danger" role="alert" th:errors="*{caracter}"></p>
 					</div>
@@ -186,8 +183,8 @@ $( document ).ready(function() {
 
 						<select 
 							th:field="*{duracion}" class="form-control" name="duracion">
-							<option th:value="'1'" th:text="'1'"></option>
-							<option th:value="'2'" th:text="'2'"></option>
+							<option th:each="opcionDuracion : ${opcionesDuracion}" th:value="${opcionDuracion}" 
+							th:text="${opcionDuracion}" ></option>
 					
 						</select>
 						<p class="alert alert-danger" role="alert"
@@ -198,8 +195,8 @@ $( document ).ready(function() {
 
 						<select 
 							th:field="*{creditos}" class="form-control" name="creditos">
-							<option th:value="'1'" th:text="'1'"></option>
-							<option th:value="'2'" th:text="'2'"></option>
+							<option th:each="opcionCredito : ${opcionesCredito}" th:value="${opcionCredito}" 
+							th:text="${opcionCredito}" ></option>
 					
 						</select>
 						<p class="alert alert-danger" role="alert"
@@ -210,8 +207,8 @@ $( document ).ready(function() {
 
 						<select 
 							th:field="*{ano}" class="form-control" name="año">
-							<option th:value="'1'" th:text="'1'"></option>
-							<option th:value="'2'" th:text="'2'"></option>
+							<option th:each="opcionAno : ${opcionesAno}" th:value="${opcionAno}" 
+							th:text="${opcionAno}" ></option>
 					
 						</select>
 						<p class="alert alert-danger" role="alert"
@@ -222,8 +219,8 @@ $( document ).ready(function() {
 
 						<select 
 							th:field="*{departamento.id}" class="form-control" name="departamento">
-							<option th:value="'1'" th:text="'1'"></option>
-							<option th:value="'2'" th:text="'2'"></option>
+							<option th:each="opcionDepartamento : ${opcionesDepartamento}" th:value="${opcionDepartamento.id}" 
+							th:text="${opcionDepartamento.nombre}" ></option>
 					
 						</select>
 						<p class="alert alert-danger" role="alert"
@@ -234,8 +231,9 @@ $( document ).ready(function() {
 
 						<select 
 							th:field="*{titulacion.id}" class="form-control" name="titulacion">
-							<option th:value="401" th:text="'401'"></option>
-							<option th:value="723" th:text="'723'"></option>
+							<option  th:each="opcionTitulacion : ${opcionesTitulacion}" th:value="${opcionTitulacion.id}" 
+							th:text="${opcionTitulacion.nombre}"
+							th:selected="*{titulacion.id}"></option>
 					
 						</select>
 						<p class="alert alert-danger" role="alert"

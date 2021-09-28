@@ -1,5 +1,7 @@
 package com.dlgaApp.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -21,5 +23,17 @@ public interface AsignaturaRepository extends CrudRepository<Asignatura	, Long> 
 	public long countByNombre(String nombre);
 	
 	public long countByTitulacion(Titulacion titulacion);
+	
+	@Query("SELECT DISTINCT caracter FROM Asignatura")
+	public List<String> obtenerCaracters();
+	
+	@Query("SELECT DISTINCT duracion FROM Asignatura")
+	public List<String> obtenerDuraciones();
+	
+	@Query("SELECT DISTINCT creditos FROM Asignatura")
+	public List<String> obtenerCreditos();
+	
+	@Query("SELECT DISTINCT ano FROM Asignatura")
+	public List<String> obtenerAños();
 
 }

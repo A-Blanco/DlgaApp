@@ -15,8 +15,16 @@ public class TitulacionService {
 	private TitulacionRepository titulacionRepository;
 	
 	
-	
 	public List<Titulacion> findAll() {
 		return (List<Titulacion>) this.titulacionRepository.findAll();
+	}
+	
+	public Titulacion findById(long id) {
+		return this.titulacionRepository.findById(id).orElse(null);
+	}
+	
+	public List<Long> getIdsTitulaciones(){
+		
+		return this.titulacionRepository.obtenerIds();
 	}
 }

@@ -23,6 +23,8 @@ import com.dlgaApp.entity.Asignatura;
 import com.dlgaApp.entity.Profesor;
 import com.dlgaApp.entity.Titulacion;
 import com.dlgaApp.service.AsignaturaServiceImpl;
+import com.dlgaApp.service.DepartamentoServiceImpl;
+import com.dlgaApp.service.TitulacionService;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 
 @Controller
@@ -31,6 +33,12 @@ public class AsignaturaController {
 	
 	@Autowired
 	private AsignaturaServiceImpl asignaturaService;
+	
+	@Autowired
+	private DepartamentoServiceImpl departamentoService;
+	
+	@Autowired
+	private TitulacionService titulacionService;
 	
 	
 	@GetMapping(value = "/asignaturas")
@@ -82,8 +90,15 @@ public class AsignaturaController {
 
 		Asignatura asignatura = this.asignaturaService.findById(asignaturaId);
 
+
 		model.addAttribute("asignaturaSeleccionado", asignatura);
 		model.addAttribute("asignaturas", this.asignaturaService.findAll());
+		model.addAttribute("opcionesCaracter", this.asignaturaService.obtenerCaracteres());
+		model.addAttribute("opcionesDuracion", this.asignaturaService.obtenerDuraciones());
+		model.addAttribute("opcionesCredito", this.asignaturaService.obtenerCreditos());
+		model.addAttribute("opcionesAno", this.asignaturaService.obtenerAños());
+		model.addAttribute("opcionesDepartamento", this.departamentoService.getDepartamentos());
+		model.addAttribute("opcionesTitulacion", this.titulacionService.findAll());
 
 		return "asignatura/asignaturaList";
 
@@ -99,6 +114,13 @@ public class AsignaturaController {
 			
 			model.addAttribute("asignaturaSeleccionado", asignatura);
 			model.addAttribute("asignaturas", this.asignaturaService.findAll());
+			model.addAttribute("opcionesCaracter", this.asignaturaService.obtenerCaracteres());
+			model.addAttribute("opcionesDuracion", this.asignaturaService.obtenerDuraciones());
+			model.addAttribute("opcionesCredito", this.asignaturaService.obtenerCreditos());
+			model.addAttribute("opcionesAno", this.asignaturaService.obtenerAños());
+			model.addAttribute("opcionesDepartamento", this.departamentoService.getDepartamentos());
+			model.addAttribute("opcionesTitulacion", this.titulacionService.findAll());
+			
 
 			return "asignatura/asignaturaList";
 		} else {
@@ -112,10 +134,45 @@ public class AsignaturaController {
 	
 	public void validarAsignatura(Asignatura asignatura, BindingResult result, boolean checkUpdate) {
 
+		List<Long> idsDepartamentos = this.departamentoService.getIdsDepartamentos();
+		List<Long> idsTitulaciones = this.titulacionService.getIdsTitulaciones();
+		List<String> nombresCaracters = this.asignaturaService.obtenerCaracteres();
+		List<String> nombresDuracions = this.asignaturaService.obtenerDuraciones();	
+		List<String> nombresCreditos = this.asignaturaService.obtenerCreditos();
+		List<String> nombresAños = this.asignaturaService.obtenerAños();
+		
+		
 		if(asignatura.getNombre().equals("")) {
 			result.rejectValue("nombre", "nombre", "El nombre no puede ser nulo");
-
+}
+		
+		if(asignatura.getCaracter().equals("") || !nombresCaracters.contains(asignatura.getCaracter())) {
+			result.rejectValue("caracter", "caracter", "El valor indicado no es corrector");
 		}
+		
+		if(asignatura.getDuracion().equals("") || !nombresDuracions.contains(asignatura.getDuracion())) {
+			result.rejectValue("duracion", "duracion", "El valor indicado no es corrector");
+		}
+		
+		if(asignatura.getCreditos().equals("") || !nombresCreditos.contains(asignatura.getCreditos())) {
+			result.rejectValue("creditos", "creditos", "El valor indicado no es corrector");
+		}
+		
+		if(asignatura.getAno().equals("") || !nombresAños.contains(asignatura.getAno())) {
+			result.rejectValue("ano", "ano", "El valor indicado no es corrector");
+		}
+		
+		if(asignatura.getDepartamento() == null ||
+				!idsDepartamentos.contains(asignatura.getDepartamento().getId())) {
+			result.rejectValue("departamento.id", "departamento.id", "El valor indicado no es corrector");
+		}
+		
+		if( asignatura.getTitulacion() == null|| asignatura.getTitulacion().getId()  == null ||
+				!idsTitulaciones.contains(asignatura.getTitulacion().getId())) {
+			result.rejectValue("titulacion.id", "titulacion.id", "El valor indicado no es corrector");
+		}
+		
+		if(!result.hasErrors()) {
 		
 		// validar que el email es único
 		if (checkUpdate) {
@@ -126,7 +183,7 @@ public class AsignaturaController {
 			
 			String nombre = asignatura.getNombre();
 			Long titulacionId = asignatura.getTitulacion().getId();
-			Titulacion titulacion = asignatura.getTitulacion();
+			Titulacion titulacion = this.titulacionService.findById(titulacionId);
 			
 			String nombreBd = asignaturaBd.getNombre();
 			Long titulacionIdBd = asignaturaBd.getTitulacion().getId();
@@ -134,12 +191,14 @@ public class AsignaturaController {
 
 			if (!nombre.equals(nombreBd) || !titulacionId.equals(titulacionIdBd) ) {
 
-				if (this.asignaturaService.numeroAsignaturasByNombre(nombre) != 0 &&
-						this.asignaturaService.numeroAsignaturasByTitulacion(titulacion) != 0) {
+				if (titulacion.getAsignaturas().stream()
+				.map(x->x.getNombre()).anyMatch(a->a.equals(nombre))) {
 					result.rejectValue("nombre", "nombre", "La asignatura ya está añadida en la titulación seleccionada");
 				}
 
 			}
+			
+			
 		} else {
 			if (this.asignaturaService.numeroAsignaturasByNombre(asignatura.getNombre()) != 0 &&
 					this.asignaturaService.numeroAsignaturasByTitulacion(asignatura.getTitulacion()) != 0) {
@@ -147,5 +206,6 @@ public class AsignaturaController {
 			}
 		}
 	}
+		}
 
 }

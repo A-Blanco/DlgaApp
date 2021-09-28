@@ -1,5 +1,7 @@
 package com.dlgaApp.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -17,4 +19,8 @@ public interface DepartamentoRepository extends CrudRepository<Departamento, Lon
 	@Modifying
 	@Query("delete FROM Departamento WHERE nombre = null")
 	public void limpiarTabla();
+	
+	
+	@Query("SELECT DISTINCT id FROM Departamento")
+	public List<Long> obtenerIds();
 }

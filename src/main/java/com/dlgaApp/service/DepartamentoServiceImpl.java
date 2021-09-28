@@ -217,5 +217,14 @@ public class DepartamentoServiceImpl {
 		this.departamentoRepository.deleteAll();
 	}
 	
+	public List<Departamento> getDepartamentos() {
+		return (List<Departamento>) this.departamentoRepository.findAll();
+	}
+
+	
+	public List<Long> getIdsDepartamentos(){
+		
+		return this.departamentoRepository.obtenerIds();
+	}
 
 }

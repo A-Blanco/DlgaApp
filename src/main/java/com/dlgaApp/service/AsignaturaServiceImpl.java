@@ -299,4 +299,20 @@ public class AsignaturaServiceImpl {
 		return this.asignaturaRepository.countByTitulacion(titulacion);
 	}
 	
+	public List<String> obtenerCaracteres(){
+		return this.asignaturaRepository.obtenerCaracters();
+	}
+	
+	public List<String> obtenerAños(){
+		return this.asignaturaRepository.obtenerAños();
+	}
+	
+	public List<String> obtenerCreditos(){
+		return this.asignaturaRepository.obtenerCreditos();
+	}
+	
+	public List<String> obtenerDuraciones(){
+		return this.asignaturaRepository.obtenerDuraciones();
+	}
+	
 }
