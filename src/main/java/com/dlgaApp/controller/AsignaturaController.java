@@ -132,6 +132,55 @@ public class AsignaturaController {
 
 	}
 	
+	@GetMapping(value = "/asignaturaCreate")
+	public String asignaturaCreateGet(
+			Model model, HttpServletRequest request) {
+
+		Asignatura asignatura = new Asignatura();
+		
+		
+		model.addAttribute("asignaturaCreada", asignatura);
+		
+		model.addAttribute("asignaturas", this.asignaturaService.findAll());
+		model.addAttribute("opcionesCaracter", this.asignaturaService.obtenerCaracteres());
+		model.addAttribute("opcionesDuracion", this.asignaturaService.obtenerDuraciones());
+		model.addAttribute("opcionesCredito", this.asignaturaService.obtenerCreditos());
+		model.addAttribute("opcionesAno", this.asignaturaService.obtenerAños());
+		model.addAttribute("opcionesDepartamento", this.departamentoService.getDepartamentos());
+		model.addAttribute("opcionesTitulacion", this.titulacionService.findAll());
+		
+		return "asignatura/asignaturaList";
+
+	}
+	
+	@PostMapping(value = "/asignaturaCreate")
+	public String asignaturaCreatePost(@Valid @ModelAttribute("asignaturaCreada") Asignatura asignatura, BindingResult result,
+			Model model, HttpServletRequest request) {
+
+		this.validarAsignatura(asignatura, result, false);
+
+		if (result.hasErrors()) {
+			
+			model.addAttribute("asignaturaCreada", asignatura);
+			model.addAttribute("asignaturas", this.asignaturaService.findAll());
+			model.addAttribute("opcionesCaracter", this.asignaturaService.obtenerCaracteres());
+			model.addAttribute("opcionesDuracion", this.asignaturaService.obtenerDuraciones());
+			model.addAttribute("opcionesCredito", this.asignaturaService.obtenerCreditos());
+			model.addAttribute("opcionesAno", this.asignaturaService.obtenerAños());
+			model.addAttribute("opcionesDepartamento", this.departamentoService.getDepartamentos());
+			model.addAttribute("opcionesTitulacion", this.titulacionService.findAll());
+			
+
+			return "asignatura/asignaturaList";
+		} else {
+
+			this.asignaturaService.saveAsignatura(asignatura);
+
+			return "redirect:/asignaturaList";
+		}
+
+	}
+	
 	public void validarAsignatura(Asignatura asignatura, BindingResult result, boolean checkUpdate) {
 
 		List<Long> idsDepartamentos = this.departamentoService.getIdsDepartamentos();
