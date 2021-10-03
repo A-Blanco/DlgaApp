@@ -39,10 +39,12 @@ public class GrupoController {
 
 		Grupo grupo = new Grupo();
 		List<Titulacion> t = titulacionService.findAll();
+		List<Grupo> l = this.grupoService.findAll();
+		model.addAttribute("grupos", l);
 
 		model.addAttribute("grupo", grupo);
 		model.addAttribute("titulaciones", t);
-		return "grupo/grupoForm";
+		return "grupo/grupoList";
 
 	}
 
@@ -54,17 +56,20 @@ public class GrupoController {
 
 		if (result.hasErrors()) {
 			List<Titulacion> t = titulacionService.findAll();
+			
+			List<Grupo> l = this.grupoService.findAll();
+			model.addAttribute("grupos", l);
 
 			model.addAttribute("grupo", grupo);
 			model.addAttribute("titulaciones", t);
-			return "grupo/grupoForm";
+			return "grupo/grupoList";
 		} else {
 
 			grupoService.save(grupo);
 
 		}
 
-		return "redirect:";
+		return "redirect:/grupoList";
 
 	}
 
