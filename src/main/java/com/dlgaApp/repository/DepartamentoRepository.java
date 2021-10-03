@@ -23,4 +23,7 @@ public interface DepartamentoRepository extends CrudRepository<Departamento, Lon
 	
 	@Query("SELECT DISTINCT id FROM Departamento")
 	public List<Long> obtenerIds();
+	
+	@Query("SELECT DISTINCT sede FROM Departamento")
+	public List<String> obtenerSedes();
 }

@@ -76,7 +76,7 @@ public class AsignaturaController {
 	}
 	
 	@GetMapping(value = "/asignaturaDelete/{asignaturaId}")
-	public String alumnoDelete(Model model, @PathVariable("asignaturaId") final long asignaturaId, HttpServletRequest request) {
+	public String asignaturaDelete(Model model, @PathVariable("asignaturaId") final long asignaturaId, HttpServletRequest request) {
 
 		this.asignaturaService.deleteAsignaturaByID(asignaturaId);
 

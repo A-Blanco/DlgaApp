@@ -8,8 +8,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.dlgaApp.service.DepartamentoServiceImpl;
 
 @Entity
 @Table(name = "departamentos")
@@ -17,7 +23,7 @@ public class Departamento {
 
 	@Id
 	@Column(name = "departamento_id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	
@@ -30,7 +36,6 @@ public class Departamento {
 	private String email;
 	
 	
-	
 	private String telefono;
 	
 	
@@ -38,7 +43,11 @@ public class Departamento {
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "departamento")
 	private List<Asignatura> asignaturas;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "departamento")
+	private List<Profesor> profesores;
 
+	
 	
 	
 	
@@ -97,6 +106,18 @@ public class Departamento {
 
 	public void setAsignaturas(List<Asignatura> asignaturas) {
 		this.asignaturas = asignaturas;
+	}
+
+
+
+	public List<Profesor> getProfesores() {
+		return profesores;
+	}
+
+
+
+	public void setProfesores(List<Profesor> profesores) {
+		this.profesores = profesores;
 	}
 	
 	
