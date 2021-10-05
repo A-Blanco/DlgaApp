@@ -86,8 +86,8 @@ $(function(){
 					</tbody>
 				</table>
 				
-				<td sec:authorize="hasRole('ADMIN')"><a class="btn btn-primary"
-								th:href="@{/profesorCreate}">Crear Profesor</a></td>
+				<div sec:authorize="hasRole('ADMIN')"><a class="btn btn-primary"
+								th:href="@{/profesorCreate}">Crear Profesor</a></div>
 			</div>
 		</div>
 	</div>

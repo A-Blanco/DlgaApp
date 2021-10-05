@@ -27,4 +27,12 @@ public class TitulacionService {
 		
 		return this.titulacionRepository.obtenerIds();
 	}
+	
+	public void save(Titulacion t) {
+		this.titulacionRepository.save(t);
+	}
+	
+	public void deleteById(Long id) {
+		this.titulacionRepository.deleteById(id);
+	}
 }
