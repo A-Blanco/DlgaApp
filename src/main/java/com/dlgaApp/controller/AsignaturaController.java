@@ -49,14 +49,7 @@ public class AsignaturaController {
 		return "recursos/index";
 	}
 	
-//	@RequestMapping(value = "/asignaturaDelete")
-//	public String delete(Model model)  {
-//		
-//		this.asignaturaService.delete();
-//		
-//		return "recursos/index";
-//	}
-	
+
 
 	@GetMapping(value = "/asignaturaList")
 	public String asignaturaList(Model model) {

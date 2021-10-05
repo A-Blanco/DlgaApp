@@ -315,4 +315,9 @@ public class AsignaturaServiceImpl {
 		return this.asignaturaRepository.obtenerDuraciones();
 	}
 	
+	public List<Long> getIdsAsignaturas(){
+		
+		return this.asignaturaRepository.obtenerIds();
+	}
+	
 }

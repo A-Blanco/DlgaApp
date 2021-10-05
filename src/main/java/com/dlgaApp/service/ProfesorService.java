@@ -208,4 +208,9 @@ public class ProfesorService {
 	public void save(Profesor p) {
 		this.profesorRepository.save(p);
 	}
+	
+	public void deleteById(Long id) {
+		this.profesorRepository.deleteById(id);
+	}
+	
 }

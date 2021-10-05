@@ -35,5 +35,8 @@ public interface AsignaturaRepository extends CrudRepository<Asignatura	, Long> 
 	
 	@Query("SELECT DISTINCT ano FROM Asignatura")
 	public List<String> obtenerAños();
+	
+	@Query("SELECT DISTINCT id FROM Asignatura")
+	public List<Long> obtenerIds();
 
 }
