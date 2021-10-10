@@ -14,6 +14,7 @@ $( document ).ready(function() {
 	  
 	  var departamento = "[[${departamentoSeleccionado}]]";
 	  var departamentocreada = "[[${departamentoCreada}]]";
+	  var departamentoId = "[[${idDepartamentoSeleccionado}]]";
 	  
 	  
 	  if(departamento!=""){
@@ -22,6 +23,9 @@ $( document ).ready(function() {
 	  
 	  if(departamentocreada!=""){
 		  $('#ModalDepartamentoCreate').modal()
+	  }
+	  if(departamentoId!=""){
+		  $('#ModalDepartamentoDelete').modal()
 	  }
 	 
 	 
@@ -94,7 +98,7 @@ $(function(){
 							</td>
 									
 							<td sec:authorize="hasRole('ADMIN')"><a class="btn btn-danger"
-								th:href="@{/departamentoDelete/} + ${departamento.id}">Eliminar</a></td>
+								th:href="@{/departamentoDeleteSeguridad/} + ${departamento.id}">Eliminar</a></td>
 								
 								
 									
@@ -305,6 +309,35 @@ th:href="@{/departamentoCreate} ">Crear Departamento</a>
 			</div>
 		</div>
 	</div>
+	
+	<div class="modal fade" th:id="ModalDepartamentoDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalTitle">Aviso Importante</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+       
+      <div class="modal-body">
+       
+          <div >
+            <p>Usted va a eliminar los datos del Departamento seleccionado, esto conlleva la eliminación de ciertos datos relacionados con el departamento.
+            ¿Está segur@?
+            </p>
+          </div>
+        
+      </div>
+      <div class="modal-footer">
+       <a th:href="@{/listDepartamentos}" class="btn btn-secondary">Cerrar</a>
+       <a  th:href="@{/departamentoDelete/} + ${idDepartamentoSeleccionado}" class="btn btn-danger">Eliminar</a>
+      </div>
+    
+    </div>
+  </div>
+</div>    
+	
 	
 </body>
 </html>

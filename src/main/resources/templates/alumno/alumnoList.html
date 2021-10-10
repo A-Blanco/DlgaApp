@@ -69,10 +69,14 @@ $( document ).ready(function() {
 
 	  
 	  var alumno = "[[${alumnoSeleccionado}]]";
-	  
+	  var alumnoId = "[[${idAlumnoSeleccionado}]]";
 	  
 	  if(alumno!=""){
 		  $('#ModalAlumnoUpdate').modal()
+	  }
+	  
+	  if(alumnoId!=""){
+		  $('#ModalAlumnoDelete').modal()
 	  }
 	 
 	
@@ -130,9 +134,9 @@ $( document ).ready(function() {
  
  
 					<td sec:authorize="hasRole('ADMIN')" th:if="${#session.getAttribute('grupoId') == null}"><a 
-					th:href="@{/alumnoDelete/} + ${alumno.id}">Eliminar</a></td>
+					 class="btn btn-danger" th:href="@{/alumnoDeleteSeguridad/} + ${alumno.id}">Eliminar</a></td>
 				<td><a
-					th:href="@{/detallesAlumno/} + ${alumno.id}">Ver detalles Alumno</a></td>
+					 class="btn btn-dark" th:href="@{/detallesAlumno/} + ${alumno.id}">Ver detalles Alumno</a></td>
 			</tr>
 
 		</tbody>
@@ -146,7 +150,7 @@ th:href="@{/crearAlumno} ">Crear Alumno</a>
 
 
 
-<div th:if="${alumnoSeleccionado != null}" class="modal fade" th:id="ModalAlumnoUpdate" tabindex="-1"
+<div th:if="${alumnoSeleccionado != null}" class="modal fade" th:id="ModalAlumnoUpdate" data-keyboard="false" data-backdrop="static" tabindex="-1"
 		role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -161,20 +165,26 @@ th:href="@{/crearAlumno} ">Crear Alumno</a>
                      
                      <div class="form-group" id="nombre-group">
                      
-                        <input th:field="*{nombre}" type="text" class="form-control" placeholder="Nombre del alumno" name="nombre"/>
+                     <label for="nombre">Nombre</label>
+                     
+                        <input id="nombre" th:field="*{nombre}" type="text" class="form-control" placeholder="Nombre del alumno" name="nombre"/>
                        <p class="alert alert-danger" role="alert" th:errors="*{nombre}"></p>
                     </div>
                     <div class="form-group" id="apellidos-group">
                     
-                        <input th:field="*{apellidos}" type="text" class="form-control" placeholder="Apellidos" name="apellidos">
+                    <label for="apellidos">Apellidos</label>
+                        <input id="apellidos" th:field="*{apellidos}" type="text" class="form-control" placeholder="Apellidos" name="apellidos">
                   		<p class="alert alert-danger" role="alert" th:errors="*{apellidos}"></p>
                     </div>
                     <div class="form-group" id="edad-group">
-                        <input th:field="*{edad}" type="number" class="form-control" placeholder="Edad" name="edad"/>
+                    
+                    	<label for="edad">Edad</label>
+                        <input id="edad" th:field="*{edad}" type="number" class="form-control" placeholder="Edad" name="edad"/>
                         <p class="alert alert-danger" role="alert" th:errors="*{edad}"></p>
                     </div>
                     <div class="form-group" id="email-group">
-                        <input th:field="*{email}" type="text" class="form-control" placeholder="Email" name="email"/>
+                    	<label for="email">Email</label>
+                        <input id="email" th:field="*{email}" type="text" class="form-control" placeholder="Email" name="email"/>
                         <p class="alert alert-danger" role="alert" th:errors="*{email}"></p>
                     </div>
                     <div class="modal-footer">
@@ -186,6 +196,34 @@ th:href="@{/crearAlumno} ">Crear Alumno</a>
 			</div>
 		</div>
 	</div>
+	
+	 <div class="modal fade" th:id="ModalAlumnoDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalTitle">Aviso Importante</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+     
+      <div class="modal-body">
+       
+          <div >
+            <p>Usted va a eliminar los datos del alumno seleccionado, esto conlleva la eliminación de el usuario relacionado en el caso de que lo tenga.
+            ¿Está segur@?
+            </p>
+          </div>
+        
+      </div>
+      <div class="modal-footer">
+       <a th:href="@{/listAlumnos}" class="btn btn-secondary">Cerrar</a>
+       <a  th:href="@{/alumnoDelete/} + ${idAlumnoSeleccionado}" class="btn btn-danger">Eliminar</a>
+      </div>
+    
+    </div>
+  </div>
+</div>    
     
 </body>
 </html>

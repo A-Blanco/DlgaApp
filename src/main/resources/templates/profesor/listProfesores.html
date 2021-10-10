@@ -18,6 +18,7 @@ $( document ).ready(function() {
 		  
 	  var profesor = "[[${profesorSeleccionado}]]"; 
 	  var profesorCreado = "[[${profesorCreado}]]"; 
+	  var profesorId = "[[${idProfesorSeleccionado}]]"; 
 	  
 	  
 	  if(profesor!=""){
@@ -26,6 +27,10 @@ $( document ).ready(function() {
 	  
 	  if(profesorCreado!=""){
 		  $('#ModalProfesorCreate').modal()
+	  }
+	  
+	  if(profesorId!=""){
+		  $('#ModalProfesorDelete').modal()
 	  }
 	  
 })
@@ -80,7 +85,7 @@ $(function(){
 							</td>
 									
 							<td sec:authorize="hasRole('ADMIN')"><a class="btn btn-danger"
-								th:href="@{/profesorDelete/} + ${profesor.id}">Eliminar</a></td>
+								th:href="@{/profesorDeleteSeguridad/} + ${profesor.id}">Eliminar</a></td>
 						</tr>
 
 					</tbody>
@@ -247,7 +252,33 @@ $(function(){
 		</div>
 	</div>
 	
-	
+	<div class="modal fade" th:id="ModalProfesorDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalTitle">Aviso Importante</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+       
+      <div class="modal-body">
+       
+          <div >
+            <p>Usted va a eliminar los datos del Profesor o Profesora seleccionado@, esto conlleva la eliminación de ciertos datos relacionados con el Profesor o Profesora.
+            ¿Está segur@?
+            </p>
+          </div>
+        
+      </div>
+      <div class="modal-footer">
+       <a th:href="@{/profesorList}" class="btn btn-secondary">Cerrar</a>
+       <a  th:href="@{/profesorDelete/} + ${idProfesorSeleccionado}" class="btn btn-danger">Eliminar</a>
+      </div>
+    
+    </div>
+  </div>
+</div>    
 	
 	
 

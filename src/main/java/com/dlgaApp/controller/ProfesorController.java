@@ -233,11 +233,27 @@ public class ProfesorController {
 
 	}
 	
+
+	@GetMapping(value = "/profesorDeleteSeguridad/{profesorId}")
+	public String profesorDeleteModal(@PathVariable("profesorId") final long profesorId, Model model,
+			HttpServletRequest request) {
+
+		model.addAttribute("idProfesorSeleccionado", profesorId);
+		
+		List<Profesor> profesores = this.profesorService.profesorList();
+		model.addAttribute("profesores", profesores);
+		
+		return "profesor/listProfesores";
+
+	}
+	
 	
 	
 public void validarProfesor(Profesor profesor, BindingResult result) {
 		
 		String regex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
+		
+		String regexTelefono = "(\\+34|0034|34)?[ -]*(6|7|8)[ -]*([0-9][ -]*){8}";
 		
 		List<Long> idsDepartamentos = this.departamentoService.getIdsDepartamentos();
 		List<Long> idsAsignaturas = this.asignaturaService.getIdsAsignaturas();
@@ -246,9 +262,10 @@ public void validarProfesor(Profesor profesor, BindingResult result) {
 			result.rejectValue("nombre", "nombre", "El nombre no puede ser nulo");
 			}
 		
-		if(profesor.getTelefono().equals("")) {
-			result.rejectValue("telefono", "telefono", "El tléfono no puede ser nulo");
-			}
+		if(!profesor.getTelefono().equals("") && !Pattern.matches(regexTelefono, profesor.getTelefono())) {
+			
+			result.rejectValue("telefono", "telefono", "El teléfono debe ser válido");
+		}
 		
 		if(profesor.getEmail().equals("") || !Pattern.matches(regex, profesor.getEmail())) {
 			result.rejectValue("email", "email", "El emáil debe ser válido");

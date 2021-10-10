@@ -161,6 +161,19 @@ public class GrupoController {
 		return "redirect:/grupoList";
 
 	}
+	
+	@GetMapping(value = "/eliminarGrupoSeguridad/{grupoId}")
+	public String departamentoDeleteModal(@PathVariable("grupoId") final long grupoId, Model model,
+			HttpServletRequest request) {
+
+		model.addAttribute("idGrupoSeleccionado", grupoId);
+		List<Grupo> l = this.grupoService.findAll();
+		model.addAttribute("grupos", l);
+
+		return "grupo/grupoList";
+
+	}
+
 
 	public void validarGrupo(Grupo grupo, BindingResult result) {
 

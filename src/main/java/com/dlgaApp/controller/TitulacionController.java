@@ -131,9 +131,6 @@ public class TitulacionController {
 
 			this.titulacionService.save(titulacion);
 
-			
-			
-
 			return "redirect:/titulacionList";
 		}
 
@@ -146,6 +143,19 @@ public class TitulacionController {
 
 		return "redirect:/titulacionList";
 
+	}
+	
+	@GetMapping(value = "/titulacionDeleteSeguridad/{titulacionId}")
+	public String departamentoDeleteModal(@PathVariable("titulacionId") final long titulacionId, Model model,
+			HttpServletRequest request) {
+
+		model.addAttribute("idTitulacionSeleccionado", titulacionId);
+		List<Titulacion> l = this.titulacionService.findAll();
+
+		model.addAttribute("titulaciones", l);
+
+		return "titulacion/titulacionesList";
+		
 	}
 
 	

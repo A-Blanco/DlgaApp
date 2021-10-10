@@ -135,6 +135,7 @@ public class UserController {
 
 		List<Usuario> l = new ArrayList<Usuario>();
 		l = usuarioService.findAllUsers();
+		l.removeIf(x->x.getId()==this.usuarioActual().getId());
 
 		model.addAttribute("usuarios", l);
 

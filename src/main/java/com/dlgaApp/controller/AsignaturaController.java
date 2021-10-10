@@ -173,6 +173,18 @@ public class AsignaturaController {
 		}
 
 	}
+
+	
+	@GetMapping(value = "/asignaturaDeleteSeguridad/{asignaturaId}")
+	public String asignaturaDeleteModal(@PathVariable("asignaturaId") final long asignaturaId, Model model,
+			HttpServletRequest request) {
+
+		model.addAttribute("idAsignaturaSeleccionado", asignaturaId);
+		List<Asignatura> asignaturas = this.asignaturaService.asignaturaList();
+		model.addAttribute("asignaturas", asignaturas);
+		return "asignatura/asignaturaList";
+	}
+	
 	
 	public void validarAsignatura(Asignatura asignatura, BindingResult result, boolean checkUpdate) {
 

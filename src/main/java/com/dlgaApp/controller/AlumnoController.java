@@ -1,5 +1,6 @@
 package com.dlgaApp.controller;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -62,6 +63,10 @@ public class AlumnoController {
 	public String listAlumnos(Model model) {
 
 		List<Alumno> alumnos = this.alumnoService.findAll();
+		Usuario usuarioActual = usuarioActual();
+		Alumno alumnoActual = usuarioActual.getAlumno();
+		alumnos.removeIf(x->x.getId()==alumnoActual.getId());
+		
 		model.addAttribute("alumnos", alumnos);
 
 		model.addAttribute("prueba", "prueba");
@@ -176,7 +181,12 @@ public class AlumnoController {
 		Alumno alumno = this.alumnoService.findById(alumnoId);
 
 		model.addAttribute("alumnoSeleccionado", alumno);
-		model.addAttribute("alumnos", this.alumnoService.findAll());
+		List<Alumno> alumnos = this.alumnoService.findAll();
+		Usuario usuarioActual = usuarioActual();
+		Alumno alumnoActual = usuarioActual.getAlumno();
+		alumnos.removeIf(x->x.getId()==alumnoActual.getId());
+		
+		model.addAttribute("alumnos", alumnos);
 
 		return "alumno/alumnoList";
 
@@ -190,7 +200,12 @@ public class AlumnoController {
 
 		if (result.hasErrors()) {
 			model.addAttribute("alumnoSeleccionado", alumno);
-			model.addAttribute("alumnos", this.alumnoService.findAll());
+			List<Alumno> alumnos = this.alumnoService.findAll();
+			Usuario usuarioActual = usuarioActual();
+			Alumno alumnoActual = usuarioActual.getAlumno();
+			alumnos.removeIf(x->x.getId()==alumnoActual.getId());
+			
+			model.addAttribute("alumnos", alumnos);
 
 			return "alumno/alumnoList";
 		} else {
@@ -201,6 +216,25 @@ public class AlumnoController {
 		}
 
 	}
+	
+	@GetMapping(value = "/alumnoDeleteSeguridad/{alumnoId}")
+	public String alumnoDeleteModal(@PathVariable("alumnoId") final long alumnoId, Model model,
+			HttpServletRequest request) {
+
+
+		model.addAttribute("idAlumnoSeleccionado", alumnoId);
+		List<Alumno> alumnos = this.alumnoService.findAll();
+		Usuario usuarioActual = usuarioActual();
+		Alumno alumnoActual = usuarioActual.getAlumno();
+		alumnos.removeIf(x->x.getId()==alumnoActual.getId());
+		
+		model.addAttribute("alumnos", alumnos);
+
+		return "alumno/alumnoList";
+
+	}
+	
+	
 
 	public void validarAlumno(Alumno alumno, BindingResult result, boolean checkUpdate) {
 
@@ -225,5 +259,22 @@ public class AlumnoController {
 				result.rejectValue("email", "email", "El email introducido ya está registrado");
 			}
 		}
+			
+	}
+	
+	private Usuario usuarioActual() {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = null;
+		Usuario us = null;
+		if (principal instanceof UserDetails) {
+			userDetails = (UserDetails) principal;
+			String userName = userDetails.getUsername();
+			us = this.usuarioService.findByUsername(userName);
+		} else {
+			us = null;
+		}
+
+		return us;
+
 	}
 }
