@@ -42,8 +42,8 @@ public class AdminController {
 		this.filtroMantenimiento.activarMantenimiento();
 
 		this.departamentoService.añadirDepartamentos();
-//		this.profesorService.añadirProfesores();
-//		this.asignaturaService.añadirAsignaturas();
+		this.profesorService.añadirProfesores();
+		this.asignaturaService.añadirAsignaturas();
 		
 		this.filtroMantenimiento.desactivarMantenimiento();
 		
@@ -57,5 +57,14 @@ public class AdminController {
 		return "recursos/denegado";
 
 	}
+	
+	@GetMapping(value = "/gestionBd")
+	public String vistaGestionBd(Model model,HttpServletRequest request) {
+		
+		return "admin/opcionesGestionBd";
+
+	}
+	
+	
 
 }

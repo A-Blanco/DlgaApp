@@ -13,6 +13,15 @@
 		}).draw(true).columns.adjust();
 	});
 </script>
+<script type="text/javascript">
+function datosModal(id) {
+	
+	$('#usuarioId').val(id);
+
+}
+
+
+</script>
 <script th:replace="recursos/idiomaTable :: idiomaTable"
 	type="text/javascript"></script>
 </head>
@@ -42,9 +51,19 @@
 							<td th:text="${usuario.username}"></td>
 							<td th:text="${usuario.alumno.nombre}"></td>
 							<td th:text="${usuario.alumno.apellidos}"></td>
-							<td sec:authorize="hasRole('ADMIN')" th:text="${#strings.substringAfter(usuario.rol,'ROLE_')}"></td>
-							<td sec:authorize="hasRole('ADMIN')"><a th:href="@{eliminarUsuario/} + ${usuario.id}">Eliminar</a></td>
-							<td><a th:href="@{usuario/} + ${usuario.id}">Ver
+							<td sec:authorize="hasRole('ADMIN')"
+								th:text="${#strings.substringAfter(usuario.rol,'ROLE_')}"></td>
+							
+							
+<td sec:authorize="hasRole('ADMIN')">
+
+
+<a class="btn btn-danger" id="linkModal"
+ th:attr="data-target='#ModalAlumnoDelete', data-toggle='modal'" th:onclick="'datosModal(\'' + ${usuario.id} + '\');'">Eliminar</a></td>
+									
+									
+									
+							<td><a class="btn btn-primary" th:href="@{usuario/} + ${usuario.id}">Ver
 									detalles</a></td>
 						</tr>
 
@@ -54,5 +73,40 @@
 		</div>
 	</div>
 
+	<div class="modal fade" th:id="ModalAlumnoDelete" tabindex="-1"
+		role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="ModalTitle">¿Estas seguro de
+						borrar este usuario?</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form th:action="@{eliminarUsuario/}" method="post">
+					<div class="modal-body">
+
+						<div class="form-group">
+							<p>Está a punto de borrar este usuario, por favor marque el
+								check si desea mantener los datos del alumno asociado a dicho
+								usuario</p>
+							<input  type="checkbox" class="form-control"
+								name="checkbox"></input> 
+								<input required="required"
+								type="hidden" class="form-control" name="usuarioId" id="usuarioId" ></input>
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Cerrar</button>
+						<button type="submit" class="btn btn-primary">Eliminar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

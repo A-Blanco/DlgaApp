@@ -39,10 +39,12 @@ public class GrupoController {
 
 		Grupo grupo = new Grupo();
 		List<Titulacion> t = titulacionService.findAll();
+		List<Grupo> l = this.grupoService.findAll();
+		model.addAttribute("grupos", l);
 
 		model.addAttribute("grupo", grupo);
 		model.addAttribute("titulaciones", t);
-		return "grupo/grupoForm";
+		return "grupo/grupoList";
 
 	}
 
@@ -54,17 +56,20 @@ public class GrupoController {
 
 		if (result.hasErrors()) {
 			List<Titulacion> t = titulacionService.findAll();
+			
+			List<Grupo> l = this.grupoService.findAll();
+			model.addAttribute("grupos", l);
 
 			model.addAttribute("grupo", grupo);
 			model.addAttribute("titulaciones", t);
-			return "grupo/grupoForm";
+			return "grupo/grupoList";
 		} else {
 
 			grupoService.save(grupo);
 
 		}
 
-		return "redirect:";
+		return "redirect:/grupoList";
 
 	}
 
@@ -156,6 +161,19 @@ public class GrupoController {
 		return "redirect:/grupoList";
 
 	}
+	
+	@GetMapping(value = "/eliminarGrupoSeguridad/{grupoId}")
+	public String departamentoDeleteModal(@PathVariable("grupoId") final long grupoId, Model model,
+			HttpServletRequest request) {
+
+		model.addAttribute("idGrupoSeleccionado", grupoId);
+		List<Grupo> l = this.grupoService.findAll();
+		model.addAttribute("grupos", l);
+
+		return "grupo/grupoList";
+
+	}
+
 
 	public void validarGrupo(Grupo grupo, BindingResult result) {
 

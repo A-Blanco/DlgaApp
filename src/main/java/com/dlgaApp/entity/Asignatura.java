@@ -3,6 +3,7 @@ package com.dlgaApp.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 
 @Entity
@@ -37,13 +39,22 @@ public class Asignatura {
 	@JoinColumn(name = "titulacion_id")
 	private Titulacion titulacion;
 
-	@ManyToOne
+	@ManyToOne()
 	@JoinColumn(name = "departamento_id")
 	private Departamento departamento;
 
 	@JoinTable(name = "rel_asig_prof", joinColumns = @JoinColumn(name = "FK_ASIGANTURA"), inverseJoinColumns = @JoinColumn(name = "FK_PROFESOR"))
 	@ManyToMany()
 	private List<Profesor> profesores;
+	
+	
+	@PreRemove
+    private void removeProfesoresFromAsignatura() {
+        for (Profesor p : profesores) {
+            p.getAsignaturas().remove(this);
+        }
+    }
+	
 
 	public void addProfesor(Profesor profesor) {
 		if (this.profesores == null) {

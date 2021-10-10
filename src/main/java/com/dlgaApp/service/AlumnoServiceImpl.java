@@ -2,6 +2,7 @@ package com.dlgaApp.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -53,6 +54,17 @@ public class AlumnoServiceImpl {
 	
 	public Alumno findByEmail(String email) {
 		return this.alumnoRepository.findByEmail(email);
+	}
+	
+	public List<String> listaEmailSinPropio(Alumno alumno){
+		
+		List<Alumno> lista = (List<Alumno>) this.alumnoRepository.findAll();
+		lista.remove(alumno);
+		
+		List<String> l = lista.stream().map(x->x.getEmail()).collect(Collectors.toList());
+		
+		
+		return l;
 	}
 	
 }

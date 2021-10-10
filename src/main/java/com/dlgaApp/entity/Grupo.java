@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -48,6 +49,13 @@ public class Grupo {
 	@NotNull
     private Titulacion titulacion;
 
+	
+	@PreRemove
+	private void limpiarDelegados() {
+		
+		this.delegados.stream().forEach(x->x.setGrupoDelegado(null));
+		
+	}
 	
 	public Long getId() {
 		return id;

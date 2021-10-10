@@ -11,11 +11,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.UniqueElements;
 
 @Entity
 @Table(name = "alumnos")
@@ -34,7 +36,8 @@ public class Alumno {
 	private String apellidos;
 	
 	@NotNull(message = "Se debe introducir la edad del alumno")
-	@Min(value = 0,message = "Debe ser una edad válida")
+	@Min(value = 17,message = "Debe ser de al menos 17 años")
+	@Max(value = 80,message = "Debe ser menor de 80 años")
 	private Integer edad;
 
 	@NotEmpty(message = "Debes introducir el email del alumno")

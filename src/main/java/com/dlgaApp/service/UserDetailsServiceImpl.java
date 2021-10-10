@@ -86,5 +86,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     	return usuarioRepository.findByUsername(username);
     }
     
-   
+    public void eliminarUsuario(Usuario u) {
+    	usuarioRepository.delete(u);
+    }
 }

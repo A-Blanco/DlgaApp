@@ -11,8 +11,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.dlgaApp.entity.Asignatura;
 import com.dlgaApp.entity.Departamento;
+import com.dlgaApp.entity.Profesor;
+import com.dlgaApp.repository.AsignaturaRepository;
 import com.dlgaApp.repository.DepartamentoRepository;
+import com.dlgaApp.repository.ProfesorRepository;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.WebClient;
 
@@ -21,6 +26,12 @@ public class DepartamentoServiceImpl {
 
 	@Autowired
 	private DepartamentoRepository departamentoRepository;
+	
+	@Autowired
+	private AsignaturaRepository asignaturaRepository;
+	
+	@Autowired
+	private ProfesorRepository profesorRepository;
 
 	private final String webDepartamentos = "https://www.us.es/centros/escuela-tecnica-superior-de-ingenieria-informatica";
 
@@ -217,5 +228,27 @@ public class DepartamentoServiceImpl {
 		this.departamentoRepository.deleteAll();
 	}
 	
+	public List<Departamento> getDepartamentos() {
+		return (List<Departamento>) this.departamentoRepository.findAll();
+	}
+
+	
+	public List<Long> getIdsDepartamentos(){
+		
+		return this.departamentoRepository.obtenerIds();
+	}
+	
+	public void removeDepartamentoById(Long id) {
+		this.departamentoRepository.deleteById(id);
+		
+	}
+	
+	public List<String> obtenerSedes (){
+		return this.departamentoRepository.obtenerSedes();
+	}
+	
+	public void save(Departamento dep) {
+		this.departamentoRepository.save(dep);
+	}
 
 }

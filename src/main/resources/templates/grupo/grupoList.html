@@ -13,6 +13,22 @@
 		}).draw(true).columns.adjust();
 	});
 </script>
+<script type="text/javascript">
+$( document ).ready(function() {
+		  
+	  var grupo = "[[${grupo}]]";
+	  var grupoId = "[[${idGrupoSeleccionado}]]";
+	  
+	  if(grupo!=""){
+		  $('#ModalGrupoCreate').modal()
+	  }
+	  
+	  if(grupoId!=""){
+		  $('#ModalGrupoDelete').modal()
+	  }
+
+})
+</script>
 <script th:replace="recursos/idiomaTable :: idiomaTable"
 	type="text/javascript"></script>
 </head>
@@ -30,7 +46,7 @@
 							<th>Titulacion</th>
 							<th>Curso</th>
 							<th>Grupo</th>
-							<th></th>
+							<th sec:authorize="hasRole('ADMIN')"></th>
 							<th></th>
 						</tr>
 					</thead>
@@ -40,10 +56,12 @@
 							<td th:text="${grupo.titulacion.nombre}"></td>
 							<td th:text="${grupo.curso}"></td>
 							<td th:text="${grupo.numerogrupo}"></td>
-							<td><a th:href="@{delegados/} + ${grupo.id}">Ver
-									delegados</a></td>
-							<td><a th:href="@{eliminarGrupo/} + ${grupo.id}">Eliminar
+							<td sec:authorize="hasRole('ADMIN')"><a class="btn btn-danger" th:href="@{eliminarGrupoSeguridad/} + ${grupo.id}">Eliminar
 									grupo</a></td>
+									
+							<td><a class="btn btn-primary" th:href="@{delegados/} + ${grupo.id}">Ver
+									delegados</a></td>
+							
 						</tr>
 
 					</tbody>
@@ -51,6 +69,101 @@
 			</div>
 		</div>
 	</div>
+	
+	<a class="btn btn-primary" sec:authorize="hasAnyRole('ADMIN')"  
+th:href="@{/crearGrupo} ">Crear Grupo</a>
+
+
+<div th:if="${grupo!= null}" class="modal fade" data-keyboard="false" data-backdrop="static"
+		th:id="ModalGrupoCreate" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="ModalTitle">Crear Grupo</h5>
+
+
+				</div>
+				<form id="formUpdate" class="col-12"
+					th:object="${grupo}"
+					th:action="@{crearGrupo}" method="post">
+
+					<input  th:field="*{id}" type="hidden" name="id" />
+					
+					<div class="form-group" >
+
+					 <label for="titulacion">Titulación del Grupo</label>
+						<select id="titulacion"
+							th:field="*{titulacion.id}" class="form-control" name="titulacion">
+							<option  th:each="opcionTitulacion : ${titulaciones}" th:value="${opcionTitulacion.id}" 
+							th:text="${opcionTitulacion.nombre}"
+							th:selected="*{titulacion.id}"></option>
+					
+						</select>
+						<p class="alert alert-danger" role="alert"
+							th:errors="*{titulacion.id}"></p>
+							
+					</div>
+					
+					<div class="form-group" id="nombre-group">
+                     <label for="numerogrupo">Número del Grupo</label>
+                        <input id="numerogrupo" th:field="*{numerogrupo}" type="number" class="form-control" name="numerogrupo"/>
+                       <p class="alert alert-danger" role="alert" th:errors="*{numerogrupo}"></p>
+                    </div>
+                    
+
+					<div class="form-group" id="nombre-group">
+                     <label for="curso">Curso</label>
+                        <input id="curso" th:field="*{curso}" type="number" class="form-control" name="curso"/>
+                       <p class="alert alert-danger" role="alert" th:errors="*{curso}"></p>
+                    </div>
+                    
+                    <div class="form-group" id="nombre-group">
+                     <label> Marca la casilla si es un grupo de Inglés</label> <input
+				type="checkbox" th:field="*{esingles}">
+		<p  th:errors="*{esingles}"></p>
+		
+                    </div>
+                   <div  class="alert alert-danger" role="alert" th:errors="${grupo}"> </div> 
+					
+					
+					<div class="modal-footer">
+
+						<a th:href="@{/grupoList}" class="btn btn-secondary">Cerrar</a>
+						<button type="submit" class="btn btn-primary">Confirmar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" th:id="ModalGrupoDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalTitle">Aviso Importante</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+       
+      <div class="modal-body">
+       
+          <div >
+            <p>Usted va a eliminar los datos del Grupo seleccionado, esto conlleva la eliminación de ciertos datos relacionados con el grupo.
+            ¿Está segur@?
+            </p>
+          </div>
+        
+      </div>
+      <div class="modal-footer">
+       <a th:href="@{/grupoList}" class="btn btn-secondary">Cerrar</a>
+       <a  th:href="@{/eliminarGrupo/} + ${idGrupoSeleccionado}" class="btn btn-danger">Eliminar</a>
+      </div>
+    
+    </div>
+  </div>
+</div>   
 
 </body>
 </html>

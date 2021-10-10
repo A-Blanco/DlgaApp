@@ -25,7 +25,7 @@ public class Usuario implements UserDetails {
 	private Long id;
 
 	
-	@Column(unique = true)
+	
 	@NotEmpty(message = "Se debe introducir su uvus")
 	private String username;
 	

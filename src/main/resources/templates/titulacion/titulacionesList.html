@@ -13,6 +13,34 @@
 		}).draw(true).columns.adjust();
 	});
 </script>
+<script type="text/javascript">
+$( document ).ready(function() {
+		  
+	  var titulacion = "[[${titulacionSeleccionado}]]"; 
+	  var titulacionCreado = "[[${titulacionCreado}]]"; 
+	  var titulacionCreadoId = "[[${idTitulacionSeleccionado}]]"; 
+	  
+	  
+	  if(titulacion!=""){
+		  $('#ModalTitulacionUpdate').modal()
+	  }
+	  
+	  if(titulacionCreado!=""){
+		  $('#ModalTitulacionCreate').modal()
+	  }
+	  if(titulacionCreadoId!=""){
+		  $('#ModalTitulacionDelete').modal()
+	  }
+})
+
+</script>
+
+<script type="text/javascript">
+$(function(){
+	$("#selectAsignaturas").select2({ width: '100%' }); 
+	
+})
+</script>
 <script th:replace="recursos/idiomaTable :: idiomaTable"
 	type="text/javascript"></script>
 </head>
@@ -27,21 +55,136 @@
 					<thead class="thead-light">
 						<tr>
 							<th>Nombre</th>
-							<th></th>
+							<th sec:authorize="hasRole('ADMIN')"></th>
+							<th sec:authorize="hasRole('ADMIN')"></th>
 						</tr>
 					</thead>
 					<tbody>
 
 						<tr th:each="titulacion : ${titulaciones}">
 							<td th:text="${titulacion.nombre}"></td>
-							<td><a
-								th:href="@{modificarTitulacion/} + ${titulacion.id}">Modificar</a></td>
+							
+								<td sec:authorize="hasRole('ADMIN')">
+								<form th:action="@{titulacionUpdate}" method="get">
+									<input type="hidden" th:value="${titulacion.id}"
+										name="titulacionId"></input>
+									<button type="submit" class="btn btn-primary">Modificar
+										datos</button>
+								</form>
+
+							</td>
+							
+							<td sec:authorize="hasRole('ADMIN')"><a class="btn btn-danger"
+								th:href="@{/titulacionDeleteSeguridad/} + ${titulacion.id}">Eliminar</a></td>
 						</tr>
 
 					</tbody>
 				</table>
+				<div sec:authorize="hasRole('ADMIN')"><a class="btn btn-primary"
+								th:href="@{/titulacionCreate}">Crear Titulacion</a></div>
 			</div>
 		</div>
 	</div>
+	
+	
+	<div th:if="${titulacionCreado != null}" class="modal fade" data-keyboard="false" data-backdrop="static"
+		th:id="ModalTitulacionCreate" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="ModalTitle">Crear Titulación</h5>
+
+
+				</div>
+				<form id="formUpdate" class="col-12"
+					th:object="${titulacionCreado}"
+					th:action="@{titulacionCreate}" method="post">
+
+					<input  th:field="*{id}" type="hidden" name="id" />
+					
+					<div class="form-group" id="nombre-group">
+                     <label for="nombre">Nombre</label>
+                        <input id="nombre" th:field="*{nombre}" type="text" class="form-control" placeholder="Nombre de la titulación" name="nombre"/>
+                       <p class="alert alert-danger" role="alert" th:errors="*{nombre}"></p>
+                    </div>	
+					
+					
+					
+					
+					<div class="modal-footer">
+
+						<a th:href="@{/titulacionList}" class="btn btn-secondary">Cerrar</a>
+						<button type="submit" class="btn btn-primary">Confirmar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<div th:if="${titulacionSeleccionado != null}" class="modal fade" data-keyboard="false" data-backdrop="static"
+		th:id="ModalTitulacionUpdate" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="ModalTitle">Editar Titulación</h5>
+
+
+				</div>
+				<form id="formUpdate" class="col-12"
+					th:object="${titulacionSeleccionado}"
+					th:action="@{titulacionUpdate}" method="post">
+
+					<input  th:field="*{id}" type="hidden" name="id" />
+					
+					<div class="form-group" id="nombre-group">
+                     <label for="nombre">Nombre</label>
+                        <input id="nombre" th:field="*{nombre}" type="text" class="form-control" placeholder="Nombre de la titulación" name="nombre"/>
+                       <p class="alert alert-danger" role="alert" th:errors="*{nombre}"></p>
+                    </div>	
+					
+					
+					
+					
+					<div class="modal-footer">
+
+						<a th:href="@{/titulacionList}" class="btn btn-secondary">Cerrar</a>
+						<button type="submit" class="btn btn-primary">Confirmar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" th:id="ModalTitulacionDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalTitle">Aviso Importante</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+       
+      <div class="modal-body">
+       
+          <div >
+            <p>Usted va a eliminar los datos de la Titulación seleccionada, esto conlleva la eliminación de ciertos datos relacionados con la titulación.
+            ¿Está segur@?
+            </p>
+          </div>
+        
+      </div>
+      <div class="modal-footer">
+       <a th:href="@{/titulacionList}" class="btn btn-secondary">Cerrar</a>
+       <a  th:href="@{/titulacionDelete/} + ${idTitulacionSeleccionado}" class="btn btn-danger">Eliminar</a>
+      </div>
+    
+    </div>
+  </div>
+</div>   
+	
+	
 </body>
 </html>

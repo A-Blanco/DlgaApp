@@ -1,5 +1,6 @@
 package com.dlgaApp.controller;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dlgaApp.entity.Alumno;
 import com.dlgaApp.entity.Grupo;
@@ -33,23 +35,23 @@ public class AlumnoController {
 
 	@Autowired
 	private GrupoServiceImpl grupoService;
-	
-	@Autowired 
+
+	@Autowired
 	private UserDetailsServiceImpl usuarioService;
 
 	@GetMapping(value = "/crearAlumno")
 	public String crearAlumnoForm(Model model, HttpServletRequest request) {
 
-		if(request.getSession().getAttribute("noAlumno")!=null) {
+		if (request.getSession().getAttribute("noAlumno") != null) {
 			model.addAttribute("noAlumno", 1);
 		}
-		
-		if(request.getSession().getAttribute("siUsuario")!=null) {
+
+		if (request.getSession().getAttribute("siUsuario") != null) {
 			model.addAttribute("siUsuario", 1);
 		}
-		
+
 		Alumno alumno = new Alumno();
-		
+
 		model.addAttribute("alumno", alumno);
 		request.getSession().removeAttribute("noAlumno");
 		request.getSession().removeAttribute("siUsuario");
@@ -61,7 +63,13 @@ public class AlumnoController {
 	public String listAlumnos(Model model) {
 
 		List<Alumno> alumnos = this.alumnoService.findAll();
+		Usuario usuarioActual = usuarioActual();
+		Alumno alumnoActual = usuarioActual.getAlumno();
+		alumnos.removeIf(x->x.getId()==alumnoActual.getId());
+		
 		model.addAttribute("alumnos", alumnos);
+
+		model.addAttribute("prueba", "prueba");
 
 		return "alumno/alumnoList";
 
@@ -71,10 +79,10 @@ public class AlumnoController {
 	public String crearAlumno(@Valid @ModelAttribute("alumno") Alumno alumno, BindingResult result, Model model,
 			HttpServletRequest request) {
 
-		validarAlumno(alumno, result);
+		validarAlumno(alumno, result, false);
 
 		if (result.hasErrors()) {
-			
+
 			model.addAttribute("alumno", alumno);
 			return "alumno/formAlumno";
 		} else {
@@ -100,7 +108,7 @@ public class AlumnoController {
 				alumnoService.saveAlumno(alumno);
 
 				Grupo grupo = this.grupoService.findById((long) request.getSession().getAttribute("grupoId"));
-				
+
 				if (grupo.getDelegados().size() < 4) {
 
 					model.addAttribute("addDelegadoAgain", 1);
@@ -113,7 +121,7 @@ public class AlumnoController {
 			}
 		}
 
-		return "redirect:";
+		return "redirect:/listAlumnos";
 
 	}
 
@@ -138,34 +146,135 @@ public class AlumnoController {
 		return "grupo/inicioGrupoAdd";
 
 	}
-	
+
 	@GetMapping(value = "/detallesAlumno/{alumnoId}")
-	public String alumnoDetails (Model model, @PathVariable("alumnoId") final long alumnoId,
+	public String alumnoDetails(Model model, @PathVariable("alumnoId") final long alumnoId,
 			HttpServletRequest request) {
-		
-		
-		if(request.getSession().getAttribute("siAlumno") != null) {
+
+		if (request.getSession().getAttribute("siAlumno") != null) {
 
 			model.addAttribute("siAlumno", 1);
-			}
-	
+		}
+
 		Alumno alumno = this.alumnoService.findById(alumnoId);
-		
+
 		model.addAttribute("alumno", alumno);
 		request.getSession().removeAttribute("siAlumno");
-		
+
 		return "alumno/alumnoDetails";
-		
+
 	}
 
-	public void validarAlumno(Alumno alumno, BindingResult result) {
+	@GetMapping(value = "/alumnoDelete/{alumnoId}")
+	public String alumnoDelete(Model model, @PathVariable("alumnoId") final long alumnoId, HttpServletRequest request) {
 
-		// validar que el username es único
-		if (alumnoService.numeroAlumnosByEmail(alumno.getEmail()) != 0) {
-			result.rejectValue("email", "email", "El email introducido ya está registrado");
+		this.alumnoService.eliminaAlumnoById(alumnoId);
+
+		return "redirect:/listAlumnos";
+
+	}
+
+	@GetMapping(value = "/alumnoUpdate")
+	public String alumnoUpdateModal(@RequestParam(name = "alumnoId") final long alumnoId, Model model,
+			HttpServletRequest request) {
+
+		Alumno alumno = this.alumnoService.findById(alumnoId);
+
+		model.addAttribute("alumnoSeleccionado", alumno);
+		List<Alumno> alumnos = this.alumnoService.findAll();
+		Usuario usuarioActual = usuarioActual();
+		Alumno alumnoActual = usuarioActual.getAlumno();
+		alumnos.removeIf(x->x.getId()==alumnoActual.getId());
+		
+		model.addAttribute("alumnos", alumnos);
+
+		return "alumno/alumnoList";
+
+	}
+
+	@PostMapping(value = "/alumnoUpdate")
+	public String alumnoUpdate(@Valid @ModelAttribute("alumnoSeleccionado") Alumno alumno, BindingResult result,
+			Model model, HttpServletRequest request) {
+
+		this.validarAlumno(alumno, result, true);
+
+		if (result.hasErrors()) {
+			model.addAttribute("alumnoSeleccionado", alumno);
+			List<Alumno> alumnos = this.alumnoService.findAll();
+			Usuario usuarioActual = usuarioActual();
+			Alumno alumnoActual = usuarioActual.getAlumno();
+			alumnos.removeIf(x->x.getId()==alumnoActual.getId());
+			
+			model.addAttribute("alumnos", alumnos);
+
+			return "alumno/alumnoList";
+		} else {
+
+			this.alumnoService.saveAlumno(alumno);
+
+			return "redirect:/listAlumnos";
 		}
 
 	}
 	
+	@GetMapping(value = "/alumnoDeleteSeguridad/{alumnoId}")
+	public String alumnoDeleteModal(@PathVariable("alumnoId") final long alumnoId, Model model,
+			HttpServletRequest request) {
+
+
+		model.addAttribute("idAlumnoSeleccionado", alumnoId);
+		List<Alumno> alumnos = this.alumnoService.findAll();
+		Usuario usuarioActual = usuarioActual();
+		Alumno alumnoActual = usuarioActual.getAlumno();
+		alumnos.removeIf(x->x.getId()==alumnoActual.getId());
+		
+		model.addAttribute("alumnos", alumnos);
+
+		return "alumno/alumnoList";
+
+	}
 	
+	
+
+	public void validarAlumno(Alumno alumno, BindingResult result, boolean checkUpdate) {
+
+		// validar que el email es único
+		if (checkUpdate) {
+
+			Alumno alumnoBd = this.alumnoService.findById(alumno.getId());
+
+			String email = alumno.getEmail();
+
+			String emailBD = alumnoBd.getEmail();
+
+			if (!email.equals(emailBD)) {
+
+				if (this.alumnoService.numeroAlumnosByEmail(alumno.getEmail()) != 0) {
+					result.rejectValue("email", "email", "El email introducido ya está registrado");
+				}
+
+			}
+		} else {
+			if (this.alumnoService.numeroAlumnosByEmail(alumno.getEmail()) != 0) {
+				result.rejectValue("email", "email", "El email introducido ya está registrado");
+			}
+		}
+			
+	}
+	
+	private Usuario usuarioActual() {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = null;
+		Usuario us = null;
+		if (principal instanceof UserDetails) {
+			userDetails = (UserDetails) principal;
+			String userName = userDetails.getUsername();
+			us = this.usuarioService.findByUsername(userName);
+		} else {
+			us = null;
+		}
+
+		return us;
+
+	}
 }

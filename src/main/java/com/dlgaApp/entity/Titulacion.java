@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -31,6 +32,8 @@ public class Titulacion {
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "titulacion")
 	private List<Asignatura> asignaturas;
+	
+	
 
 	public Long getId() {
 		return id;
