@@ -259,6 +259,14 @@ public class AlumnoController {
 				result.rejectValue("email", "email", "El email introducido ya está registrado");
 			}
 		}
+		
+		if(!alumno.getNombre().equals("") && alumno.getNombre().trim().equals("")) {
+			result.rejectValue("nombre", "nombre", "Debes introducir un nombre válido");
+		}
+		
+		if(!alumno.getApellidos().equals("") && alumno.getApellidos().trim().equals("")) {
+			result.rejectValue("apellidos", "apellidos", "Debes introducir unos apellidos válido");
+		}
 			
 	}
 	

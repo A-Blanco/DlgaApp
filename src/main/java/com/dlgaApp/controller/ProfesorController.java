@@ -258,16 +258,16 @@ public void validarProfesor(Profesor profesor, BindingResult result) {
 		List<Long> idsDepartamentos = this.departamentoService.getIdsDepartamentos();
 		List<Long> idsAsignaturas = this.asignaturaService.getIdsAsignaturas();
 
-		if(profesor.getNombre().equals("")) {
+		if(profesor.getNombre().trim().equals("")) {
 			result.rejectValue("nombre", "nombre", "El nombre no puede ser nulo");
 			}
 		
-		if(!profesor.getTelefono().equals("") && !Pattern.matches(regexTelefono, profesor.getTelefono())) {
+		if(!profesor.getTelefono().trim().equals("") && !Pattern.matches(regexTelefono, profesor.getTelefono())) {
 			
 			result.rejectValue("telefono", "telefono", "El teléfono debe ser válido");
 		}
 		
-		if(profesor.getEmail().equals("") || !Pattern.matches(regex, profesor.getEmail())) {
+		if(profesor.getEmail().trim().equals("") || !Pattern.matches(regex, profesor.getEmail())) {
 			result.rejectValue("email", "email", "El emáil debe ser válido");
 			}
 		

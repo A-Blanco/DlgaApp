@@ -356,24 +356,24 @@ public class DepartamentoController {
 
 		String regexWeb = "/^http[s]?:\\/\\/[\\w]+([\\.]+[\\w]+)+$/";
 
-		if (departamento.getNombre().equals("")) {
+		if (departamento.getNombre().trim().equals("")) {
 			result.rejectValue("nombre", "nombre", "El nombre no puede ser nulo");
 		}
 
-		if (departamento.getSede().equals("")) {
+		if (departamento.getSede().trim().equals("")) {
 			result.rejectValue("sede", "sede", "La Sede no puede ser nula");
 		}
 
-		if (departamento.getEmail().equals("") || !Pattern.matches(regex, departamento.getEmail())) {
+		if (departamento.getEmail().trim().equals("") || !Pattern.matches(regex, departamento.getEmail())) {
 			result.rejectValue("email", "email", "El emáil debe ser válido");
 		}
 
-		if (!departamento.getTelefono().equals("") && !Pattern.matches(regexTelefono, departamento.getTelefono())) {
+		if (!departamento.getTelefono().trim().equals("") && !Pattern.matches(regexTelefono, departamento.getTelefono())) {
 
 			result.rejectValue("telefono", "telefono", "El teléfono debe ser válido");
 		}
 
-		if (!departamento.getWeb().equals("") && !Pattern.matches(regexWeb, departamento.getWeb())) {
+		if (!departamento.getWeb().trim().equals("") && !Pattern.matches(regexWeb, departamento.getWeb())) {
 
 			result.rejectValue("web", "web", "La driección web debe ser válida");
 		}

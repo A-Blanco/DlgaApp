@@ -163,7 +163,7 @@ public void validarTitulacion(Titulacion titulacion, BindingResult result) {
 		
 	
 
-		if(titulacion.getNombre().equals("")) {
+		if(titulacion.getNombre().trim().equals("")) {
 			result.rejectValue("nombre", "nombre", "El nombre no puede ser nulo");
 			}
 		
