@@ -10,9 +10,19 @@
 
 <body>
 
-	<header th:replace="recursos/base :: navbar"></header>
+	<header  th:replace="recursos/base :: navbar"></header>
 
-
+<div class="container-fluid">
+  <div class="row">
+  <div class="col">
+  
+<a class="twitter-timeline" data-height="700" href="https://twitter.com/delegaETSII?ref_src=twsrc%5Etfw">Tweets by delegaETSII</a>
+ <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  
+  </div>
+  
+ 
+ <div class="col-6">
 	<h1>Funciones</h1>
 	
 	<div class="funcionInicio">
@@ -53,8 +63,23 @@
 			src="/img/gruposalumnos.png" width="150"></a> <br>
 		<p>Grupos</p>
 	</div>
+	
+	<div class="funcionInicio">
+		<a class="funcion" th:href="@{incidenciaCreate}"><img
+			src="/img/anadir-amigo.png" width="150"> </a><br>
+		<p >Crear Incidencia</p>
+	</div>
 
+	 </div>
 	
 
+ <div class="col">
+    <a class="twitter-timeline" data-height="700" href="https://twitter.com/etsii?ref_src=twsrc%5Etfw">
+    Tweets by etsii</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  
+  </div>
+  
+    </div>
+    </div>
 </body>
 </html>

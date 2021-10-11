@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
 
@@ -47,6 +48,8 @@ public class Asignatura {
 	@ManyToMany()
 	private List<Profesor> profesores;
 	
+	@OneToMany(mappedBy = "asignatura")
+	private List<Incidencia> incidencias ;
 	
 	@PreRemove
     private void removeProfesoresFromAsignatura() {
@@ -140,5 +143,17 @@ public class Asignatura {
 	public void setAno(String ano) {
 		this.ano = ano;
 	}
+
+
+	public List<Incidencia> getIncidencias() {
+		return incidencias;
+	}
+
+
+	public void setIncidencias(List<Incidencia> incidencias) {
+		this.incidencias = incidencias;
+	}
+	
+	
 
 }

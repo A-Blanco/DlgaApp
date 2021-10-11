@@ -352,7 +352,7 @@ public class DepartamentoController {
 
 		String regex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
 
-		String regexTelefono = "(\\+34|0034|34)?[ -]*(6|7|8)[ -]*([0-9][ -]*){8}";
+		String regexTelefono = "(\\+34|0034|34)?[ -]*(6|7|8|9)[ -]*([0-9][ -]*){8}";
 
 		String regexWeb = "/^http[s]?:\\/\\/[\\w]+([\\.]+[\\w]+)+$/";
 
@@ -368,14 +368,11 @@ public class DepartamentoController {
 			result.rejectValue("email", "email", "El emáil debe ser válido");
 		}
 
-		if (!departamento.getTelefono().trim().equals("") && !Pattern.matches(regexTelefono, departamento.getTelefono())) {
+		if (!departamento.getTelefono().equals("") && !Pattern.matches(regexTelefono, departamento.getTelefono())) {
 
 			result.rejectValue("telefono", "telefono", "El teléfono debe ser válido");
 		}
 
-		if (!departamento.getWeb().trim().equals("") && !Pattern.matches(regexWeb, departamento.getWeb())) {
-
-			result.rejectValue("web", "web", "La driección web debe ser válida");
-		}
+		
 	}
 }

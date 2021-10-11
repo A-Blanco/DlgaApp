@@ -53,6 +53,9 @@ public class Usuario implements UserDetails {
 	private Alumno alumno;
 	
 	private String motivoRechazo;
+	
+	@OneToMany(mappedBy = "miembro")
+	private List<Incidencia> incidencias ;
 
 	 @Override
 	    public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -145,6 +148,14 @@ public class Usuario implements UserDetails {
 
 		public void setMotivoRechazo(String motivoRechazo) {
 			this.motivoRechazo = motivoRechazo;
+		}
+
+		public List<Incidencia> getIncidencias() {
+			return incidencias;
+		}
+
+		public void setIncidencias(List<Incidencia> incidencias) {
+			this.incidencias = incidencias;
 		}
 	    
 		
