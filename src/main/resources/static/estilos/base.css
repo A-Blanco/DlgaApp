@@ -5,6 +5,14 @@ background-color: #ABDFFA}
 
 div.funcionInicio{
 	margin-left: 40px;
+	margin-right: 40px;
 	display:  inline-block;
-	width: 200px;
+	width: auto;
+}
+
+div.inicio{
+	margin-left: 40px;
+	display:  inline-block;
+	width: 400px;
+	position: relative;
 }

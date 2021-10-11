@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" th:href="@{/estilos/form.css}" />
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
+<title>Incidencia</title>
+</head>
+<body>
+<header th:replace="recursos/base :: navbar"></header>
+<script type="text/javascript">
+$(function(){
+	$("#selectAsignatura").select2({ width: '100%' }); 
+	$("#selectProfesor").select2({ width: '100%' }); 
+	$("#selectAlumno").select2({ width: '100%' }); 
+})
+</script>
+
+<body>
+    <div class="modal-dialog text-center">
+        <div class="col-sm-8 main-section">
+            <div class="modal-content">
+                <div class="col-12 user-img">
+                    <img src="img/userIcon.png"/>
+                </div>
+                <form class="col-12" th:action="@{incidenciaCreate}" th:object="${incidencia}" method="post">
+                
+                <input  th:field="*{id}" type="hidden" name="id" />
+                <input  th:field="*{miembro}" type="hidden" name="miembro" />
+                <input  th:field="*{estado}" type="hidden" name="estado" />
+                
+                    
+                    
+                    <div class="form-group" id="nombre-group">
+                        <textarea th:field="*{descripcion}" class="form-control" placeholder="Descripción de la Incidencia" name="descripcion"></textarea>
+                        <p class="alert alert-danger" role="alert" th:errors="*{descripcion}"></p>
+                    </div>
+                   <div class="form-group">
+					
+							<label for="selectAlumno">Alumno Implicado</label>
+												
+							<select  id="selectAlumno" 
+							th:field="*{alumno}" >
+							<option th:each="opcionAlumno : ${opcionesAlumnos.entrySet()}" 
+							 th:value="${opcionAlumno.key}"
+							th:text="${opcionAlumno.value}" ></option>
+						</select>
+						<p class="alert alert-danger" role="alert" th:errors="*{alumno}"></p>
+					</div>
+					
+					 <div class="form-group">
+					
+							<label for="selectProfesor">Profesor Implicado</label>
+												
+							<select  id="selectProfesor" 
+							th:field="*{profesor}" >
+							<option th:each="opcionProfesor : ${opcionesProfesores.entrySet()}" 
+							 th:value="${opcionProfesor.key}"
+							th:text="${opcionProfesor.value}" ></option>
+						</select>
+						<p class="alert alert-danger" role="alert" th:errors="*{profesor}"></p>
+					</div>
+					
+					<div class="form-group">
+					
+							<label for="selectAsignaturas">Asignaturas</label>
+												
+							<select  id="selectAsignatura" 
+							th:field="*{asignatura}" >
+							<option th:each="opcionAsignatura : ${opcionesAsignaturas.entrySet()}" 
+							 th:value="${opcionAsignatura.key}"
+							th:text="${opcionAsignatura.value}" ></option>
+						</select>
+						<p class="alert alert-danger" role="alert" th:errors="*{asignatura}"></p>
+					</div>
+					
+					
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i>  Registrar Incidencia </button>
+                </form>
+                <div class="col-12 forgot">
+                    <a th:href="@{/}">Cancelar Registro</a>
+
+				 
+				          
+            </div>
+        </div>
+    </div>
+     </div>
+     
+    
+
+</body>
+</html>
