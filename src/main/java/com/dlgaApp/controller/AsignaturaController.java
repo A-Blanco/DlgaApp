@@ -196,23 +196,23 @@ public class AsignaturaController {
 		List<String> nombresAños = this.asignaturaService.obtenerAños();
 		
 		
-		if(asignatura.getNombre().equals("")) {
+		if(asignatura.getNombre().trim().equals("") ) {
 			result.rejectValue("nombre", "nombre", "El nombre no puede ser nulo");
 }
 		
-		if(asignatura.getCaracter().equals("") || !nombresCaracters.contains(asignatura.getCaracter())) {
+		if(asignatura.getCaracter().trim().equals("") || !nombresCaracters.contains(asignatura.getCaracter())) {
 			result.rejectValue("caracter", "caracter", "El valor indicado no es corrector");
 		}
 		
-		if(asignatura.getDuracion().equals("") || !nombresDuracions.contains(asignatura.getDuracion())) {
+		if(asignatura.getDuracion().trim().equals("") || !nombresDuracions.contains(asignatura.getDuracion())) {
 			result.rejectValue("duracion", "duracion", "El valor indicado no es corrector");
 		}
 		
-		if(asignatura.getCreditos().equals("") || !nombresCreditos.contains(asignatura.getCreditos())) {
+		if(asignatura.getCreditos().trim().equals("") || !nombresCreditos.contains(asignatura.getCreditos())) {
 			result.rejectValue("creditos", "creditos", "El valor indicado no es corrector");
 		}
 		
-		if(asignatura.getAno().equals("") || !nombresAños.contains(asignatura.getAno())) {
+		if(asignatura.getAno().trim().equals("") || !nombresAños.contains(asignatura.getAno())) {
 			result.rejectValue("ano", "ano", "El valor indicado no es corrector");
 		}
 		
