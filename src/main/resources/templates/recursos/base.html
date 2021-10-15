@@ -61,6 +61,8 @@
 					class="navbar-item active"><a href="/usuariosNoAceptados" class="nav-link">Nuevos Usuarios</a></li>
 					<li sec:authorize="hasRole('ADMIN')" 
 					class="navbar-item active"><a href="/administrador" class="nav-link">Herramientas Administrador</a></li>
+				    <li sec:authorize="hasAnyRole('MIEMBRO, ADMIN')"  
+					class="navbar-item active"><a href="/incidenciaPersonalList" class="nav-link">Incidencias Personales</a></li>
 				</ul>
 				<div th:if="${#authorization.expression('isAuthenticated()')}">
 				<span class="navbar-text"> <b
