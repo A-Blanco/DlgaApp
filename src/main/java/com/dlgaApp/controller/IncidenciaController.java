@@ -94,6 +94,8 @@ public class IncidenciaController {
 	public String createIncidenciaPost(@Valid @ModelAttribute("incidencia") Incidencia incidencia,
 			BindingResult result,Model model, HttpServletRequest request) {
 		
+		validateIncidencia(incidencia, result);
+		
 		if(result.hasErrors()) {
 		
 		List<Asignatura> asignaturas = this.asignaturaService.findAll();
@@ -135,6 +137,54 @@ public class IncidenciaController {
 			return "redirect:";
 			
 		}
+		
+	}
+	
+	@GetMapping(value = "/incidenciaList")
+	public String incidenciaList(Model model) {
+		
+		List<Incidencia> incidencias = this.incidenciaService.finfAll();
+		
+		Usuario usuarioActual = usuarioActual();
+		incidencias.removeIf(x->x.getMiembro().getId()==usuarioActual.getId());
+		
+		model.addAttribute("incidencias", incidencias);
+
+		return "incidencia/incidenciaList";
+		
+	}
+	
+	@GetMapping(value = "/incidenciaPersonalList")
+	public String incidenciaPersonalList(Model model) {
+		
+		List<Incidencia> incidencias = this.incidenciaService.finfAll();
+		
+		Usuario usuarioActual = usuarioActual();
+		incidencias.removeIf(x->x.getMiembro().getId()!=usuarioActual.getId());
+		
+		model.addAttribute("incidencias", incidencias);
+
+		return "incidencia/incidenciaList";
+		
+	}
+	
+	private void validateIncidencia(Incidencia incidencia, BindingResult result) {
+		
+		if(!incidencia.getDescripcion().equals("") && incidencia.getDescripcion().trim().equals("")) {
+			result.rejectValue("descripcion", "descripcion", "La descripción debe ser válida");
+		}
+		
+		if(incidencia.getEstado()==EstadosIncidencia.BusquedaAcuerdo && incidencia.getInformacionContrastada().trim().equals("")) {
+			result.rejectValue("informacionContrastada", "informacionContrastada", 
+					"En el estado que se encuentra la incidencia, debe tener la información contrastadada");
+		}
+		
+		if(incidencia.getEstado()==EstadosIncidencia.Finalizada && incidencia.getAcuerdo().trim().equals("")) {
+			result.rejectValue("acuerdo", "acuerdo", 
+					"En el estado que se encuentra la incidencia, debe tener el acuerdo alcanzado");
+		}
+		
+		
 		
 	}
 

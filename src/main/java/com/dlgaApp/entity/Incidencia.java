@@ -30,19 +30,19 @@ public class Incidencia {
     @Temporal(TemporalType.DATE)
     private Date fechaCreacion;
 	
-	@NotEmpty
+	@NotEmpty(message = "Debes escribir una descripción")
 	private String descripcion;
 	
 	private String informacionContrastada;
 	
 	private String acuerdo;
 	
-	@NotNull
+	@NotNull( message = "Debes Seleccionar a un alumno")
 	@ManyToOne
 	@JoinColumn(name = "alumnoImplicado")
 	private Alumno alumno;
 	
-	
+	@NotNull( message = "Debes Seleccionar a un profesor")
 	@ManyToOne
 	@JoinColumn(name = "profesorImplicado")
 	private Profesor profesor;
@@ -52,7 +52,7 @@ public class Incidencia {
 	@JoinColumn(name = "miembroImplicado")
 	private Usuario miembro;
 	
-	@NotNull
+	@NotNull( message = "Debes Seleccionar una asignatura")
 	@ManyToOne
 	@JoinColumn(name = "asignaturaImplicada")
 	private Asignatura asignatura;

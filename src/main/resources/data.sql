@@ -17,3 +17,5 @@ INSERT INTO `rel_asig_prof` VALUES (402,71),(402,75),(402,173),(402,186),(402,20
 
 INSERT INTO `usuario` VALUES (1000,NULL,'$2a$10$RR8Ou12cc7Rb8jyXTj9oH.eehq1OUbXG/h6xKY5NWLAWuyuBQi.za','$2a$10$RR8Ou12cc7Rb8jyXTj9oH.eehq1OUbXG/h6xKY5NWLAWuyuBQi.za','ROLE_ADMIN','666355444','aleblaper1',1000),(1001,NULL,'$2a$10$RR8Ou12cc7Rb8jyXTj9oH.eehq1OUbXG/h6xKY5NWLAWuyuBQi.za','$2a$10$RR8Ou12cc7Rb8jyXTj9oH.eehq1OUbXG/h6xKY5NWLAWuyuBQi.za','ROLE_MIEMBRO','666555443','anacatcam',1003),
 (1002,NULL,'$2a$10$RR8Ou12cc7Rb8jyXTj9oH.eehq1OUbXG/h6xKY5NWLAWuyuBQi.za','$2a$10$RR8Ou12cc7Rb8jyXTj9oH.eehq1OUbXG/h6xKY5NWLAWuyuBQi.za','ROLE_REGISTRADO','666555123','pacozafra',1002);
+
+INSERT INTO `incidencias` VALUES (1000,null,'Esto es una prueba','BusquedaInformacion','2021-07-04',null,1001,403,1002,29), (1001,null,'Esto es una prueba personal','BusquedaAcuerdo','2021-08-24',null,1003,598,1000,31);

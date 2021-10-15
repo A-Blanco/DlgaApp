@@ -32,7 +32,8 @@ $(function(){
                 
                     
                     
-                    <div class="form-group" id="nombre-group">
+                    <div class="form-group" >
+                        	<label >Descripción</label>
                         <textarea th:field="*{descripcion}" class="form-control" placeholder="Descripción de la Incidencia" name="descripcion"></textarea>
                         <p class="alert alert-danger" role="alert" th:errors="*{descripcion}"></p>
                     </div>
@@ -42,6 +43,7 @@ $(function(){
 												
 							<select  id="selectAlumno" 
 							th:field="*{alumno}" >
+							<option value="" label="Selecciona a un Alumno"  selected="selected"></option>
 							<option th:each="opcionAlumno : ${opcionesAlumnos.entrySet()}" 
 							 th:value="${opcionAlumno.key}"
 							th:text="${opcionAlumno.value}" ></option>
@@ -55,6 +57,8 @@ $(function(){
 												
 							<select  id="selectProfesor" 
 							th:field="*{profesor}" >
+							
+							<option value="" label="Selecciona a un Profesor"  selected="selected"></option>
 							<option th:each="opcionProfesor : ${opcionesProfesores.entrySet()}" 
 							 th:value="${opcionProfesor.key}"
 							th:text="${opcionProfesor.value}" ></option>
@@ -68,6 +72,7 @@ $(function(){
 												
 							<select  id="selectAsignatura" 
 							th:field="*{asignatura}" >
+							<option value="" label="Selecciona una Asignatura"  selected="selected"></option>
 							<option th:each="opcionAsignatura : ${opcionesAsignaturas.entrySet()}" 
 							 th:value="${opcionAsignatura.key}"
 							th:text="${opcionAsignatura.value}" ></option>
