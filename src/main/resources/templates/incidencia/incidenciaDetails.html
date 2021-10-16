@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
+<script type="text/javascript">
+$( document ).ready(function() {
+	
+
+	  
+	  var errorAcuerdo = "[[${errorAcuerdo}]]";
+	  var errorInfo = "[[${errorInfo}]]";
+	 
+	  
+	  if(errorAcuerdo!=""){
+		  $('#ModalActualizacionIncidenciaAcuerdo').modal()
+	  }
+	  
+	  if(errorInfo!=""){
+		  $('#ModalActualizacionIncidencia').modal()
+	  }
+	 
+	 
+	
+})
+
+
+</script>
+</head>
+<body>
+<header th:replace="recursos/base :: navbar"></header>
+	<h1>Detalles Incidencia</h1>
+
+
+	<table>
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Fecha de Creación</th>
+				<th>Alumno</th>
+				<th>Profesor</th>
+				<th>Asignatura</th>
+				<th>Miembro encargado</th>
+				<th>Estado</th>
+				<th>Descripción</th>
+				<th th:if="${incidencia.informacionContrastada != null}">Información Contrastada</th>
+				<th th:if="${incidencia.acuerdo != null}">Acuerdo Alcanzado</th>
+			</tr>
+		</thead>
+		<tbody>
+
+			<tr>
+				<td th:text="${incidencia.id}"></td>
+				<td th:text="${incidencia.fechaCreacion}"></td>
+				<td th:text="${incidencia.alumno.nombre + ' ' + incidencia.alumno.apellidos}"></td>
+				<td th:text="${incidencia.profesor.nombre}"></td>
+				<td th:text="${incidencia.asignatura.nombre}"></td>
+				<td th:text="${incidencia.miembro.alumno.nombre + ' ' + incidencia.miembro.alumno.apellidos}"></td>
+				<td th:text="${incidencia.estado}"></td>
+				<td th:text="${incidencia.descripcion}"></td>
+				<td th:if="${incidencia.informacionContrastada != null}" th:text="${incidencia.informacionContrastada}"></td>
+				<td th:if="${incidencia.acuerdo != null}" th:text="${incidencia.acuerdo}"></td>
+				
+			</tr>
+
+		</tbody>
+	</table>
+	
+	<div>
+	<button th:if="${incidencia.informacionContrastada == null AND #authentication.getPrincipal().getId() == incidencia.miembro.id}" type="button" class="btn btn-primary" data-toggle="modal"
+				 th:attr="data-target='#ModalActualizacionIncidencia'">
+		Añadir Información Contrastada
+		</button>
+	</div>
+	
+	<div>
+	<button th:if="${incidencia.informacionContrastada != null AND incidencia.estado.name() != 'Finalizada' AND #authentication.getPrincipal().getId() == incidencia.miembro.id}"  type="button" class="btn btn-primary" data-toggle="modal"
+				 th:attr="data-target='#ModalActualizacionIncidencia'">
+		Modificar Información Contrastada
+		</button>
+	</div>
+	
+	<div>
+	<button th:if="${incidencia.estado.name() == 'BusquedaAcuerdo' AND #authentication.getPrincipal().getId() == incidencia.miembro.id}" type="button" class="btn btn-primary" data-toggle="modal"
+				 th:attr="data-target='#ModalActualizacionIncidenciaAcuerdo'">
+		Añadir Acuerdo
+		</button>
+	</div>
+	
+	<div>
+	
+	 <div th:id="ModalActualizacionIncidencia"  class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static"> 
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalTitle">Introducir Información contrastada</h5>
+       
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+       <form  th:action="@{/incidenciaUpdateInfo}" th:object="${incidencia}" method="post">
+      <div class="modal-body">
+      
+      
+      
+      <input  th:field="*{id}" type="hidden" name="id" />
+      
+      <input  th:field="*{descripcion}" type="hidden" name="descripcion" />
+      <input  th:field="*{alumno}" type="hidden" name="alumno" />
+      <input  th:field="*{profesor}" type="hidden" name="profesor" />
+      <input  th:field="*{miembro}" type="hidden" name="miembro" />
+      <input  th:field="*{asignatura}" type="hidden" name="asignatura" />
+      <input  th:field="*{estado}" type="hidden" name="estado" />
+      
+      
+       
+          <div class="form-group" >
+                        	<label >Información Contrastada</label>
+                        <textarea th:field="*{informacionContrastada}" class="form-control" placeholder="Descripción de la Información" name="informacionContrastada"></textarea>
+                        <p class="alert alert-danger" role="alert" th:errors="*{informacionContrastada}"></p>
+                    </div>
+        
+      </div>
+      <div class="modal-footer">
+         <a  class="btn btn-secondary" th:href="@{/detallesIncidencia/} + ${incidencia.id}">Cerrar</a>
+        	 <button type="submit" class="btn btn-primary"  >Añadir Información</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>  
+
+<div th:id="ModalActualizacionIncidenciaAcuerdo"  class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static"> 
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalTitle">Introducir acuerdo alcanzado</h5>
+        
+          <span aria-hidden="true">&times;</span>
+        
+      </div>
+       <form  th:action="@{/incidenciaUpdateAcuerdo}" th:object="${incidencia}" method="post">
+      <div class="modal-body">
+      
+       
+       
+       <input  th:field="*{id}" type="hidden" name="id" />
+      
+      <input  th:field="*{descripcion}" type="hidden" name="descripcion" />
+      <input  th:field="*{alumno}" type="hidden" name="alumno" />
+      <input  th:field="*{profesor}" type="hidden" name="profesor" />
+      <input  th:field="*{miembro}" type="hidden" name="miembro" />
+      <input  th:field="*{asignatura}" type="hidden" name="asignatura" />
+      <input  th:field="*{estado}" type="hidden" name="estado" />
+      <input  th:field="*{informacionContrastada}" type="hidden" name="informacionContrastada" />
+     
+      
+       
+          <div class="form-group" >
+                        	<label >Acuerdo</label>
+                        <textarea th:field="*{acuerdo}" class="form-control" placeholder="Descripción de la Información" name="informacionContrastada"></textarea>
+                        <p class="alert alert-danger" role="alert" th:errors="*{acuerdo}"></p>
+                    </div>
+        
+      </div>
+      <div class="modal-footer">
+       <a  class="btn btn-secondary" th:href="@{/detallesIncidencia/} + ${incidencia.id}">Cerrar</a>
+        	 <button type="submit" class="btn btn-primary"  >Añadir Acuerdo</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>  
+
+</body>
+</html>
