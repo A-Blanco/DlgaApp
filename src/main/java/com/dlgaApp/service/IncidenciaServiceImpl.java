@@ -25,4 +25,9 @@ public class IncidenciaServiceImpl {
 		
 		return (List<Incidencia>) this.incidenciaRepository.findAll();
 	}
+	
+	public Incidencia findIncidenciaById (Long id) {
+		
+		return incidenciaRepository.findById(id).orElse(null);
+	}
 }

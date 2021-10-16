@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.dlgaApp.entity.Alumno;
@@ -94,7 +95,7 @@ public class IncidenciaController {
 	public String createIncidenciaPost(@Valid @ModelAttribute("incidencia") Incidencia incidencia,
 			BindingResult result,Model model, HttpServletRequest request) {
 		
-		validateIncidencia(incidencia, result);
+		validateIncidencia(incidencia, result,0);
 		
 		if(result.hasErrors()) {
 		
@@ -168,22 +169,111 @@ public class IncidenciaController {
 		
 	}
 	
-	private void validateIncidencia(Incidencia incidencia, BindingResult result) {
+	@GetMapping(value = "/detallesIncidencia/{incidenciaId}")
+	public String detallesIncidencia(@PathVariable("incidenciaId") final long incidenciaId, Model model) {
+		
+		Incidencia incidencia = this.incidenciaService.findIncidenciaById(incidenciaId);
+		
+		model.addAttribute("incidencia", incidencia);
+		return "incidencia/incidenciaDetails";
+	}
+	
+	@PostMapping(value = "/incidenciaUpdateInfo")
+	public String incidenciaUpdateInfo(@Valid @ModelAttribute("incidencia") Incidencia incidencia, BindingResult result,
+			Model model, HttpServletRequest request) {
+
+		this.validateIncidencia(incidencia, result,1);
+
+		if (result.hasErrors()) {
+			model.addAttribute("incidencia", incidencia);
+			if(result.hasFieldErrors("informacionContrastada")) {
+				model.addAttribute("errorInfo", "errorInfo");
+			}
+			
+			if(result.hasFieldErrors("acuerdo")) {
+				model.addAttribute("errorAcuerdo", "errorAcuerdo");
+			}
+			
+
+			return "incidencia/incidenciaDetails";
+		} else {
+			
+			if(incidencia.getEstado() == EstadosIncidencia.BusquedaInformacion) {
+				incidencia.setEstado(EstadosIncidencia.BusquedaAcuerdo);
+			}
+			
+			this.incidenciaService.save(incidencia);
+
+			return "redirect:/detallesIncidencia/" + incidencia.getId();
+		}
+
+	}
+	
+	@PostMapping(value = "/incidenciaUpdateAcuerdo")
+	public String incidenciaUpdateAcuerdo(@Valid @ModelAttribute("incidencia") Incidencia incidencia, BindingResult result,
+			Model model, HttpServletRequest request) {
+
+		this.validateIncidencia(incidencia, result,2);
+
+		if (result.hasErrors()) {
+			model.addAttribute("incidencia", incidencia);
+			if(result.hasFieldErrors("informacionContrastada")) {
+				model.addAttribute("errorInfo", "errorInfo");
+			}
+			
+			if(result.hasFieldErrors("acuerdo")) {
+				model.addAttribute("errorAcuerdo", "errorAcuerdo");
+			}
+			
+
+			return "incidencia/incidenciaDetails";
+		} else {
+			
+			 if(incidencia.getEstado() == EstadosIncidencia.BusquedaAcuerdo) {
+				incidencia.setEstado(EstadosIncidencia.Finalizada);
+			}
+			
+			this.incidenciaService.save(incidencia);
+
+			return "redirect:/detallesIncidencia/" + incidencia.getId();
+		}
+
+	}
+	
+	
+	private void validateIncidencia(Incidencia incidencia, BindingResult result, Integer update) {
 		
 		if(!incidencia.getDescripcion().equals("") && incidencia.getDescripcion().trim().equals("")) {
 			result.rejectValue("descripcion", "descripcion", "La descripción debe ser válida");
 		}
 		
-		if(incidencia.getEstado()==EstadosIncidencia.BusquedaAcuerdo && incidencia.getInformacionContrastada().trim().equals("")) {
-			result.rejectValue("informacionContrastada", "informacionContrastada", 
-					"En el estado que se encuentra la incidencia, debe tener la información contrastadada");
-		}
+//		if(incidencia.getEstado()==EstadosIncidencia.BusquedaAcuerdo && incidencia.getInformacionContrastada().trim().equals("")) {
+//			result.rejectValue("informacionContrastada", "informacionContrastada", 
+//					"En el estado que se encuentra la incidencia, debe tener la información contrastadada");
+//		}
+//		
+//		if(incidencia.getEstado()==EstadosIncidencia.Finalizada && incidencia.getAcuerdo().trim().equals("")) {
+//			result.rejectValue("acuerdo", "acuerdo", 
+//					"En el estado que se encuentra la incidencia, debe tener el acuerdo alcanzado");
+//		}
 		
-		if(incidencia.getEstado()==EstadosIncidencia.Finalizada && incidencia.getAcuerdo().trim().equals("")) {
-			result.rejectValue("acuerdo", "acuerdo", 
-					"En el estado que se encuentra la incidencia, debe tener el acuerdo alcanzado");
-		}
 		
+		if(update == 1 && (incidencia.getEstado() == EstadosIncidencia.BusquedaInformacion || incidencia.getEstado() == EstadosIncidencia.BusquedaAcuerdo)
+				&& (incidencia.getInformacionContrastada() ==null || incidencia.getInformacionContrastada().trim().equals(""))){
+			
+			result.rejectValue("informacionContrastada", "informacionContrastadaUpdate", 
+					"Debes completar la información Contrastada");
+			
+		}
+				
+		
+		if(update == 2 && incidencia.getEstado() == EstadosIncidencia.BusquedaAcuerdo
+				&& (incidencia.getAcuerdo() == null || incidencia.getAcuerdo().trim().equals(""))){
+			
+					result.rejectValue("acuerdo", "acuerdoUpdate", 
+							"Debes completar la información sobre el Acuerdo");
+			
+		}
 		
 		
 	}
