@@ -30,4 +30,8 @@ public class IncidenciaServiceImpl {
 		
 		return incidenciaRepository.findById(id).orElse(null);
 	}
+	
+	public void deleteById(Long id) {
+		incidenciaRepository.deleteById(id);
+	}
 }

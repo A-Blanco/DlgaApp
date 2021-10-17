@@ -54,7 +54,7 @@ public class Usuario implements UserDetails {
 	
 	private String motivoRechazo;
 	
-	@OneToMany(mappedBy = "miembro")
+	@OneToMany(mappedBy = "miembro",cascade = CascadeType.ALL)
 	private List<Incidencia> incidencias ;
 
 	 @Override

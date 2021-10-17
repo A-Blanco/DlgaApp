@@ -36,7 +36,7 @@ public class Profesor {
 	@ManyToMany(mappedBy = "profesores")
 	private List<Asignatura> asignaturas;
 	
-	@OneToMany(mappedBy = "profesor")
+	@OneToMany(mappedBy = "profesor",cascade = CascadeType.ALL)
 	private List<Incidencia> incidencias ;
 	
 	@PreRemove

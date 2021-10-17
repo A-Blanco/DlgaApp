@@ -169,6 +169,18 @@ public class IncidenciaController {
 		
 	}
 	
+	
+	@GetMapping(value = "/gestionIncidencias")
+	public String gestionIncidencias(Model model) {
+		
+		List<Incidencia> incidencias = this.incidenciaService.finfAll();
+		
+		model.addAttribute("incidencias", incidencias);
+
+		return "incidencia/incidenciaList";
+		
+	}
+	
 	@GetMapping(value = "/detallesIncidencia/{incidenciaId}")
 	public String detallesIncidencia(@PathVariable("incidenciaId") final long incidenciaId, Model model) {
 		
@@ -237,6 +249,25 @@ public class IncidenciaController {
 
 			return "redirect:/detallesIncidencia/" + incidencia.getId();
 		}
+
+	}
+	
+	@GetMapping(value = "/incidenciaDeleteSeguridad/{incidenciaId}")
+	public String incidenciaDeleteModal(@PathVariable("incidenciaId") final long incidenciaId, Model model,
+			HttpServletRequest request) {
+
+		model.addAttribute("incidenciaIdDelete", incidenciaId);
+		List<Incidencia> incidencias = this.incidenciaService.finfAll();
+		model.addAttribute("incidencias", incidencias);
+		return "incidencia/incidenciaList";
+	}
+	
+	@GetMapping(value = "/incidenciaDelete/{incidenciaId}")
+	public String incidenciaDelete(Model model, @PathVariable("incidenciaId") final long incidenciaId, HttpServletRequest request) {
+
+		this.incidenciaService.deleteById(incidenciaId);
+
+		return "redirect:/gestionIncidencias";
 
 	}
 	
