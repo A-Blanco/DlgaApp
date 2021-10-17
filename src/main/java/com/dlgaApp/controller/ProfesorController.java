@@ -253,7 +253,7 @@ public void validarProfesor(Profesor profesor, BindingResult result) {
 		
 		String regex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
 		
-		String regexTelefono = "(\\+34|0034|34)?[ -]*(6|7|8)[ -]*([0-9][ -]*){8}";
+		String regexTelefono = "(\\+34|0034|34)?[ -]*(6|7|8|9)[ -]*([0-9][ -]*){8}";
 		
 		List<Long> idsDepartamentos = this.departamentoService.getIdsDepartamentos();
 		List<Long> idsAsignaturas = this.asignaturaService.getIdsAsignaturas();
