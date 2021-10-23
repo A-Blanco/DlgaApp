@@ -38,6 +38,7 @@ $( document ).ready(function() {
 		<thead>
 			<tr>
 				<th>Id</th>
+				<th>Título</th>
 				<th>Fecha de Creación</th>
 				<th>Alumno</th>
 				<th>Profesor</th>
@@ -53,6 +54,7 @@ $( document ).ready(function() {
 
 			<tr>
 				<td th:text="${incidencia.id}"></td>
+				<td th:text="${incidencia.titulo}"></td>
 				<td th:text="${incidencia.fechaCreacion}"></td>
 				<td th:text="${incidencia.alumno.nombre + ' ' + incidencia.alumno.apellidos}"></td>
 				<td th:text="${incidencia.profesor.nombre}"></td>
@@ -67,6 +69,8 @@ $( document ).ready(function() {
 
 		</tbody>
 	</table>
+	
+	 <a  class="btn btn-success" th:href="@{/pdf/} + ${incidencia.id}">Generar PDF</a>
 	
 	<div>
 	<button th:if="${incidencia.informacionContrastada == null AND #authentication.getPrincipal().getId() == incidencia.miembro.id}" type="button" class="btn btn-primary" data-toggle="modal"
@@ -106,6 +110,7 @@ $( document ).ready(function() {
       
       
       <input  th:field="*{id}" type="hidden" name="id" />
+      <input  th:field="*{titulo}" type="hidden" name="titulo" />
       
       <input  th:field="*{descripcion}" type="hidden" name="descripcion" />
       <input  th:field="*{alumno}" type="hidden" name="alumno" />
@@ -147,7 +152,7 @@ $( document ).ready(function() {
        
        
        <input  th:field="*{id}" type="hidden" name="id" />
-      
+      <input  th:field="*{titulo}" type="hidden" name="titulo" />
       <input  th:field="*{descripcion}" type="hidden" name="descripcion" />
       <input  th:field="*{alumno}" type="hidden" name="alumno" />
       <input  th:field="*{profesor}" type="hidden" name="profesor" />
