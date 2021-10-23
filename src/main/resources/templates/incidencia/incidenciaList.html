@@ -271,7 +271,7 @@ $( document ).ready(function() {
 				<td th:text="${incidencia.asignatura.nombre}"></td>
 				<td th:text="${incidencia.estado}"></td>
 				<td><a
-					 class="btn btn-dark" target="_blank" th:href="@{/detallesIncidencia/} + ${incidencia.id}">Ver detalles Incidencia</a></td>	
+					 class="btn btn-dark"  th:href="@{/detallesIncidencia/} + ${incidencia.id}">Ver detalles Incidencia</a></td>	
 					 
 				<td sec:authorize="hasRole('ADMIN')"><a class="btn btn-danger"
 								th:href="@{/incidenciaDeleteSeguridad/} + ${incidencia.id}">Eliminar</a></td>	 	

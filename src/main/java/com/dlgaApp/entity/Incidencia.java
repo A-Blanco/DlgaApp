@@ -16,6 +16,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "incidencias")
@@ -25,6 +26,11 @@ public class Incidencia {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "incidencia_id")
 	private Long id;
+	
+	@NotEmpty(message = "Debes escribir un título para la incidencia")
+	@Size(max = 80, message = "El título introducido es demasiado largo" )
+	private String titulo;
+	
 	
 	@Column(name = "fechaCreacion", updatable = false, nullable = false)
     @Temporal(TemporalType.DATE)
@@ -67,6 +73,16 @@ public class Incidencia {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	
+	
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
 	}
 
 	public Date getFechaCreacion() {
