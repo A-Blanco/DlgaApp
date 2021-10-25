@@ -42,38 +42,42 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
+		//administradorController
 		http.authorizeRequests().antMatchers("/administrador").hasRole("ADMIN")
 		.antMatchers("/populateBd").hasRole("ADMIN")
 		.antMatchers("/mantenimiento").permitAll()
 		.antMatchers("/gestionBd").hasRole("ADMIN");
 		
-		
+		//alumnoController
 		http.authorizeRequests().antMatchers("/crearAlumno").permitAll()
 		.antMatchers("/listAlumnos").hasAnyRole("ADMIN","MIEMBRO")
 		.antMatchers("/agregarDelegado/{alumnoId}").hasAnyRole("ADMIN","MIEMBRO")
 		.antMatchers("/detallesAlumno/{alumnoId}").hasAnyRole("ADMIN","MIEMBRO")
 		.antMatchers("/alumnoDelete/{alumnoId}").hasRole("ADMIN")
+		.antMatchers("/alumnoDeleteSeguridad/{alumnoId}").hasRole("ADMIN")
 		.antMatchers("/alumnoUpdate").hasRole("ADMIN");
 		
-		
+		//asignaturaController
 		 http.authorizeRequests()
 		.antMatchers("/asignaturas").hasRole("ADMIN")
 		.antMatchers("/asignaturaList").hasAnyRole("ADMIN","MIEMBRO")
 		.antMatchers("/detallesAsignatura/{asignaturaId}").hasAnyRole("ADMIN","MIEMBRO")
 		.antMatchers("/asignaturaDelete/{asignaturaId}").hasRole("ADMIN")
+		.antMatchers("/asignaturaDeleteSeguridad/{asignaturaId}").hasRole("ADMIN")
 		.antMatchers("/asignaturaUpdate").hasRole("ADMIN")
 		.antMatchers("/asignaturaCreate").hasRole("ADMIN");
 		 
-		 
+		 //departamentoController
 		 http.authorizeRequests()
 		.antMatchers("/departamentos").hasRole("ADMIN")
 		.antMatchers("/listDepartamentos").hasAnyRole("ADMIN","MIEMBRO")
 		.antMatchers("/detallesDepartamento/{departamentoId}").hasAnyRole("ADMIN","MIEMBRO")
 		.antMatchers("/departamentoDelete/{departamentoId}").hasRole("ADMIN")
+		.antMatchers("/departamentoDeleteSeguridad/{departamentoId}").hasRole("ADMIN")
 		.antMatchers("/departamentoUpdate").hasRole("ADMIN")
 		.antMatchers("/departamentoCreate").hasRole("ADMIN");
 		 
-		 
+		 //grupoController
 		 http.authorizeRequests()
 		 .antMatchers("/crearGrupo").hasAnyRole("ADMIN","MIEMBRO")
 		 .antMatchers("/grupoList").hasAnyRole("ADMIN","MIEMBRO")
@@ -82,28 +86,30 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		 .antMatchers("delegados/{grupoId}").hasAnyRole("ADMIN","MIEMBRO")
 		 .antMatchers("modificarDelegados/{grupoId}").hasAnyRole("ADMIN","MIEMBRO")
 		 .antMatchers("eliminarDelegado/{grupoId}/{alumnoId}").hasAnyRole("ADMIN","MIEMBRO")
-		 .antMatchers("eliminarGrupo/{grupoId}").hasAnyRole("ADMIN","MIEMBRO");
+		 .antMatchers("eliminarGrupo/{grupoId}").hasAnyRole("ADMIN","MIEMBRO")
+		 .antMatchers("/eliminarGrupoSeguridad/{grupoId}").hasAnyRole("ADMIN","MIEMBRO");
 		 
-		 
-		 
+		 //profesorController
 		 http.authorizeRequests()
 		 .antMatchers("/profesor").hasRole("ADMIN")
 		 .antMatchers("/profesorList").hasAnyRole("ADMIN","MIEMBRO")
 		 .antMatchers("/detallesProfesor/{profesorId}").hasAnyRole("ADMIN","MIEMBRO")
 		 .antMatchers("/profesorDelete/{profesorId}").hasRole("ADMIN")
+		 .antMatchers("/profesorDeleteSeguridad/{profesorId}").hasRole("ADMIN")
 		 .antMatchers("/profesorUpdate").hasRole("ADMIN")
 		 .antMatchers("/profesorCreate").hasRole("ADMIN");
 		 
-		 
+		 //titulacionController
 		 http.authorizeRequests()
 		 .antMatchers("/titulacionList").hasAnyRole("ADMIN","MIEMBRO")
 		 .antMatchers("/titulacionUpdate").hasRole("ADMIN")
 		 .antMatchers("/titulacionCreate").hasRole("ADMIN")
-		 .antMatchers("/titulacionDelete/{titulacionId}").hasRole("ADMIN");
+		 .antMatchers("/titulacionDelete/{titulacionId}").hasRole("ADMIN")
+		 .antMatchers("/titulacionDeleteSeguridad/{titulacionId}").hasRole("ADMIN");
 		 
 		 
-
-		http.authorizeRequests()
+		 //usuarioController
+		 http.authorizeRequests()
 		.antMatchers("/crearUsuario").permitAll()
 		.antMatchers("/crearUsuarioRegistrado").permitAll()
 		.antMatchers("/listaUsuario").hasAnyRole("ADMIN","MIEMBRO")
@@ -113,8 +119,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.antMatchers("/aceptarUsuario/{usuarioId}").hasAnyRole("ADMIN","MIEMBRO")
 		.antMatchers("/denegarUsuario").hasAnyRole("ADMIN","MIEMBRO");
 		
-		
+		 //incidenciaController
+		 http.authorizeRequests()
+			.antMatchers("/incidenciaCreate").hasAnyRole("ADMIN","MIEMBRO")
+			.antMatchers("/incidenciaList").hasAnyRole("ADMIN","MIEMBRO")
+			.antMatchers("/incidenciaPersonalList").hasAnyRole("ADMIN","MIEMBRO")
+			.antMatchers("/gestionIncidencias").hasAnyRole("ADMIN")
+			.antMatchers("/detallesIncidencia/{incidenciaId}").hasAnyRole("ADMIN","MIEMBRO")
+			.antMatchers("/incidenciaUpdateAcuerdo").hasAnyRole("ADMIN","MIEMBRO")
+			.antMatchers("/incidenciaDeleteSeguridad/{incidenciaId}").hasAnyRole("ADMIN","MIEMBRO")
+			.antMatchers("/incidenciaDelete/{incidenciaId}").hasAnyRole("ADMIN","MIEMBRO");
+		 
+		 
+		 //pdfController
+		 http.authorizeRequests()
+			.antMatchers("/pdf/{idIncidencia}").hasAnyRole("ADMIN","MIEMBRO");
+			
 
+		 //recursos
 		 http.authorizeRequests()
 		 .antMatchers("/**").hasAnyRole("MIEMBRO, ADMIN")
 		 .and().formLogin().loginPage("/login")

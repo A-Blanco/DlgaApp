@@ -303,11 +303,6 @@ public class IncidenciaController {
 		}else {
 			return "redirect:/denegado";
 		}
-		
-		
-		
-		
-
 	}
 	
 	
