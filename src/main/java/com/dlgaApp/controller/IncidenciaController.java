@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dlgaApp.entity.Alumno;
 import com.dlgaApp.entity.Asignatura;
@@ -26,6 +27,7 @@ import com.dlgaApp.entity.Departamento;
 import com.dlgaApp.entity.EstadosIncidencia;
 import com.dlgaApp.entity.Incidencia;
 import com.dlgaApp.entity.Profesor;
+import com.dlgaApp.entity.Roles;
 import com.dlgaApp.entity.Usuario;
 import com.dlgaApp.service.AlumnoServiceImpl;
 import com.dlgaApp.service.AsignaturaServiceImpl;
@@ -150,7 +152,7 @@ public class IncidenciaController {
 		incidencias.removeIf(x->x.getMiembro().getId()==usuarioActual.getId());
 		
 		model.addAttribute("incidencias", incidencias);
-
+		model.addAttribute("modo", "ajeno");
 		return "incidencia/incidenciaList";
 		
 	}
@@ -164,6 +166,7 @@ public class IncidenciaController {
 		incidencias.removeIf(x->x.getMiembro().getId()!=usuarioActual.getId());
 		
 		model.addAttribute("incidencias", incidencias);
+		model.addAttribute("modo", "personal");
 
 		return "incidencia/incidenciaList";
 		
@@ -176,6 +179,7 @@ public class IncidenciaController {
 		List<Incidencia> incidencias = this.incidenciaService.finfAll();
 		
 		model.addAttribute("incidencias", incidencias);
+		model.addAttribute("modo", "gestion");
 
 		return "incidencia/incidenciaList";
 		
@@ -253,21 +257,56 @@ public class IncidenciaController {
 	}
 	
 	@GetMapping(value = "/incidenciaDeleteSeguridad/{incidenciaId}")
-	public String incidenciaDeleteModal(@PathVariable("incidenciaId") final long incidenciaId, Model model,
+	public String incidenciaDeleteModal(@PathVariable("incidenciaId") final long incidenciaId, @RequestParam(name = "modo") String modo, Model model,
 			HttpServletRequest request) {
-
+		
+		
 		model.addAttribute("incidenciaIdDelete", incidenciaId);
 		List<Incidencia> incidencias = this.incidenciaService.finfAll();
+		Usuario usuarioActual = usuarioActual();
+		model.addAttribute("modo", modo);
+		
+		if(modo.equals("ajeno")) {
+			incidencias.removeIf(x->x.getMiembro().getId()==usuarioActual.getId());
+		}if(modo.equals("personal")) {
+			incidencias.removeIf(x->x.getMiembro().getId()!=usuarioActual.getId());
+		}if(modo.equals("gestion")) {
+			
+		}
+		
 		model.addAttribute("incidencias", incidencias);
 		return "incidencia/incidenciaList";
 	}
 	
 	@GetMapping(value = "/incidenciaDelete/{incidenciaId}")
-	public String incidenciaDelete(Model model, @PathVariable("incidenciaId") final long incidenciaId, HttpServletRequest request) {
+	public String incidenciaDelete(Model model, @PathVariable("incidenciaId") final long incidenciaId,@RequestParam(required = false, name = "modo") String modo,
+			HttpServletRequest request) {
+		
+		Incidencia incidencia = this.incidenciaService.findIncidenciaById(incidenciaId);
+		
+		Usuario usuarioActual = usuarioActual();
+		if((usuarioActual.getRol().equals(Roles.ROLE_ADMIN) || incidencia.getMiembro().getId() == usuarioActual.getId()) && modo != null){
 
 		this.incidenciaService.deleteById(incidenciaId);
-
-		return "redirect:/gestionIncidencias";
+		
+		
+		if(modo.equals("ajeno")) {
+			return "redirect:/incidenciaList";
+		}if(modo.equals("personal")) {
+			return "redirect:/incidenciaPersonalList";
+		}if(modo.equals("gestion")) {
+			return "redirect:/gestionIncidencias";
+		}else {
+			
+			return "redirect:";
+		}
+		}else {
+			return "redirect:/denegado";
+		}
+		
+		
+		
+		
 
 	}
 	
