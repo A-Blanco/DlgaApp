@@ -1,7 +1,10 @@
 package com.dlgaApp.controller;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,18 +43,20 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/populateBd")
-	public String actualizaBd(Model model) {
+	public String actualizaBd(Model model) throws JSONException, MailjetException, MailjetSocketTimeoutException, IOException {
 		
 		
 		
 		
 		this.filtroMantenimiento.activarMantenimiento();
+		this.mailService.inicioMantenimiento();
 
 		this.departamentoService.añadirDepartamentos();
-		this.profesorService.añadirProfesores();
-		this.asignaturaService.añadirAsignaturas();
+//		this.profesorService.añadirProfesores();
+//		this.asignaturaService.añadirAsignaturas();
 		
 		this.filtroMantenimiento.desactivarMantenimiento();
+		this.mailService.finalizaciónMantenimiento();
 		
 		return "redirect:";
 

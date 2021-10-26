@@ -25,6 +25,9 @@ public class MailService {
 	@Autowired
 	private GeneradorPdfController pdfController;
 	
+	@Autowired
+	private UserDetailsServiceImpl userService;
+	
 	private final String publicKey = "891c437bd8d020e0e17a75468ab45bab";
 	
 	private final String privateKey = "c96a13fffde20bfc8e5fde9bec3fe7bf";
@@ -176,6 +179,70 @@ public class MailService {
                         .put("ContentID", "id1")
                         .put("Base64Content",this.pdfController.pdfBase64(incidencia.getId())))
 				)));
+		response = client.post(request);
+		System.out.println(response.getStatus());
+		System.out.println(response.getData());
+		
+	}
+	
+	public void inicioMantenimiento() throws MailjetException, MailjetSocketTimeoutException, JSONException, IOException {
+		MailjetClient client;
+		MailjetRequest request;
+		MailjetResponse response;
+		
+		JSONArray destinatarios = new JSONArray();
+		
+		this.userService.findAllUsers().stream().forEach(x->destinatarios.put(new JSONObject().put("Email", x.getAlumno().getEmail()).put("Name", x.getAlumno().getNombre()
+										+" "+ x.getAlumno().getApellidos())));
+		
+		client = new MailjetClient(publicKey, privateKey, new ClientOptions("v3.1"));
+
+		request = new MailjetRequest(Emailv31.resource).property(Emailv31.MESSAGES, new JSONArray().put(new JSONObject()
+				.put(Emailv31.Message.FROM,
+						new JSONObject().put("Email", "alexblanper99@gmail.com").put("Name", "Alejandro Blanco Pérez"))
+				.put(Emailv31.Message.TO,destinatarios)
+				.put(Emailv31.Message.SUBJECT, "Aplicación en Mantenimiento")
+				.put(Emailv31.Message.TEXTPART, "")
+				.put(Emailv31.Message.HTMLPART,
+						"<h2> Saludos compañer@"+"</h2><br>" + "<h3> "
+								+"La aplicación de DlgaApp ha entrado en mantenimiento"
+										+ " </h3><br> " +"<p>Duración estimada de 1 o 2 horas Durante el mantenimiento, no se puede acceder a ninguna función de la aplicación. </p><br>"
+																	
+												+ "<p>En cuanto finalice el mantenimiento de la web, se notificará vía email.")
+				
+				));
+		response = client.post(request);
+		System.out.println(response.getStatus());
+		System.out.println(response.getData());
+		
+	}
+	
+	public void finalizaciónMantenimiento() throws MailjetException, MailjetSocketTimeoutException, JSONException, IOException {
+		MailjetClient client;
+		MailjetRequest request;
+		MailjetResponse response;
+		
+		JSONArray destinatarios = new JSONArray();
+		
+		this.userService.findAllUsers().stream().forEach(x->destinatarios.put(new JSONObject().put("Email", x.getAlumno().getEmail()).put("Name", x.getAlumno().getNombre()
+										+" "+ x.getAlumno().getApellidos())));
+		
+		client = new MailjetClient(publicKey, privateKey, new ClientOptions("v3.1"));
+
+		request = new MailjetRequest(Emailv31.resource).property(Emailv31.MESSAGES, new JSONArray().put(new JSONObject()
+				.put(Emailv31.Message.FROM,
+						new JSONObject().put("Email", "alexblanper99@gmail.com").put("Name", "Alejandro Blanco Pérez"))
+				.put(Emailv31.Message.TO,destinatarios)
+				.put(Emailv31.Message.SUBJECT, "Finalización del mantenimiento")
+				.put(Emailv31.Message.TEXTPART, "")
+				.put(Emailv31.Message.HTMLPART,
+						"<h2> Buenas noticias compañer@!"+"</h2><br>" + "<h3> "
+								+"La aplicación de DlgaApp ha finalizado el mantenimiento"
+										+ " </h3><br> " +"<p>Hola buenas, la aplicación de la Delegación de Alumnos se encuentra disponible de nuevo. </p><br>"
+																	
+												+ "<p>Si tiene algún problema a la hora de iniciar sesión o realizar alguna función, póngase en contacto con el administrador de la Web.")
+				
+				));
 		response = client.post(request);
 		System.out.println(response.getStatus());
 		System.out.println(response.getData());

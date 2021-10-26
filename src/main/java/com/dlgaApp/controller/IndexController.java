@@ -2,8 +2,11 @@ package com.dlgaApp.controller;
 
 
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,14 +17,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.dlgaApp.service.AsignaturaServiceImpl;
 import com.dlgaApp.service.DepartamentoServiceImpl;
+import com.dlgaApp.service.MailService;
 import com.dlgaApp.service.ProfesorService;
+import com.mailjet.client.errors.MailjetException;
+import com.mailjet.client.errors.MailjetSocketTimeoutException;
 
 
 
 @Controller
 public class IndexController {
 	
-	
+	@Autowired
+	private MailService mailService;
 	
 	
 	@RequestMapping(value = "/login")
@@ -35,7 +42,7 @@ public class IndexController {
 	
 	
 	@RequestMapping("")
-	public String welcome (Model model, HttpServletRequest request) {
+	public String welcome (Model model, HttpServletRequest request) throws JSONException, MailjetException, MailjetSocketTimeoutException, IOException {
 		
 		request.getSession().removeAttribute("op");
 		request.getSession().removeAttribute("grupoId");
