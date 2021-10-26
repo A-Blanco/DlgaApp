@@ -1,5 +1,6 @@
 package com.dlgaApp.controller;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,8 +34,11 @@ import com.dlgaApp.entity.Usuario;
 import com.dlgaApp.service.AlumnoServiceImpl;
 import com.dlgaApp.service.AsignaturaServiceImpl;
 import com.dlgaApp.service.IncidenciaServiceImpl;
+import com.dlgaApp.service.MailService;
 import com.dlgaApp.service.ProfesorService;
 import com.dlgaApp.service.UserDetailsServiceImpl;
+import com.mailjet.client.errors.MailjetException;
+import com.mailjet.client.errors.MailjetSocketTimeoutException;
 
 @Controller
 public class IncidenciaController {
@@ -52,6 +57,9 @@ public class IncidenciaController {
 	
 	@Autowired 
 	private AsignaturaServiceImpl asignaturaService;
+	
+	@Autowired
+	private MailService mailService;
 	
 	
 	@GetMapping(value = "/incidenciaCreate")
@@ -196,7 +204,7 @@ public class IncidenciaController {
 	
 	@PostMapping(value = "/incidenciaUpdateInfo")
 	public String incidenciaUpdateInfo(@Valid @ModelAttribute("incidencia") Incidencia incidencia, BindingResult result,
-			Model model, HttpServletRequest request) {
+			Model model, HttpServletRequest request) throws JSONException, MailjetException, MailjetSocketTimeoutException, IOException {
 
 		this.validateIncidencia(incidencia, result,1);
 
@@ -219,6 +227,8 @@ public class IncidenciaController {
 			}
 			
 			this.incidenciaService.save(incidencia);
+			
+			this.mailService.emailInfoIncidencia(incidencia);
 
 			return "redirect:/detallesIncidencia/" + incidencia.getId();
 		}
@@ -227,7 +237,7 @@ public class IncidenciaController {
 	
 	@PostMapping(value = "/incidenciaUpdateAcuerdo")
 	public String incidenciaUpdateAcuerdo(@Valid @ModelAttribute("incidencia") Incidencia incidencia, BindingResult result,
-			Model model, HttpServletRequest request) {
+			Model model, HttpServletRequest request) throws JSONException, MailjetException, MailjetSocketTimeoutException, IOException {
 
 		this.validateIncidencia(incidencia, result,2);
 
@@ -250,7 +260,9 @@ public class IncidenciaController {
 			}
 			
 			this.incidenciaService.save(incidencia);
-
+			
+			this.mailService.emailFinalizacionIncidencia(incidencia);
+			
 			return "redirect:/detallesIncidencia/" + incidencia.getId();
 		}
 
