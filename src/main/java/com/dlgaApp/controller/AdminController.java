@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.dlgaApp.service.AsignaturaServiceImpl;
 import com.dlgaApp.service.DepartamentoServiceImpl;
+import com.dlgaApp.service.MailService;
 import com.dlgaApp.service.ProfesorService;
+import com.mailjet.client.errors.MailjetException;
+import com.mailjet.client.errors.MailjetSocketTimeoutException;
 
 @Controller
 public class AdminController {
@@ -26,6 +29,9 @@ public class AdminController {
 	
 	@Autowired
 	private ProfesorService profesorService;
+	
+	@Autowired
+	private MailService mailService;
 
 	@GetMapping(value = "/administrador")
 	public String herraminetasAdmin(Model model) {
@@ -62,6 +68,15 @@ public class AdminController {
 	public String vistaGestionBd(Model model,HttpServletRequest request) {
 		
 		return "admin/opcionesGestionBd";
+
+	}
+	
+	@GetMapping(value = "/email")
+	public String email() throws MailjetException, MailjetSocketTimeoutException {
+		
+		this.mailService.envíoEmail();
+		
+		return "redirect:";
 
 	}
 	
