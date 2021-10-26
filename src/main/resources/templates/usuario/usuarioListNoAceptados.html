@@ -40,11 +40,37 @@
 				<td th:text="${usuario.username}"></td>
 				<td th:text="${usuario.alumno.nombre}"></td>
 				<td th:text="${usuario.alumno.apellidos}"></td>
-				 <td> <a class="btn btn-success" th:href="@{aceptarUsuario/} + ${usuario.id}">Aceptar</a>
+				 <td> 
+				 
+				 
+				  <button type="button" class="btn btn-success" data-toggle="modal" th:attr="data-target='#ModalAceptado'+*{usuario.id}">Aceptar</button>
+				  
+				  <div class="modal fade" th:id="*{'ModalAceptado'+{usuario.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalTitle">¿Estás seguro de aceptar a este usuario?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+       
+      <div class="modal-body">
+       
+          <p>Vas a aceptar a este usuario y por lo tanto le vas a dar acceso a las funciones de la aplicación de DlgaApp.</p>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        	 <a class="btn btn-success" th:href="@{aceptarUsuario/} + ${usuario.id}">Aceptar</a>
+      </div>
+    </div>
+  </div>
+</div>
 				 &nbsp 
 				 <button type="button" class="btn btn-danger" data-toggle="modal" th:attr="data-target='#ModalDenegado'+*{usuario.id}">Rechazar</button>
 				 
-				 <div class="modal fade" th:id="*{'ModalDenegado'+{usuario.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				 	<div class="modal fade" th:id="*{'ModalDenegado'+{usuario.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -71,12 +97,18 @@
     </div>
   </div>
 </div>
-				
+				</td>
 				
 			</tr>
 			
 		</tbody>
 	</table>
+	</div>
+	</div>
+	</div>
+	
+	
+
 
 </body>
 </html>

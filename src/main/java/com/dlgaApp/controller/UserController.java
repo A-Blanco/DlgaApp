@@ -24,7 +24,10 @@ import com.dlgaApp.entity.Alumno;
 import com.dlgaApp.entity.Roles;
 import com.dlgaApp.entity.Usuario;
 import com.dlgaApp.service.AlumnoServiceImpl;
+import com.dlgaApp.service.MailService;
 import com.dlgaApp.service.UserDetailsServiceImpl;
+import com.mailjet.client.errors.MailjetException;
+import com.mailjet.client.errors.MailjetSocketTimeoutException;
 
 @Controller
 public class UserController {
@@ -34,6 +37,9 @@ public class UserController {
 
 	@Autowired
 	private AlumnoServiceImpl alumnoService;
+	
+	@Autowired
+	private MailService mailService;
 
 	@GetMapping(value = "/crearUsuario")
 	public String crearUsuarioForm(Model model, HttpServletRequest request) {
@@ -187,19 +193,21 @@ public class UserController {
 	}
 
 	@GetMapping(value = "/aceptarUsuario/{usuarioId}")
-	public String aceptarUsuario(@PathVariable("usuarioId") final long usuarioId, Model model) {
+	public String aceptarUsuario(@PathVariable("usuarioId") final long usuarioId, Model model) throws MailjetException, MailjetSocketTimeoutException {
 
 		Usuario usuario = this.usuarioService.findById(usuarioId);
 
 		usuario.setRol(Roles.ROLE_MIEMBRO);
 		this.usuarioService.save(usuario);
+		this.mailService.emailAceptadoMiembro(usuario);
+		
 
 		return "redirect:/usuariosNoAceptados";
 	}
 
 	@PostMapping(value = "/denegarUsuario")
 	public String denegarUsuario(@RequestParam("usuarioId") Long usuarioId,
-			@RequestParam(required = false, name = "motivo") String motivo, Model model) {
+			@RequestParam(required = false, name = "motivo") String motivo, Model model) throws MailjetException, MailjetSocketTimeoutException {
 
 		Usuario usuario = this.usuarioService.findById(usuarioId);
 		usuario.setRol(Roles.ROLE_DENEGADO);
@@ -209,6 +217,8 @@ public class UserController {
 		}
 
 		this.usuarioService.save(usuario);
+		
+		this.mailService.emailRechazoMiembro(usuario);
 
 		return "redirect:/usuariosNoAceptados";
 	}
