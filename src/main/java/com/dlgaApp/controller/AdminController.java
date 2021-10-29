@@ -52,8 +52,8 @@ public class AdminController {
 		this.mailService.inicioMantenimiento();
 
 		this.departamentoService.añadirDepartamentos();
-//		this.profesorService.añadirProfesores();
-//		this.asignaturaService.añadirAsignaturas();
+		this.profesorService.añadirProfesores();
+		this.asignaturaService.añadirAsignaturas();
 		
 		this.filtroMantenimiento.desactivarMantenimiento();
 		this.mailService.finalizaciónMantenimiento();

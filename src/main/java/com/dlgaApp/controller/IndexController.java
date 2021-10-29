@@ -5,6 +5,7 @@ package com.dlgaApp.controller;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class IndexController {
 	@Autowired
 	private MailService mailService;
 	
+	@Autowired
+	private GeneradorPdfController pdfController;
+	
 	
 	@RequestMapping(value = "/login")
 	public String login(Model model,HttpServletRequest request) {
@@ -46,7 +50,6 @@ public class IndexController {
 		
 		request.getSession().removeAttribute("op");
 		request.getSession().removeAttribute("grupoId");
-		
 		
 		
 		return "recursos/index";

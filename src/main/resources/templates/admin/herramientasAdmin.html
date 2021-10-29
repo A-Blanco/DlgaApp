@@ -14,7 +14,16 @@ function cargaModales() {
 	   }
 
 </script>
-
+<script type="text/javascript">
+function validar(obj){
+	var d = document.btnActualizar;
+	if(obj.checked==false){
+		d.disabled = false;
+	}else{
+		d.disabled= true;
+	}
+}
+</script>
 
 </head>
 <body>
@@ -65,12 +74,19 @@ function cargaModales() {
             <p>Usted va a realizar una actualización de lo datos del sistema, este proceso cerrará la aplicación por un tiempo (1 hora aprox).
             Tenga en cuenta que al finalizar el proceso es recomendable revisar los datos descargados.
             </p>
+            <p>Antes de comenzar la actualización, se recomienda guardar una copia de todas las Incidencias guardadas actualmente en la base de datos, ya que 
+            durante la actualización se va a eliminar todas las Incidencias.
+            </p>
+             <a  th:href="@{/pdfZip}" class="btn btn-success">Generar PDFs</a>
+            <p>Marca el Check una vez que se haya realizado la copia de las Incidencias.
+            </p>
+          <input type="checkbox" value="1" name="pepe" onclick="btnActualizar.disabled = !this.checked">
           </div>
         
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        	 <button type="submit" class="btn btn-primary" onclick="cargaModales();" >Actualizar</button>
+        <button  type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        	 <button name="btnActualizar" type="submit" class="btn btn-primary" onclick="cargaModales();" disabled>Actualizar</button>
       </div>
       </form>
     </div>
@@ -84,7 +100,7 @@ function cargaModales() {
         <h5 class="modal-title" id="ModalTitle">La Base de Datos se está actualizando</h5>
         
       </div>
-      <div class="modal-body" s>
+      <div class="modal-body">
        
           <div >
             <img
