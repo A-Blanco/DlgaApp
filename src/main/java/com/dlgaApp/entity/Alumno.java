@@ -1,5 +1,6 @@
 package com.dlgaApp.entity;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -15,6 +16,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -23,6 +26,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "alumnos")
@@ -40,10 +44,16 @@ public class Alumno {
 	@Length(max = 70,message = "La longitud de los apellidos no es válida")
 	private String apellidos;
 	
-	@NotNull(message = "Se debe introducir la edad del alumno")
-	@Min(value = 17,message = "Debe ser de al menos 17 años")
-	@Max(value = 80,message = "Debe ser menor de 80 años")
-	private Integer edad;
+//	@NotNull(message = "Se debe introducir la edad del alumno")
+//	@Min(value = 17,message = "Debe ser de al menos 17 años")
+//	@Max(value = 80,message = "Debe ser menor de 80 años")
+//	private Integer edad;
+	
+	@Column(name = "fechaNacimiento", nullable = false)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Temporal(TemporalType.DATE)
+	@NotNull(message = "Debes introducir una fecha de nacimiento")
+    private Date fechaNacimiento;
 
 	@NotEmpty(message = "Debes introducir el email del alumno")
 	@Email(message = "El email debe ser vádilo")
@@ -110,18 +120,29 @@ public class Alumno {
 	}
 
 
-	public Integer getEdad() {
-		return edad;
-	}
-
-
-	public void setEdad(Integer edad) {
-		this.edad = edad;
-	}
+//	public Integer getEdad() {
+//		return edad;
+//	}
+//
+//
+//	public void setEdad(Integer edad) {
+//		this.edad = edad;
+//	}
+	
 
 
 	public String getEmail() {
 		return email;
+	}
+
+
+	public Date getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
 	}
 
 

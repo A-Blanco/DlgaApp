@@ -1,6 +1,11 @@
 package com.dlgaApp.controller;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -258,6 +263,15 @@ public class AlumnoController {
 			if (this.alumnoService.numeroAlumnosByEmail(alumno.getEmail()) != 0) {
 				result.rejectValue("email", "email", "El email introducido ya está registrado");
 			}
+		}
+		
+		if(alumno.getFechaNacimiento()!=null) {
+		LocalDate hoy = LocalDate.now();
+		LocalDate fechaNacimiento = alumno.getFechaNacimiento().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		
+		if(Period.between(fechaNacimiento, hoy).getYears()<17 || Period.between(fechaNacimiento, hoy).getYears()>85) {
+			result.rejectValue("fechaNacimiento", "fechaNacimiento", "El alumno debe tener una edad entre los 17 y los 85 años");
+		}
 		}
 		
 		if(!alumno.getNombre().equals("") && alumno.getNombre().trim().equals("")) {
