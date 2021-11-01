@@ -76,14 +76,7 @@ public class AdminController {
 
 	}
 	
-	@GetMapping(value = "/email")
-	public String email() throws MailjetException, MailjetSocketTimeoutException {
-		
-		this.mailService.envíoEmail();
-		
-		return "redirect:";
-
-	}
+	
 	
 	
 

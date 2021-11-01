@@ -1,5 +1,6 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">
 
 <head >
 	<meta charset="UTF-8">
@@ -28,7 +29,7 @@
 				<td th:text="${usuario.alumno.nombre + ' ' + usuario.alumno.apellidos }"></td>
 			
 				<td th:text="${usuario.alumno.email}"></td>
-				<td th:text="${usuario.alumno.edad}"></td>
+				<td th:text="${usuario.alumno.fechaNacimiento}"></td>
 				<td th:text="${usuario.telefono}"></td>
 				
 				

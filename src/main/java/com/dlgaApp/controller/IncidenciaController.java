@@ -91,18 +91,18 @@ public class IncidenciaController {
 			opcionesProfesores.put(prof.getId().toString(), prof.getNombre() );
 		}
 		
-		model.addAttribute("incidencia", incidencia);
+		model.addAttribute("incidenciaCreate", incidencia);
 		model.addAttribute("opcionesAlumnos", opcionesAlumnos);
 		model.addAttribute("opcionesProfesores", opcionesProfesores);
 		model.addAttribute("opcionesAsignaturas", opcionesAsignatura);
 		
 		
-		return "incidencia/formIncidencia";
+		return "recursos/index";
 		
 	}
 	
 	@PostMapping(value = "/incidenciaCreate")
-	public String createIncidenciaPost(@Valid @ModelAttribute("incidencia") Incidencia incidencia,
+	public String createIncidenciaPost(@Valid @ModelAttribute("incidenciaCreate") Incidencia incidencia,
 			BindingResult result,Model model, HttpServletRequest request) {
 		
 		validateIncidencia(incidencia, result,0);
@@ -131,13 +131,13 @@ public class IncidenciaController {
 			opcionesProfesores.put(prof.getId().toString(), prof.getNombre() );
 		}
 		
-		model.addAttribute("incidencia", incidencia);
+		model.addAttribute("incidenciaCreate", incidencia);
 		model.addAttribute("opcionesAlumnos", opcionesAlumnos);
 		model.addAttribute("opcionesProfesores", opcionesProfesores);
 		model.addAttribute("opcionesAsignaturas", opcionesAsignatura);
 		
 		
-		return "incidencia/formIncidencia";
+		return "recursos/index";
 		
 		}else {
 			
@@ -198,18 +198,27 @@ public class IncidenciaController {
 		
 		Incidencia incidencia = this.incidenciaService.findIncidenciaById(incidenciaId);
 		
-		model.addAttribute("incidencia", incidencia);
-		return "incidencia/incidenciaDetails";
+		model.addAttribute("incidenciaDetalles", incidencia);
+		return "incidencia/incidenciaList";
+	}
+	
+	@GetMapping(value = "/incidenciaUpdateInfo/{incidenciaId}")
+	public String incidenciaUpdateInfoGet(@PathVariable("incidenciaId") final long incidenciaId, Model model) {
+		
+		Incidencia incidencia = this.incidenciaService.findIncidenciaById(incidenciaId);
+		
+		model.addAttribute("incidenciaUpdateInfo", incidencia);
+		return "incidencia/incidenciaList";
 	}
 	
 	@PostMapping(value = "/incidenciaUpdateInfo")
-	public String incidenciaUpdateInfo(@Valid @ModelAttribute("incidencia") Incidencia incidencia, BindingResult result,
+	public String incidenciaUpdateInfo(@Valid @ModelAttribute("incidenciaUpdateInfo") Incidencia incidencia, BindingResult result,
 			Model model, HttpServletRequest request) throws JSONException, MailjetException, MailjetSocketTimeoutException, IOException {
 
 		this.validateIncidencia(incidencia, result,1);
 
 		if (result.hasErrors()) {
-			model.addAttribute("incidencia", incidencia);
+			model.addAttribute("incidenciaUpdateInfo", incidencia);
 			if(result.hasFieldErrors("informacionContrastada")) {
 				model.addAttribute("errorInfo", "errorInfo");
 			}
@@ -219,7 +228,7 @@ public class IncidenciaController {
 			}
 			
 
-			return "incidencia/incidenciaDetails";
+			return "incidencia/incidenciaList";
 		} else {
 			
 			if(incidencia.getEstado() == EstadosIncidencia.BusquedaInformacion) {
@@ -235,14 +244,23 @@ public class IncidenciaController {
 
 	}
 	
+	@GetMapping(value = "/incidenciaUpdateAcuerdo/{incidenciaId}")
+	public String incidenciaUpdateAcuerdoGet(@PathVariable("incidenciaId") final long incidenciaId, Model model) {
+		
+		Incidencia incidencia = this.incidenciaService.findIncidenciaById(incidenciaId);
+		
+		model.addAttribute("incidenciaUpdateAcuerdo", incidencia);
+		return "incidencia/incidenciaList";
+	}
+	
 	@PostMapping(value = "/incidenciaUpdateAcuerdo")
-	public String incidenciaUpdateAcuerdo(@Valid @ModelAttribute("incidencia") Incidencia incidencia, BindingResult result,
+	public String incidenciaUpdateAcuerdo(@Valid @ModelAttribute("incidenciaUpdateAcuerdo") Incidencia incidencia, BindingResult result,
 			Model model, HttpServletRequest request) throws JSONException, MailjetException, MailjetSocketTimeoutException, IOException {
 
 		this.validateIncidencia(incidencia, result,2);
 
 		if (result.hasErrors()) {
-			model.addAttribute("incidencia", incidencia);
+			model.addAttribute("incidenciaUpdateAcuerdo", incidencia);
 			if(result.hasFieldErrors("informacionContrastada")) {
 				model.addAttribute("errorInfo", "errorInfo");
 			}
@@ -252,7 +270,7 @@ public class IncidenciaController {
 			}
 			
 
-			return "incidencia/incidenciaDetails";
+			return "incidencia/incidenciaList";
 		} else {
 			
 			 if(incidencia.getEstado() == EstadosIncidencia.BusquedaAcuerdo) {

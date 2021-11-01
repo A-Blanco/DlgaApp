@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -32,10 +33,12 @@ public class Grupo {
 	
 	@NotNull
 	@Min(value = 1)
+	@Max(value = 7)
 	private Integer numerogrupo;
 	
 	@NotNull
 	@Min(value = 1)
+	@Max(value = 7)
 	private Integer curso;
 	
 	@NotNull

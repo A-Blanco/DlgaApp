@@ -1,0 +1,94 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" th:href="@{/estilos/form.css}" />
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
+</head>
+<body>
+
+
+
+<body>
+
+     
+ 
+	<div th:fragment="updateModal" th:if="${profesorSeleccionado != null}" class="modal fade" data-keyboard="false" data-backdrop="static"
+		th:id="ModalProfesorUpdate" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="ModalTitle">Editar Profesor</h5>
+
+
+				</div>
+				<form id="formUpdate" class="col-12"
+					th:object="${profesorSeleccionado}"
+					th:action="@{profesorUpdate}" method="post">
+
+					<input  th:field="*{id}" type="hidden" name="id" />
+					
+					<div class="form-group" id="nombre-group">
+                     <label for="nombre">Nombre</label>
+                        <input id="nombre" th:field="*{nombre}" type="text" class="form-control" placeholder="Nombre del profesor" name="nombre"/>
+                       <p class="alert alert-danger" role="alert" th:errors="*{nombre}"></p>
+                    </div>	
+					
+					<div class="form-group" id="nombre-group">
+					
+					<label for="email">Email</label>
+                     
+                        <input id="email" th:field="*{email}" type="text" class="form-control" placeholder="Email del profesor" name="email"/>
+                       <p class="alert alert-danger" role="alert" th:errors="*{email}"></p>
+                    </div>
+                    
+                    <div class="form-group" id="nombre-group">
+                     
+							<label for="telefono">Teléfono</label>                     
+                        <input id="telefono" th:field="*{telefono}" type="text" class="form-control" placeholder="Teléfono del profesor" name="telefono"/>
+                       <p class="alert alert-danger" role="alert" th:errors="*{telefono}"></p>
+                    </div>
+                  
+                  <div class="form-group" >
+                  
+                  <label for="selectDepartamento">Departamento</label>
+
+						<select id="selectDepartamento" 
+							th:field="*{departamento.id}" class="form-control" name="departamento">
+							<option th:each="opcionDepartamento : ${opcionesDepartamento}" th:value="${opcionDepartamento.id}" 
+							th:text="${opcionDepartamento.nombre}" ></option>
+					
+						</select>
+						<p class="alert alert-danger" role="alert"
+							th:errors="*{departamento.id}"></p>
+					</div>
+					
+					<div class="form-group">
+					
+							<label for="selectAsignaturas">Asignaturas</label>
+												
+							<select  id="selectAsignaturas" 
+							th:field="*{asignaturas}" multiple="multiple">
+							<option th:each="opcionAsignatura : ${opcionesAsignatura.entrySet()}" 
+							 th:value="${opcionAsignatura.key}"
+							th:text="${opcionAsignatura.value}" ></option>
+						</select>
+						<p class="alert alert-danger" role="alert" th:errors="*{asignaturas}"></p>
+					</div>
+					
+					
+					
+					<div class="modal-footer">
+
+						<a th:href="@{/profesorList}" class="btn btn-secondary">Cerrar</a>
+						<button type="submit" class="btn btn-primary">Confirmar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

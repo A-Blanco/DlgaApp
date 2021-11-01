@@ -1,14 +1,15 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
 <object th:replace="recursos/base :: boot"></object>
 <link rel="stylesheet" th:href="@{/estilos/form.css}" />
 <link rel="stylesheet" th:href="@{/estilos/base.css}" />
-<title>Incidencia</title>
+
 </head>
 <body>
-<header th:replace="recursos/base :: navbar"></header>
+
 <script type="text/javascript">
 $(function(){
 	$("#selectAsignatura").select2({ width: '100%' }); 
@@ -18,13 +19,19 @@ $(function(){
 </script>
 
 <body>
-    <div class="modal-dialog text-center">
-        <div class="col main-section">
-            <div class="modal-content">
-                <div class="col-12 user-img">
-                    <img src="img/userIcon.png"/>
-                </div>
-                <form class="col-12" th:action="@{incidenciaCreate}" th:object="${incidencia}" method="post">
+
+     
+    <div th:fragment="createModal" th:if="${incidenciaCreate != null}" class="modal fade" data-keyboard="false" data-backdrop="static"
+		th:id="ModalIncidenciaCreate" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="ModalTitle">Crear Incidencia</h5>
+
+
+				</div>
+				<form class="col-12" th:action="@{incidenciaCreate}" th:object="${incidenciaCreate}" method="post"> 
                 
                 <input  th:field="*{id}" type="hidden" name="id" />
                 <input  th:field="*{miembro}" type="hidden" name="miembro" />
@@ -86,21 +93,17 @@ $(function(){
 						</select>
 						<p class="alert alert-danger" role="alert" th:errors="*{asignatura}"></p>
 					</div>
-					
-					
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i>  Registrar Incidencia </button>
-                </form>
-                <div class="col-12 forgot">
-                    <a th:href="@{/}">Cancelar Registro</a>
+					<div class="modal-footer">
 
-				 
-				          
-            </div>
-        </div>
-    </div>
-     </div>
-     
-    
+						<button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i>  Registrar Incidencia </button>
+						<a th:href="@{/}" class="btn btn-danger">Cerrar</a>
+						
+					</div>
+
+                </form>
+			</div>
+		</div>
+	</div>
 
 </body>
 </html>

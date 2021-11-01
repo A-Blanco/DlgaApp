@@ -1,0 +1,65 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+
+	<div th:fragment="seguridadModal" class="modal fade" th:id="ModalActualizacionBd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static"> 
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalTitle">Aviso Importante</h5>
+        
+      </div>
+       <form action="/populateBd" method="get">
+      <div class="modal-body">
+       
+          <div >
+            <p>Usted va a realizar una actualización de lo datos del sistema, este proceso cerrará la aplicación por un tiempo (1 hora aprox).
+            Tenga en cuenta que al finalizar el proceso es recomendable revisar los datos descargados.
+            </p>
+            <p>Antes de comenzar la actualización, se recomienda guardar una copia de todas las Incidencias guardadas actualmente en la base de datos, ya que 
+            durante la actualización se va a eliminar todas las Incidencias.
+            </p>
+             <a  th:href="@{/pdfZip}" class="btn btn-success">Generar PDFs</a>
+            <p>Marca el Check una vez que se haya realizado la copia de las Incidencias.
+            </p>
+          <input type="checkbox" value="1"  onclick="btnActualizar.disabled = !this.checked">
+          </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button  type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        	 <button name="btnActualizar" type="submit" class="btn btn-primary" onclick="cargaModales();" disabled>Actualizar</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>  
+
+
+
+<div th:fragment="cargandoModal" class="modal fade" th:id="ModalCargandoBd" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalTitle">La Base de Datos se está actualizando</h5>
+        
+      </div>
+      <div class="modal-body">
+       
+          <div >
+            <img
+			src="/img/cargando.gif" width="150">
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>      
+
+
+</body>
+</html>

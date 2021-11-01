@@ -63,9 +63,11 @@ public class AsignaturaController {
 	public String detallesAsignatura(@PathVariable("asignaturaId") final long asignaturaId, Model model) {
 		
 		Asignatura asignatura = this.asignaturaService.findById(asignaturaId);
+		List<Asignatura> asignaturas = this.asignaturaService.asignaturaList();
+		model.addAttribute("asignaturas", asignaturas);
 		
-		model.addAttribute("asignatura", asignatura);
-		return "asignatura/asignaturaDetails";
+		model.addAttribute("asignaturaDetalles", asignatura);
+		return "asignatura/asignaturaList";
 	}
 	
 	@GetMapping(value = "/asignaturaDelete/{asignaturaId}")
@@ -201,29 +203,29 @@ public class AsignaturaController {
 }
 		
 		if(asignatura.getCaracter().trim().equals("") || !nombresCaracters.contains(asignatura.getCaracter())) {
-			result.rejectValue("caracter", "caracter", "El valor indicado no es corrector");
+			result.rejectValue("caracter", "caracter", "El valor indicado no es correcto");
 		}
 		
 		if(asignatura.getDuracion().trim().equals("") || !nombresDuracions.contains(asignatura.getDuracion())) {
-			result.rejectValue("duracion", "duracion", "El valor indicado no es corrector");
+			result.rejectValue("duracion", "duracion", "El valor indicado no es correcto");
 		}
 		
 		if(asignatura.getCreditos().trim().equals("") || !nombresCreditos.contains(asignatura.getCreditos())) {
-			result.rejectValue("creditos", "creditos", "El valor indicado no es corrector");
+			result.rejectValue("creditos", "creditos", "El valor indicado no es correcto");
 		}
 		
 		if(asignatura.getAno().trim().equals("") || !nombresAños.contains(asignatura.getAno())) {
-			result.rejectValue("ano", "ano", "El valor indicado no es corrector");
+			result.rejectValue("ano", "ano", "El valor indicado no es correcto");
 		}
 		
 		if(asignatura.getDepartamento() == null ||
 				!idsDepartamentos.contains(asignatura.getDepartamento().getId())) {
-			result.rejectValue("departamento.id", "departamento.id", "El valor indicado no es corrector");
+			result.rejectValue("departamento.id", "departamento.id", "El valor indicado no es correcto");
 		}
 		
 		if( asignatura.getTitulacion() == null|| asignatura.getTitulacion().getId()  == null ||
 				!idsTitulaciones.contains(asignatura.getTitulacion().getId())) {
-			result.rejectValue("titulacion.id", "titulacion.id", "El valor indicado no es corrector");
+			result.rejectValue("titulacion.id", "titulacion.id", "El valor indicado no es correcto");
 		}
 		
 		if(!result.hasErrors()) {

@@ -1,0 +1,46 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+
+	<div th:fragment="updateModal" th:if="${titulacionSeleccionado != null}" class="modal fade" data-keyboard="false" data-backdrop="static"
+		th:id="ModalTitulacionUpdate" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="ModalTitle">Editar Titulación</h5>
+
+
+				</div>
+				<form id="formUpdate" class="col-12"
+					th:object="${titulacionSeleccionado}"
+					th:action="@{titulacionUpdate}" method="post">
+
+					<input  th:field="*{id}" type="hidden" name="id" />
+					
+					<div class="form-group" id="nombre-group">
+                     <label for="nombre">Nombre</label>
+                        <input id="nombre" th:field="*{nombre}" type="text" class="form-control" placeholder="Nombre de la titulación" name="nombre"/>
+                       <p class="alert alert-danger" role="alert" th:errors="*{nombre}"></p>
+                    </div>	
+					
+					
+					
+					
+					<div class="modal-footer">
+
+						<a th:href="@{/titulacionList}" class="btn btn-secondary">Cerrar</a>
+						<button type="submit" class="btn btn-primary">Confirmar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+</html>

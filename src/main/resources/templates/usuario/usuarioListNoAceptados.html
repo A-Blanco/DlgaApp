@@ -1,17 +1,29 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">
 
 <head>
 <meta charset="UTF-8">
 <object th:replace="recursos/base :: boot"></object>
 <link rel="stylesheet" th:href="@{/estilos/base.css}" />
 <script type="text/javascript">
+	
 	$(document).ready(function() {
 		$('#usuarioNoAceptadoList').DataTable({
 			"responsive" : true,
-			"language" : idioma
+			"language" : idioma,
+			"destroy" : true,
+			"columnDefs" :
+
+			[ {
+				"searchable" : false,
+				"targets" : 3
+			}, 
+			]
+
 		}).draw(true).columns.adjust();
 	});
+	
 </script>
 <script th:replace="recursos/idiomaTable :: idiomaTable"
 	type="text/javascript"></script>
@@ -19,13 +31,16 @@
 <body>
 <header th:replace="recursos/base :: navbar"></header>
 
-	<h2>Lista de Usuarios Pendientes de Activar</h2>
+	
 
-<div class="container">
+<div class="container-fluid">
+<div class="row justify-content-center">
+  <div class="col-11">
+  <h2 class="tituloTablas">Solicitudes de Acceso</h2>
 		<div class="mx-auto">
 			<div class="table-responsive">
 				<table id="usuarioNoAceptadoList"
-					class="table table-bordered table-hover table-striped">
+					class="table table-bordered table-hover table-striped tablaDatos">
 					<thead class="thead-light">
 			<tr>
 				<th>Username</th>
@@ -45,58 +60,12 @@
 				 
 				  <button type="button" class="btn btn-success" data-toggle="modal" th:attr="data-target='#ModalAceptado'+*{usuario.id}">Aceptar</button>
 				  
-				  <div class="modal fade" th:id="*{'ModalAceptado'+{usuario.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="ModalTitle">¿Estás seguro de aceptar a este usuario?</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-       
-      <div class="modal-body">
-       
-          <p>Vas a aceptar a este usuario y por lo tanto le vas a dar acceso a las funciones de la aplicación de DlgaApp.</p>
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        	 <a class="btn btn-success" th:href="@{aceptarUsuario/} + ${usuario.id}">Aceptar</a>
-      </div>
-    </div>
-  </div>
-</div>
-				 &nbsp 
-				 <button type="button" class="btn btn-danger" data-toggle="modal" th:attr="data-target='#ModalDenegado'+*{usuario.id}">Rechazar</button>
+				<div th:replace="usuario/aceptarModal :: aceptarModal"></div>
+						
+				 <button type="button" class="btn btn-danger opcionesTabla" data-toggle="modal" th:attr="data-target='#ModalDenegado'+*{usuario.id}">Rechazar</button>
 				 
-				 	<div class="modal fade" th:id="*{'ModalDenegado'+{usuario.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="ModalTitle">Motivo del rechazo</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-       <form action="/denegarUsuario" method="post">
-      <div class="modal-body">
-       
-          <div class="form-group">
-           <input type="hidden" th:value="*{usuario.id}" class="form-control" name="usuarioId">
-            <label for="recipient-name" class="col-form-label">Motivo:</label>
-            <textarea placeholder="Si dejas este campo vacío, el alumno no tendrá información respecto a su rechazo"  class="form-control" name="motivo"></textarea>
-          </div>
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        	 <button type="submit" class="btn btn-primary">Enviar</button>
-      </div>
-      </form>
-    </div>
-  </div>
-</div>
+				 	<div th:replace="usuario/rechazoModal :: rechazoModal"></div>
+				 	
 				</td>
 				
 			</tr>
@@ -106,7 +75,8 @@
 	</div>
 	</div>
 	</div>
-	
+	</div>
+	</div>
 	
 
 

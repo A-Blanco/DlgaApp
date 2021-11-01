@@ -50,6 +50,8 @@ public class IndexController {
 		
 		request.getSession().removeAttribute("op");
 		request.getSession().removeAttribute("grupoId");
+		request.getSession().removeAttribute("usuario");
+		request.getSession().removeAttribute("tipo");
 		
 		
 		return "recursos/index";

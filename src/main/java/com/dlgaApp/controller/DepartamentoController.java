@@ -67,9 +67,17 @@ public class DepartamentoController {
 	public String detallesDepartamento(@PathVariable("departamentoId") final long departamentoId, Model model) {
 
 		Departamento departamento = this.departamentoService.getDepartamentoById(departamentoId);
-
-		model.addAttribute("departamento", departamento);
-		return "departamento/detallesDepartamento";
+		
+		model.addAttribute("departamentos", departamentoService.listaDepartamento());
+		model.addAttribute("departamentoDetalles", departamento);
+		String detallesAsignatura = "";
+		for(Asignatura a: departamento.getAsignaturas()) {
+			detallesAsignatura = detallesAsignatura + "- " + a.getNombre() + " (" 
+		+ a.getTitulacion().getNombre() + ")\n";
+		}
+		model.addAttribute("detallesAsignatura", detallesAsignatura);
+		
+		return "departamento/listDepartamentos";
 	}
 
 	@GetMapping(value = "/departamentoDelete/{departamentoId}")

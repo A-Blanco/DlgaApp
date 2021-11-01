@@ -57,13 +57,22 @@ public class ProfesorController {
 	
 	
 	@GetMapping(value = "/detallesProfesor/{profesorId}")
-	public String detallesDepartamento(@PathVariable("profesorId") final long profesorId, Model model) {
+	public String detallesProfesor(@PathVariable("profesorId") final long profesorId, Model model) {
 		
 		Profesor profesor = this.profesorService.findById(profesorId);
 		
-		model.addAttribute("profesor", profesor);
+		model.addAttribute("profesorDetalles", profesor);
 		
-		return "profesor/profesorDetails";
+		String detallesAsignatura = "";
+		for(Asignatura a: profesor.getAsignaturas()) {
+			detallesAsignatura = detallesAsignatura + "- " + a.getNombre() + " (" 
+		+ a.getTitulacion().getNombre() + ")\n";
+		}
+		model.addAttribute("detallesAsignatura", detallesAsignatura);
+		
+		List<Profesor> profesores = this.profesorService.profesorList();
+		model.addAttribute("profesores", profesores);
+		return "profesor/listProfesores";
 	}
 	
 	@GetMapping(value = "/profesorDelete/{profesorId}")

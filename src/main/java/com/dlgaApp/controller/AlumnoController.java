@@ -162,11 +162,18 @@ public class AlumnoController {
 		}
 
 		Alumno alumno = this.alumnoService.findById(alumnoId);
+		
+		List<Alumno> alumnos = this.alumnoService.findAll();
+		Usuario usuarioActual = usuarioActual();
+		Alumno alumnoActual = usuarioActual.getAlumno();
+		alumnos.removeIf(x->x.getId()==alumnoActual.getId());
+		
+		model.addAttribute("alumnos", alumnos);
 
-		model.addAttribute("alumno", alumno);
+		model.addAttribute("alumnoDetalles", alumno);
 		request.getSession().removeAttribute("siAlumno");
 
-		return "alumno/alumnoDetails";
+		return "alumno/alumnoList";
 
 	}
 

@@ -1,8 +1,11 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">
 
 <head>
 <meta charset="UTF-8">
+<title>Departamentos</title>
+<link rel="icon" href="img/Simbolo.png">
 <object th:replace="recursos/base :: boot"></object>
 <link rel="stylesheet" th:href="@{/estilos/base.css}" />
 
@@ -13,12 +16,17 @@ $( document ).ready(function() {
 
 	  
 	  var departamento = "[[${departamentoSeleccionado}]]";
+	  var departamentoDetalles = "[[${departamentoDetalles}]]";
 	  var departamentocreada = "[[${departamentoCreada}]]";
 	  var departamentoId = "[[${idDepartamentoSeleccionado}]]";
 	  
 	  
 	  if(departamento!=""){
 		  $('#ModalDepartamentoUpdate').modal()
+	  }
+	  
+	  if(departamentoDetalles!=""){
+		  $('#ModalDepartamentoDetalles').modal()
 	  }
 	  
 	  if(departamentocreada!=""){
@@ -64,30 +72,31 @@ $(function(){
 </head>
 <body>
 	<header th:replace="recursos/base :: navbar"></header>
-	<h2>Lista de Departamentos</h2>
+	
 
-	<div class="container">
+	<div class="container-fluid">
+<div class="row justify-content-center">
+  <div class="col-11">
+  <h2 class="tituloTablas">Lista de Departamentos</h2>
 		<div class="mx-auto">
 			<div class="table-responsive">
-				<table id="departamentoList" class="table table-bordered table-hover table-striped">
+				<table id="departamentoList" class="table table-bordered table-hover table-striped tablaDatos">
 					<thead class="thead-light">
 						<tr>
 							<th>Nombre</th>
-							<th sec:authorize="hasRole('ADMIN')"></th>
-							<th sec:authorize="hasRole('ADMIN')"></th>
-							<th></th>
+							<th>Opciones</th>
 						</tr>
 					</thead>
 					<tbody>
 
 						<tr th:each="departamento : ${departamentos}">
 							<td th:text="${departamento.nombre}"></td>
-							<td><a class="btn btn-dark"
+							<td><div class="opcionesTabla"><a class="btn btn-dark"
 								th:href="@{detallesDepartamento/} + ${departamento.id}">Ver
-									detalles</a></td>
+									detalles</a></div>
 									
 									
-							<td sec:authorize="hasRole('ADMIN')">
+							<div  class="opcionesTabla" sec:authorize="hasRole('ADMIN')">
 								<form th:action="@{departamentoUpdate}" method="get">
 									<input type="hidden" th:value="${departamento.id}"
 										name="departamentoId"></input>
@@ -95,10 +104,11 @@ $(function(){
 										datos</button>
 								</form>
 
-							</td>
+							</div>
 									
-							<td sec:authorize="hasRole('ADMIN')"><a class="btn btn-danger"
-								th:href="@{/departamentoDeleteSeguridad/} + ${departamento.id}">Eliminar</a></td>
+							<div class="opcionesTabla" sec:authorize="hasRole('ADMIN')"><a class="btn btn-danger"
+								th:href="@{/departamentoDeleteSeguridad/} + ${departamento.id}">Eliminar</a>
+								</div></td>
 								
 								
 									
@@ -106,238 +116,18 @@ $(function(){
 
 					</tbody>
 				</table>
-			</div>
-		</div>
-	</div>
-	
-	<a class="btn btn-primary" sec:authorize="hasAnyRole('ADMIN')"  
+				<a class="btn btn-success botonesDespuesTabla" sec:authorize="hasAnyRole('ADMIN')"  
 th:href="@{/departamentoCreate} ">Crear Departamento</a>
-	
-	
-	<div th:if="${departamentoSeleccionado != null}" class="modal fade" data-keyboard="false" data-backdrop="static"
-		th:id="ModalDepartamentoUpdate" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="ModalTitle">Editar Departamento</h5>
-
-
-				</div>
-				<form id="formUpdate" class="col-12"
-					th:object="${departamentoSeleccionado}"
-					th:action="@{departamentoUpdate}" method="post">
-
-					<input  th:field="*{id}" type="hidden" name="id" />
-					
-					<div class="form-group" id="nombre-group">
-                     <label for="nombre">Nombre</label>
-                        <input id="nombre" th:field="*{nombre}" type="text" class="form-control" placeholder="Nombre del departamento" name="nombre"/>
-                       <p class="alert alert-danger" role="alert" th:errors="*{nombre}"></p>
-                    </div>
-                    
-
-					<div class="form-group">
-					
-					<label for="sede">Sede</label>
-					
-							<select  id="sede"
-							th:field="*{sede}" class="form-control" name="caracter">
-							<option th:each="opcionSede : ${opcionesSede}" th:value="${opcionSede}" 
-							th:text="${opcionSede}" ></option>
-						</select>
-						<p class="alert alert-danger" role="alert" th:errors="*{sede}"></p>
-					</div>
-					
-					
-					<div class="form-group" id="nombre-group">
-					
-					<label for="email">Email</label>
-                     
-                        <input id="email" th:field="*{email}" type="text" class="form-control" placeholder="Email del departamento" name="email"/>
-                       <p class="alert alert-danger" role="alert" th:errors="*{email}"></p>
-                    </div>
-                    
-                    <div class="form-group" id="nombre-group">
-                     
-							<label for="telefono">Teléfono</label>                     
-                        <input id="telefono" th:field="*{telefono}" type="text" class="form-control" placeholder="Teléfono del departamento" name="telefono"/>
-                       <p class="alert alert-danger" role="alert" th:errors="*{telefono}"></p>
-                    </div>
-                    
-                     <div class="form-group" id="nombre-group">
-                     
-                     <label for="web">Web</label>
-                        <input id="web" th:field="*{web}" type="text" class="form-control" placeholder="Web del departamento" name="web"/>
-                       <p class="alert alert-danger" role="alert" th:errors="*{web}"></p>
-                    </div>
-					
-					
-					<div class="form-group">
-					
-							<label for="selectAsignaturas">Asignaturas</label>
-												
-							<select  id="selectAsignaturas" 
-							th:field="*{asignaturas}" multiple="multiple">
-							<option th:each="opcionAsignatura : ${opcionesAsignatura.entrySet()}" 
-							 th:value="${opcionAsignatura.key}"
-							th:text="${opcionAsignatura.value}" ></option>
-						</select>
-						<p class="alert alert-danger" role="alert" th:errors="*{asignaturas}"></p>
-					</div>
-					
-					<div class="form-group">
-					
-						<label for="selectProfesores">Profesores</label>
-					
-							<select  id="selectProfesores" 
-							th:field="*{profesores}" multiple="multiple">
-							<option th:each="opcionProfesor : ${opcionesProfesor.entrySet()}" 
-							 th:value="${opcionProfesor.key}"
-							th:text="${opcionProfesor.value}" ></option>
-						</select>
-						<p class="alert alert-danger" role="alert" th:errors="*{profesores}"></p>
-					</div>
-					
-					
-					
-					<div class="modal-footer">
-
-						<a th:href="@{/listDepartamentos}" class="btn btn-secondary">Cerrar</a>
-						<button type="submit" class="btn btn-primary">Confirmar</button>
-					</div>
-				</form>
 			</div>
 		</div>
 	</div>
-	
-	
-	<div th:if="${departamentoCreada != null}" class="modal fade" data-keyboard="false" data-backdrop="static"
-		th:id="ModalDepartamentoCreate" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="ModalTitle">Crear Departamento</h5>
-
-
-				</div>
-				<form id="formUpdate" class="col-12"
-					th:object="${departamentoCreada}"
-					th:action="@{departamentoCreate}" method="post">
-
-					<input  th:field="*{id}" type="hidden" name="id" />
-					
-					<div class="form-group" id="nombre-group">
-                     <label for="nombre">Nombre</label>
-                        <input id="nombre" th:field="*{nombre}" type="text" class="form-control" placeholder="Nombre del departamento" name="nombre"/>
-                       <p class="alert alert-danger" role="alert" th:errors="*{nombre}"></p>
-                    </div>
-                    
-
-					<div class="form-group">
-					
-					<label for="sede">Sede</label>
-					
-							<select  id="sede"
-							th:field="*{sede}" class="form-control" name="caracter">
-							<option value="" label="-" selected="selected"></option>
-							<option th:each="opcionSede : ${opcionesSede}" th:value="${opcionSede}" 
-							th:text="${opcionSede}" ></option>
-						</select>
-						<p class="alert alert-danger" role="alert" th:errors="*{sede}"></p>
-					</div>
-					
-					
-					<div class="form-group" id="nombre-group">
-					
-					<label for="email">Email</label>
-                     
-                        <input id="email" th:field="*{email}" type="text" class="form-control" placeholder="Email del departamento" name="email"/>
-                       <p class="alert alert-danger" role="alert" th:errors="*{email}"></p>
-                    </div>
-                    
-                    <div class="form-group" id="nombre-group">
-                     
-							<label for="telefono">Teléfono</label>                     
-                        <input id="telefono" th:field="*{telefono}" type="text" class="form-control" placeholder="Teléfono del departamento" name="telefono"/>
-                       <p class="alert alert-danger" role="alert" th:errors="*{telefono}"></p>
-                    </div>
-                    
-                     <div class="form-group" id="nombre-group">
-                     
-                     <label for="web">Web</label>
-                        <input id="web" th:field="*{web}" type="text" class="form-control" placeholder="Web del departamento" name="web"/>
-                       <p class="alert alert-danger" role="alert" th:errors="*{web}"></p>
-                    </div>
-					
-					
-					<div class="form-group">
-					
-							<label for="selectAsignaturas">Asignaturas</label>
-												
-							<select  id="selectAsignaturas" 
-							th:field="*{asignaturas}" multiple="multiple">
-							<option th:each="opcionAsignatura : ${opcionesAsignatura.entrySet()}" 
-							 th:value="${opcionAsignatura.key}"
-							th:text="${opcionAsignatura.value}" ></option>
-						</select>
-						<p class="alert alert-danger" role="alert" th:errors="*{asignaturas}"></p>
-					</div>
-					
-					<div class="form-group">
-					
-						<label for="selectProfesores">Profesores</label>
-					
-							<select  id="selectProfesores" 
-							th:field="*{profesores}" multiple="multiple">
-							<option th:each="opcionProfesor : ${opcionesProfesor.entrySet()}" 
-							 th:value="${opcionProfesor.key}"
-							th:text="${opcionProfesor.value}" ></option>
-						</select>
-						<p class="alert alert-danger" role="alert" th:errors="*{profesores}"></p>
-					</div>
-					
-					
-					
-					<div class="modal-footer">
-
-						<a th:href="@{/listDepartamentos}" class="btn btn-secondary">Cerrar</a>
-						<button type="submit" class="btn btn-primary">Confirmar</button>
-					</div>
-				</form>
-			</div>
-		</div>
 	</div>
-	
-	<div class="modal fade" th:id="ModalDepartamentoDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="ModalTitle">Aviso Importante</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-       
-      <div class="modal-body">
-       
-          <div >
-            <p>Usted va a eliminar los datos del Departamento seleccionado, esto conlleva la eliminación de ciertos datos relacionados con el departamento.
-            ¿Está segur@?
-            </p>
-          </div>
-        
-      </div>
-      <div class="modal-footer">
-       <a th:href="@{/listDepartamentos}" class="btn btn-secondary">Cerrar</a>
-       <a  th:href="@{/departamentoDelete/} + ${idDepartamentoSeleccionado}" class="btn btn-danger">Eliminar</a>
-      </div>
-    
-    </div>
-  </div>
-</div>    
-	
+	</div>
+
+	<div th:replace="departamento/departamentoDetallesModal :: detallesModal"></div>
+	<div th:replace="departamento/departamentoUpdateModal :: updateModal"></div>
+	<div th:replace="departamento/departamentoCreateModal :: createModal"></div>
+	<div th:replace="departamento/departamentoDeleteModal :: deleteModal"></div>
 	
 </body>
 </html>

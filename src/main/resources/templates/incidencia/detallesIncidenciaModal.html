@@ -1,0 +1,144 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" th:href="@{/estilos/form.css}" />
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
+<title>Incidencia</title>
+
+</head>
+<body>
+	<header th:replace="recursos/base :: navbar"></header>
+	<script type="text/javascript">
+		$(function() {
+			$("#selectAsignatura").select2({
+				width : '100%'
+			});
+			$("#selectProfesor").select2({
+				width : '100%'
+			});
+			$("#selectAlumno").select2({
+				width : '100%'
+			});
+		})
+	</script>
+<body>
+
+
+	<div th:fragment="detallesModal" th:if="${incidenciaDetalles != null}"
+		class="modal fade" data-keyboard="false" data-backdrop="static"
+		th:id="ModalIncidenciaDetalles" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="ModalTitle">Detalles Incidencia</h5>
+
+
+				</div>
+				<form class="col-12" th:object="${incidenciaDetalles}" method="post">
+
+					<div class="form-group">
+						<label>Id</label> <input disabled="disabled" th:field="*{id}"
+							type="text"  class="form-control" name="id" />
+					</div>
+
+					<div class="form-group">
+						<label>Encargado</label> <input disabled="disabled"
+							th:field="*{miembro.username}" class="form-control" type="text" name="miembro" />
+					</div>
+
+					<div class="form-group">
+						<label>Estado</label> <input disabled="disabled"
+							th:field="*{estado}" class="form-control" type="text" name="estado" />
+					</div>
+
+					<div class="form-group">
+						<label>Título</label>
+						<textarea disabled="disabled" th:field="*{titulo}"
+							class="form-control" name="titulo"></textarea>
+
+					</div>
+
+
+
+					<div class="form-group">
+						<label>Descripción</label>
+						<textarea disabled="disabled" th:field="*{descripcion}"
+							class="form-control" name="descripcion"></textarea>
+
+					</div>
+					<div class="form-group">
+
+						<label for="selectAlumno">Alumno Implicado</label> <input
+						class="form-control"	disabled="disabled" id="selectAlumno" th:value="*{alumno.nombre + ' ' + alumno.apellidos}" />
+
+					</div>
+
+					<div class="form-group">
+
+						<label for="selectProfesor">Profesor Implicado</label> <input
+						class="form-control"	disabled="disabled" id="selectProfesor" th:field="*{profesor.nombre}" />
+
+					</div>
+
+					<div class="form-group">
+
+						<label for="selectAsignaturas">Asignaturas</label> <input
+						class="form-control"	disabled="disabled" id="selectAsignatura"
+							th:field="*{asignatura.nombre}" />
+
+					</div>
+					<div th:if="*{informacionContrastada != null}" class="form-group">
+
+						<label for="info">Información Contrastada</label> <textarea
+						class="form-control"	disabled="disabled" id="info"
+							th:field="*{informacionContrastada}" ></textarea>
+
+					</div>
+					<div th:if="*{acuerdo != null}" class="form-group">
+
+						<label for="acuerdo">Información Contrastada</label> <textarea
+						class="form-control"	disabled="disabled" id="acuerdo"
+							th:field="*{acuerdo}" ></textarea>
+
+					</div>
+					
+					</form>
+					<div class="modal-footer opcionesTabla">
+
+						<a class="btn btn-success opcionesTabla"
+							th:href="@{/pdf/} + ${incidenciaDetalles.id}">Generar PDF</a>
+
+						<a
+							th:if="${incidenciaDetalles.informacionContrastada == null AND #authentication.getPrincipal().getId() == incidenciaDetalles.miembro.id}"
+							 class="btn btn-primary opcionesTabla" 
+							th:href="@{/incidenciaUpdateInfo/} + ${incidenciaDetalles.id}">
+							Añadir Información Contrastada</a>
+
+						<a
+							th:if="${incidenciaDetalles.informacionContrastada != null AND incidenciaDetalles.estado.name() != 'Finalizada' AND #authentication.getPrincipal().getId() == incidenciaDetalles.miembro.id}"
+							 class="btn btn-primary opcionesTabla" 
+							th:href="@{/incidenciaUpdateInfo/} + ${incidenciaDetalles.id}">
+							Modificar Información Contrastada</a>
+
+						<a
+							th:if="${incidenciaDetalles.estado.name() == 'BusquedaAcuerdo' AND #authentication.getPrincipal().getId() == incidenciaDetalles.miembro.id}"
+							type="button" class="btn btn-primary opcionesTabla" 
+							th:href="@{/incidenciaUpdateAcuerdo/} + ${incidenciaDetalles.id}">
+							Añadir Acuerdo</a>
+
+						<a th:href="@{/}" class="btn btn-secondary opcionesTabla">Cerrar</a>
+
+			</div>
+
+				
+			</div>
+		</div>
+	</div>
+	
+
+</body>
+</html>

@@ -1,8 +1,11 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">
 
 <head>
 <meta charset="UTF-8">
+<title>Titulaciones</title>
+<link rel="icon" href="img/Simbolo.png">
 <object th:replace="recursos/base :: boot"></object>
 <link rel="stylesheet" th:href="@{/estilos/base.css}" />
 <script type="text/javascript">
@@ -46,17 +49,20 @@ $(function(){
 </head>
 <body>
 	<header th:replace="recursos/base :: navbar"></header>
-	<h2>Lista de Titulaciones</h2>
+	
 
-	<div class="container">
+	<div class="container-fluid">
+<div class="row justify-content-center">
+  <div class="col-11">
+	
+	<h2 class="tituloTablas">Lista de Titulaciones</h2>
 		<div class="mx-auto">
 			<div class="table-responsive">
-				<table id="departamentoList" class="table table-bordered table-hover table-striped">
+				<table id="departamentoList" class="table table-bordered table-hover table-striped tablaDatos">
 					<thead class="thead-light">
 						<tr>
 							<th>Nombre</th>
-							<th sec:authorize="hasRole('ADMIN')"></th>
-							<th sec:authorize="hasRole('ADMIN')"></th>
+							<th>Opciones</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -64,7 +70,7 @@ $(function(){
 						<tr th:each="titulacion : ${titulaciones}">
 							<td th:text="${titulacion.nombre}"></td>
 							
-								<td sec:authorize="hasRole('ADMIN')">
+								<td><div class="opcionesTabla" sec:authorize="hasRole('ADMIN')">
 								<form th:action="@{titulacionUpdate}" method="get">
 									<input type="hidden" th:value="${titulacion.id}"
 										name="titulacionId"></input>
@@ -72,119 +78,25 @@ $(function(){
 										datos</button>
 								</form>
 
-							</td>
+							</div>
 							
-							<td sec:authorize="hasRole('ADMIN')"><a class="btn btn-danger"
-								th:href="@{/titulacionDeleteSeguridad/} + ${titulacion.id}">Eliminar</a></td>
+							<div class="opcionesTabla" sec:authorize="hasRole('ADMIN')"><a class="btn btn-danger"
+								th:href="@{/titulacionDeleteSeguridad/} + ${titulacion.id}">Eliminar</a></div></td>
 						</tr>
 
 					</tbody>
 				</table>
-				<div sec:authorize="hasRole('ADMIN')"><a class="btn btn-primary"
+				<div class="botonesDespuesTabla" sec:authorize="hasRole('ADMIN')"><a class="btn btn-primary"
 								th:href="@{/titulacionCreate}">Crear Titulacion</a></div>
 			</div>
 		</div>
 	</div>
-	
-	
-	<div th:if="${titulacionCreado != null}" class="modal fade" data-keyboard="false" data-backdrop="static"
-		th:id="ModalTitulacionCreate" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="ModalTitle">Crear Titulación</h5>
-
-
-				</div>
-				<form id="formUpdate" class="col-12"
-					th:object="${titulacionCreado}"
-					th:action="@{titulacionCreate}" method="post">
-
-					<input  th:field="*{id}" type="hidden" name="id" />
-					
-					<div class="form-group" id="nombre-group">
-                     <label for="nombre">Nombre</label>
-                        <input id="nombre" th:field="*{nombre}" type="text" class="form-control" placeholder="Nombre de la titulación" name="nombre"/>
-                       <p class="alert alert-danger" role="alert" th:errors="*{nombre}"></p>
-                    </div>	
-					
-					
-					
-					
-					<div class="modal-footer">
-
-						<a th:href="@{/titulacionList}" class="btn btn-secondary">Cerrar</a>
-						<button type="submit" class="btn btn-primary">Confirmar</button>
-					</div>
-				</form>
-			</div>
-		</div>
+	</div>
 	</div>
 	
-	<div th:if="${titulacionSeleccionado != null}" class="modal fade" data-keyboard="false" data-backdrop="static"
-		th:id="ModalTitulacionUpdate" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="ModalTitle">Editar Titulación</h5>
+	<div th:replace="titulacion/formTitulacionModal :: formModal"></div>
+	<div th:replace="titulacion/updateTitulacionModal :: updateModal"></div>
+	<div th:replace="titulacion/deleteTitulacionModal :: deleteModal"></div>
 
-
-				</div>
-				<form id="formUpdate" class="col-12"
-					th:object="${titulacionSeleccionado}"
-					th:action="@{titulacionUpdate}" method="post">
-
-					<input  th:field="*{id}" type="hidden" name="id" />
-					
-					<div class="form-group" id="nombre-group">
-                     <label for="nombre">Nombre</label>
-                        <input id="nombre" th:field="*{nombre}" type="text" class="form-control" placeholder="Nombre de la titulación" name="nombre"/>
-                       <p class="alert alert-danger" role="alert" th:errors="*{nombre}"></p>
-                    </div>	
-					
-					
-					
-					
-					<div class="modal-footer">
-
-						<a th:href="@{/titulacionList}" class="btn btn-secondary">Cerrar</a>
-						<button type="submit" class="btn btn-primary">Confirmar</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	
-	<div class="modal fade" th:id="ModalTitulacionDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="ModalTitle">Aviso Importante</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-       
-      <div class="modal-body">
-       
-          <div >
-            <p>Usted va a eliminar los datos de la Titulación seleccionada, esto conlleva la eliminación de ciertos datos relacionados con la titulación.
-            ¿Está segur@?
-            </p>
-          </div>
-        
-      </div>
-      <div class="modal-footer">
-       <a th:href="@{/titulacionList}" class="btn btn-secondary">Cerrar</a>
-       <a  th:href="@{/titulacionDelete/} + ${idTitulacionSeleccionado}" class="btn btn-danger">Eliminar</a>
-      </div>
-    
-    </div>
-  </div>
-</div>   
-	
-	
 </body>
 </html>

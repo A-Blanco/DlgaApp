@@ -177,11 +177,18 @@ public class GrupoController {
 
 	public void validarGrupo(Grupo grupo, BindingResult result) {
 
+		List<Long> idsTitulaciones = this.titulacionService.getIdsTitulaciones();
+		
 		// validar que el grupo es único
 		if (this.grupoService.numeroGruposRepetidos(grupo.getCurso(), grupo.getNumerogrupo(), grupo.getEsingles(),
 				grupo.getTitulacion().getId()) != 0) {
 			result.reject("unico", "El grupo introducido ya está registrado en la base de datos");
 		}
+		if( grupo.getTitulacion() == null|| grupo.getTitulacion().getId()  == null ||
+				!idsTitulaciones.contains(grupo.getTitulacion().getId())) {
+			result.rejectValue("titulacion.id", "titulacion.id", "El valor indicado no es correcto");
+		}
+		
 	}
 
 }

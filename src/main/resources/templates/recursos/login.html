@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
+<title>Login</title>
+<link rel="icon" href="img/Simbolo.png">
 <object th:replace="recursos/base :: boot"></object>
 <link rel="stylesheet" th:href="@{/estilos/form.css}" />
 <link rel="stylesheet" th:href="@{/estilos/base.css}" />
@@ -12,22 +15,21 @@
 
 <body>
 
-<!-- <a class="twitter-timeline" data-lang="es" data-width="300" data-height="600" data-theme="light" href="https://twitter.com/delegaETSII?ref_src=twsrc%5Etfw"> -->
-<!-- Tweets by delegaETSII</a>  -->
-<!-- <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> -->
-    
+
     
     <div class="modal-dialog text-center">
         <div class="col-sm-8 main-section">
             <div class="modal-content">
                 <div class="col-12 user-img">
-                    <img src="img/userIcon.png"/>
+                    <img src="img/Simbolo.png"/>
                 </div>
                 <form class="col-12" th:action="@{/login}" method="post">
                     <div class="form-group" id="user-group">
+                    <label class="fechaAlumno" for="username">Username</label>
                         <input type="text" class="form-control" placeholder="Nombre de usuario" name="username"/>
                     </div>
                     <div class="form-group" id="contrasena-group">
+                    <label class="fechaAlumno" for="password">Contraseña</label>
                         <input type="password" class="form-control" placeholder="Contrasena" name="password"/>
                     </div>
                     <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i>  Ingresar </button>

@@ -2,6 +2,7 @@ package com.dlgaApp.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.dlgaApp.entity.Roles;
 import com.dlgaApp.entity.Usuario;
 import com.dlgaApp.repository.UsuarioRepository;
  
@@ -89,4 +91,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public void eliminarUsuario(Usuario u) {
     	usuarioRepository.delete(u);
     }
+    
+   
 }
