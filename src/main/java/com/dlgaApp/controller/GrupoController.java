@@ -90,11 +90,14 @@ public class GrupoController {
 		Integer check = (int) this.alumnoService.numeroAlumnos();
 
 		model.addAttribute("check", check);
+		Grupo grupo = this.grupoService.findById(grupoId);
+		model.addAttribute("grupo", grupo);
+		model.addAttribute("update", 1);
 
 		request.getSession().setAttribute("grupoId", grupoId);
 		request.getSession().setAttribute("op", "addDelegado");
 
-		return "grupo/inicioGrupoAdd";
+		return "delegado/updateDelegados";
 
 	}
 
@@ -108,18 +111,21 @@ public class GrupoController {
 			Integer check = (int) this.alumnoService.numeroAlumnos();
 
 			model.addAttribute("check", check);
-			return "grupo/inicioGrupoAdd";
+			model.addAttribute("grupo", grupo);
+			return "delegado/updateDelegados";
 		} else {
 			return "recursos/index";
 		}
 	}
 
 	@GetMapping(value = "delegados/{grupoId}")
-	public String listDelegados(Model model, @PathVariable("grupoId") final long grupoId) {
+	public String listDelegados(Model model, @PathVariable("grupoId") final long grupoId,HttpServletRequest request) {
 
 		Grupo grupo = this.grupoService.findById(grupoId);
 		model.addAttribute("grupo", grupo);
 		model.addAttribute("update", 0);
+		request.getSession().removeAttribute("grupoId");
+		request.getSession().removeAttribute("op");
 		return "delegado/updateDelegados";
 	}
 

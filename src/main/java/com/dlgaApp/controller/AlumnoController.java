@@ -117,11 +117,12 @@ public class AlumnoController {
 				if (grupo.getDelegados().size() < 4) {
 
 					model.addAttribute("addDelegadoAgain", 1);
+					model.addAttribute("grupo", grupo);
 				} else {
 					model.addAttribute("addDelegadoAgain", 0);
 					model.addAttribute("grupo", grupo);
 				}
-				return "grupo/inicioGrupoAdd";
+				return "delegado/updateDelegados";
 
 			}
 		}
@@ -143,12 +144,13 @@ public class AlumnoController {
 		if (grupo.getDelegados().size() < 4) {
 
 			model.addAttribute("addDelegadoAgain", 1);
+			model.addAttribute("grupo", grupo);
 		} else {
 			model.addAttribute("addDelegadoAgain", 0);
 			model.addAttribute("grupo", grupo);
 		}
 
-		return "grupo/inicioGrupoAdd";
+		return "delegado/updateDelegados";
 
 	}
 

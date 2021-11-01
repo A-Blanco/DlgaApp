@@ -1,0 +1,41 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Delegados</title>
+<link rel="icon" href="img/Simbolo.png">
+<object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" th:href="@{/estilos/form.css}" />
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
+</head>
+<body>
+
+<body>
+
+
+     
+ <div th:fragment="deleteModal" class="modal fade" th:id="*{'ModalDelete'+{delegado.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+				  data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalTitle">¿Estás seguro de eliminar este delegado?</h5>
+        
+      </div>
+       
+      <div class="modal-body">
+       
+          <p>Vas a eliminar el delegado seleccionado, por favor confírmelo.</p>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary opcionesTabla" data-dismiss="modal">Cerrar</button>
+        	 <a class="btn btn-danger" th:href="@{/eliminarDelegado/} + ${grupo.id} +'/'+ ${delegado.id}">Eliminar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

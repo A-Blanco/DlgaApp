@@ -1,0 +1,42 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Delegados</title>
+<link rel="icon" href="img/Simbolo.png">
+<object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" th:href="@{/estilos/form.css}" />
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
+</head>
+<body>
+
+<body>
+
+
+     
+ <div th:fragment="opcionesModal" class="modal fade" th:id="ModalOpcionesDelegado" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+				  data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalTitle">¿Está el delegado dado de alta en DlgaApp?</h5>
+        
+      </div>
+       
+      <div class="modal-body">
+       
+        	 <a class="btn btn-success opcionesTabla" th:href="@{/crearAlumno}">Crear un nuevo Alumno</a>
+        	 
+        	 <a class="btn btn-primary opcionesTabla" th:href="@{/listAlumnos}">Seleccionar un alumno creado</a>
+        
+      </div>
+      <div class="modal-footer">
+        <a type="button" th:href="@{/delegados/} + ${grupo.id}" class="btn btn-secondary opcionesTabla" >Cerrar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

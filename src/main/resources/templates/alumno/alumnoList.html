@@ -133,9 +133,9 @@
 									<td th:text="${alumno.email}"></td>
 									<td><div class="opcionesTabla"
 											th:if="${#session.getAttribute('grupoId') != null}">
-											<a class="btn btn-success" th:if="${ alumno.grupoDelegado == null}"
+											<a class="btn btn-success opcionesTabla" th:if="${ alumno.grupoDelegado == null}"
 												th:href="@{/agregarDelegado/} + ${alumno.id}">Añadir</a>
-											<p th:if="${ alumno.grupoDelegado != null}">Este Alumno
+											<p class="btn btn-info opcionesTabla" th:if="${ alumno.grupoDelegado != null}">Este Alumno
 												ya es delegado de un grupo</p>
 										</div>
 										

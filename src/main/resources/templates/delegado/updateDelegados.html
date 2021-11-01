@@ -4,45 +4,106 @@
 
 <head>
 <meta charset="UTF-8">
+<title>Delegados</title>
+<link rel="icon" href="img/Simbolo.png">
 <object th:replace="recursos/base :: boot"></object>
 <link rel="stylesheet" th:href="@{/estilos/base.css}" />
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#alumnoList').DataTable({
+		"responsive" : true,
+		"language" : idioma,
+		"destroy" : true,
+		"searching" : false,
+
+	}).draw(true).columns.adjust();
+});</script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+			
+		var check = "[[${check}]]";
+
+		if (check != "") {
+			$('#ModalOpcionesDelegado').modal()
+		}
+		
+		var addDelegadoAgain = "[[${addDelegadoAgain}]]";
+
+		if (addDelegadoAgain != "") {
+			$('#ModalAgain').modal()
+		}
+	})
+</script>
+
 </head>
 <body>
 <header th:replace="recursos/base :: navbar"></header>
-	<h2
-		th:text="${'Delegados del grupo ' + grupo.numerogrupo + ' del año ' + grupo.curso + ' de ' + grupo.titulacion.nombre} "></h2>
+		
+	<div class="container-fluid">
+		<div class="row justify-content-center">
+			<div class="col-11">
 
-	<table>
-		<thead>
-			<tr>
-				<th>Nombre</th>
-				<th></th>
-				<th></th>
+				<h2 class="tituloTablas" th:text="${'Delegados del grupo ' + grupo.numerogrupo + ' de ' + grupo.curso + 'º de ' + grupo.titulacion.nombre} "></h2>
 
-			</tr>
-		</thead>
-		<tbody>
 
-			<tr th:each="delegado : ${grupo.delegados}">
-				<td th:text="${delegado.nombre}">
-				<td th:if="${update}"><a
-					th:href="@{/eliminarDelegado/} + ${grupo.id} +'/'+ ${delegado.id}">
-						Eliminar Delegado de este grupo</a></td>
-				<td><a
-					th:href="@{/detallesAlumno/} + ${delegado.id}">Ver detalles Alumno</a></td>
-			</tr>
-			
+				<div class="mx-auto">
+					<div class="table-responsive">
+						<table id="alumnoList"
+							class="table table-bordered table-hover table-striped tablaDatos">
+							<thead class="thead-light">
+								<tr>
+									<th>Nombre</th>
+									<th>Email</th>
+									<th>Opciones</th>
+								</tr>
+							</thead>
+							<tbody>
 
-		</tbody>
-	</table>
-	<a th:if="${update == 0}"
+								<tr th:each="delegado : ${grupo.delegados}">
+									<td th:text="${delegado.nombre}"></td>
+									<td th:text="${delegado.email}"></td>
+									<td><div class="opcionesTabla"
+											th:if="${update}">
+											 <button type="button" class="btn btn-danger opcionesTabla" 
+											 data-toggle="modal" th:attr="data-target='#ModalDelete'+*{delegado.id}">Eliminar Delegad@</button></div>
+										
+										
+										<div class="opcionesTabla">
+											<a class="btn btn-dark" target="_blank"
+												th:href="@{/detallesAlumno/} + ${delegado.id}">Ver
+												detalles Delegad@</a>
+										</div>
+										
+										<div th:replace="delegado/deleteDelegadoModal :: deleteModal"></div>
+										
+										</td>
+		
+								</tr>
+
+							</tbody>
+						</table>
+						<a th:if="${update == 0}" class="btn btn-primary botonesDespuesTabla"
 		th:href="@{/modificarDelegados/} + ${grupo.id}"> Modificar
 		Delegados de este grupo</a>
 	<div th:if="${update == 1}">
-		<a th:href="@{/delegados/} + ${grupo.id}"> Finalizar Modificación</a>
-		<a th:if="${grupo.delegados.size() <4}"
+		<a class="btn btn-primary botonesDespuesTabla" th:href="@{/delegados/} + ${grupo.id}"> Finalizar Modificación</a>
+		<a class="btn btn-success botonesDespuesTabla" th:if="${grupo.delegados.size() <4}"
 			th:href="@{/añadirDelegado/} + ${grupo.id}"> Añadir Delegado</a>
 	</div>
+						
+					</div>
+				</div>
+			</div>
+
+
+
+		</div>
+	</div>
+
+<div th:replace="delegado/opcionesDelegadoModal :: opcionesModal"></div>
+
+<div th:replace="delegado/opcionesDelegadoAgainModal :: againModal"></div>
 
 </body>
 </html>
