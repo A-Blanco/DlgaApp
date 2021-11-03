@@ -10,19 +10,12 @@
 </head>
 <body>
 
-<script type="text/javascript">
-$(function(){
-	$("#selectAsignatura").select2({ width: '100%' }); 
-	$("#selectProfesor").select2({ width: '100%' }); 
-	$("#selectAlumno").select2({ width: '100%' }); 
-})
-</script>
 
 <body>
 
      
     <div th:fragment="createModal" th:if="${incidenciaCreate != null}" class="modal fade" data-keyboard="false" data-backdrop="static"
-		th:id="ModalIncidenciaCreate" tabindex="-1" role="dialog"
+		th:id="ModalIncidenciaCreate"  role="dialog"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">

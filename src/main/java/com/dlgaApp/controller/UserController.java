@@ -74,7 +74,7 @@ public class UserController {
 		} else {
 
 			usuarioService.creaUsuario(usuario);
-			;
+			
 		}
 		redirectAttributes.addFlashAttribute("alert", 11);
 		return "redirect:";

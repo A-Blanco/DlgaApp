@@ -28,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dlgaApp.entity.Alumno;
 import com.dlgaApp.entity.Grupo;
+import com.dlgaApp.entity.Roles;
 import com.dlgaApp.entity.Usuario;
 import com.dlgaApp.service.AlumnoServiceImpl;
 import com.dlgaApp.service.GrupoServiceImpl;
@@ -160,24 +161,41 @@ public class AlumnoController {
 	public String alumnoDetails(Model model, @PathVariable("alumnoId") final long alumnoId,
 			HttpServletRequest request) {
 
-		if (request.getSession().getAttribute("siAlumno") != null) {
+		if (request.getSession().getAttribute("siAlumno") != null && usuarioActual()==null) {
 
 			model.addAttribute("siAlumno", 1);
-		}
+		
 
 		Alumno alumno = this.alumnoService.findById(alumnoId);
 		
-		List<Alumno> alumnos = this.alumnoService.findAll();
-		Usuario usuarioActual = usuarioActual();
-		Alumno alumnoActual = usuarioActual.getAlumno();
-		alumnos.removeIf(x->x.getId()==alumnoActual.getId());
 		
-		model.addAttribute("alumnos", alumnos);
-
 		model.addAttribute("alumnoDetalles", alumno);
 		request.getSession().removeAttribute("siAlumno");
 
 		return "alumno/alumnoList";
+		}else if ( request.getSession().getAttribute("siAlumno") == null && usuarioActual()==null) {
+
+			return "redirect:/denegado";
+			
+		}else if ( usuarioActual()!=null && 
+				(usuarioActual().getRol().equals(Roles.ROLE_DENEGADO)||usuarioActual().getRol().equals(Roles.ROLE_REGISTRADO))) {
+
+			return "redirect:/denegado";
+		}else {
+			Alumno alumno = this.alumnoService.findById(alumnoId);
+			
+			List<Alumno> alumnos = this.alumnoService.findAll();
+			Usuario usuarioActual = usuarioActual();
+			Alumno alumnoActual = usuarioActual.getAlumno();
+			alumnos.removeIf(x->x.getId()==alumnoActual.getId());
+			
+			model.addAttribute("alumnos", alumnos);
+
+			model.addAttribute("alumnoDetalles", alumno);
+			request.getSession().removeAttribute("siAlumno");
+
+			return "alumno/alumnoList";
+		}
 
 	}
 

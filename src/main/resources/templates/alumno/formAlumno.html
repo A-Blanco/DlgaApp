@@ -20,17 +20,17 @@
         setTimeout(function () {
   
             // Closing the alert
-            $('.alert').alert('close');
+            $('.alerta').alert('close');
         }, 5000);
     </script>
 
 	<div class="container-fluid">
 
-		<div   th:if="${noAlumno == 1}" class="alert alert-danger" role="alert">
+		<div   th:if="${noAlumno == 1}" class="alert alert-danger alerta" role="alert">
 			El email introducido no existe en la base de datos, por favor,
 			comprueba los datos introducidos o rellene los datos como nuevo Alumno
 		</div>
-		<div   th:if="${siUsuario == 1}" class="alert alert-danger" role="alert">
+		<div   th:if="${siUsuario == 1}" class="alert alert-danger alerta" role="alert">
 			El email introducido ya existe en la base de datos y tiene un usuario
 			registrado.</div>
 
