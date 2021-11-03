@@ -1,0 +1,128 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+
+
+<div th:fragment="createModal" th:if="${asignaturaCreada!= null}" class="modal fade"
+		th:id="ModalAsignaturaCreate" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true"
+		data-keyboard="false" data-backdrop="static">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="ModalTitle">Crear Asignatura</h5>
+
+
+				</div>
+				<form id="formUpdate" class="col-12" th:object="${asignaturaCreada}"
+					th:action="@{asignaturaCreate}" method="post">
+
+					<input th:field="*{id}" type="hidden" name="id" />
+
+
+					<div class="form-group" id="nombre-group">
+
+						<label for="nombre">Nombre</label> <input id="nombre"
+							th:field="*{nombre}" type="text" class="form-control"
+							placeholder="Nombre de la asignatura" name="nombre" />
+						<p class="alert alert-danger" role="alert" th:errors="*{nombre}"></p>
+					</div>
+
+
+					<div class="form-group">
+
+						<label for="caracter">Carácter</label> <select id="caracter"
+							th:field="*{caracter}" class="form-control" name="caracter">
+							<option th:value="-1" th:text="${'-'}" selected="selected"></option>
+							<option th:each="opcionCaracter : ${opcionesCaracter}"
+								th:value="${opcionCaracter}" th:text="${opcionCaracter}"></option>
+						</select>
+						<p class="alert alert-danger" role="alert" th:errors="*{caracter}"></p>
+					</div>
+
+					<div class="form-group">
+
+						<label for="duracion">Duración</label> <select id="duracion"
+							th:field="*{duracion}" class="form-control" name="duracion">
+							<option th:value="-1" th:text="${'-'}" selected="selected"></option>
+							<option th:each="opcionDuracion : ${opcionesDuracion}"
+								th:value="${opcionDuracion}" th:text="${opcionDuracion}"></option>
+
+						</select>
+						<p class="alert alert-danger" role="alert" th:errors="*{duracion}"></p>
+					</div>
+
+					<div class="form-group">
+
+
+						<label for="creditos">Créditos</label> <select id="creditos"
+							th:field="*{creditos}" class="form-control" name="creditos">
+							<option th:value="-1" th:text="${'-'}" selected="selected"></option>
+							<option th:each="opcionCredito : ${opcionesCredito}"
+								th:value="${opcionCredito}" th:text="${opcionCredito}"></option>
+
+						</select>
+						<p class="alert alert-danger" role="alert" th:errors="*{creditos}"></p>
+					</div>
+
+					<div class="form-group">
+
+						<label for="ano">Año</label> <select id="ano" th:field="*{ano}"
+							class="form-control" name="año">
+							<option th:value="-1" th:text="${'-'}" selected="selected"></option>
+							<option th:each="opcionAno : ${opcionesAno}"
+								th:value="${opcionAno}" th:text="${opcionAno}"></option>
+
+						</select>
+						<p class="alert alert-danger" role="alert" th:errors="*{ano}"></p>
+					</div>
+
+					<div class="form-group">
+
+						<label for="departamento">Departamento</label> <select
+							id="departamento" th:field="*{departamento.id}"
+							class="form-control" name="departamento">
+							<option th:value="-1" th:text="${'-'}" selected="selected"></option>
+							<option th:each="opcionDepartamento : ${opcionesDepartamento}"
+								th:value="${opcionDepartamento.id}"
+								th:text="${opcionDepartamento.nombre}"></option>
+
+						</select>
+						<p class="alert alert-danger" role="alert"
+							th:errors="*{departamento.id}"></p>
+					</div>
+
+					<div class="form-group">
+
+						<label for="titulacion">Titulación</label> <select id="titulacion"
+							th:field="*{titulacion.id}" class="form-control"
+							name="titulacion">
+							<option th:value="-1" th:text="${'-'}" selected="selected"></option>
+							<option th:each="opcionTitulacion : ${opcionesTitulacion}"
+								th:value="${opcionTitulacion.id}"
+								th:text="${opcionTitulacion.nombre}"
+								th:selected="*{titulacion.id}"></option>
+
+						</select>
+						<p class="alert alert-danger" role="alert"
+							th:errors="*{titulacion.id}"></p>
+
+					</div>
+
+					<div class="modal-footer">
+
+						<a th:href="@{/asignaturaList}" class="btn btn-secondary">Cerrar</a>
+						<button type="submit" class="btn btn-primary">Confirmar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+</html>

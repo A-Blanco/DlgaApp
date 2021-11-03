@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dlgaApp.entity.Asignatura;
 import com.dlgaApp.entity.Grupo;
@@ -39,11 +40,12 @@ public class TitulacionController {
 	private GrupoServiceImpl grupoServices;
 
 	@GetMapping(value = "/titulacionList")
-	public String titulacionList(Model model) {
+	public String titulacionList(Model model,@ModelAttribute("alert") final Object alert) {
 
 		List<Titulacion> l = this.titulacionService.findAll();
 
 		model.addAttribute("titulaciones", l);
+		model.addAttribute("alert", alert);
 
 		return "titulacion/titulacionesList";
 
@@ -68,7 +70,7 @@ public class TitulacionController {
 
 	@PostMapping(value = "/titulacionUpdate")
 	public String titulacionUpdatePost(@Valid @ModelAttribute("titulacionSeleccionado") Titulacion titulacion,
-			BindingResult result, Model model, HttpServletRequest request) {
+			BindingResult result, Model model, HttpServletRequest request,RedirectAttributes redirectAttributes) {
 
 		validarTitulacion(titulacion, result);
 
@@ -87,7 +89,7 @@ public class TitulacionController {
 			this.titulacionService.save(titulacion);
 
 			
-			
+			redirectAttributes.addFlashAttribute("alert", 2);
 
 			return "redirect:/titulacionList";
 		}
@@ -113,7 +115,8 @@ public class TitulacionController {
 	
 	@PostMapping(value = "/titulacionCreate")
 	public String titulacionCreatePost(@Valid @ModelAttribute("titulacionCreado") Titulacion titulacion,
-			BindingResult result, Model model, HttpServletRequest request) {
+			BindingResult result, Model model, HttpServletRequest request
+			,RedirectAttributes redirectAttributes) {
 
 		validarTitulacion(titulacion, result);
 
@@ -130,6 +133,7 @@ public class TitulacionController {
 		} else {
 
 			this.titulacionService.save(titulacion);
+			redirectAttributes.addFlashAttribute("alert", 1);
 
 			return "redirect:/titulacionList";
 		}
@@ -137,9 +141,11 @@ public class TitulacionController {
 	}
 	
 	@GetMapping(value = "/titulacionDelete/{titulacionId}")
-	public String titulacionDelete(Model model, @PathVariable("titulacionId") final long titulacionId, HttpServletRequest request) {
+	public String titulacionDelete(Model model, @PathVariable("titulacionId") final long titulacionId, HttpServletRequest request
+			,RedirectAttributes redirectAttributes) {
 
 		this.titulacionService.deleteById(titulacionId);
+		redirectAttributes.addFlashAttribute("alert", 3);
 
 		return "redirect:/titulacionList";
 

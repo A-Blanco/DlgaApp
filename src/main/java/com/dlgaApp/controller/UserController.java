@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dlgaApp.entity.Alumno;
 import com.dlgaApp.entity.Roles;
@@ -62,7 +63,8 @@ public class UserController {
 	}
 
 	@PostMapping(value = "/crearUsuario")
-	public String crearusuario(@Valid @ModelAttribute("usuario") Usuario usuario, BindingResult result, Model model) {
+	public String crearusuario(@Valid @ModelAttribute("usuario") Usuario usuario, BindingResult result, Model model
+			,RedirectAttributes redirectAttributes) {
 
 		validarUsuario(usuario, result);
 
@@ -74,7 +76,7 @@ public class UserController {
 			usuarioService.creaUsuario(usuario);
 			;
 		}
-
+		redirectAttributes.addFlashAttribute("alert", 11);
 		return "redirect:";
 
 	}
@@ -137,20 +139,21 @@ public class UserController {
 	}
 
 	@GetMapping(value = "/listaUsuario")
-	public String listarUsuarios(Model model) {
+	public String listarUsuarios(Model model,@ModelAttribute("alert") final Object alert) {
 
 		List<Usuario> l = new ArrayList<Usuario>();
 		l = usuarioService.findAllUsers();
 		l.removeIf(x->x.getId()==this.usuarioActual().getId());
 
 		model.addAttribute("usuarios", l);
+		model.addAttribute("alert", alert);
 
 		return "usuario/listUsuario";
 	}
 
 	@PostMapping(value = "/eliminarUsuario")
 	public String eliminaUsuario(@RequestParam(defaultValue = "false",name = "checkbox") boolean checkbox,
-			@RequestParam(name = "usuarioId") long usuarioId, Model model) {
+			@RequestParam(name = "usuarioId") long usuarioId, Model model,RedirectAttributes redirectAttributes) {
 
 		Usuario usuario = this.usuarioService.findById(usuarioId);
 		Alumno alumno = usuario.getAlumno();
@@ -160,12 +163,14 @@ public class UserController {
 			alumno.setUsuario(null);
 			this.alumnoService.saveAlumno(alumno);
 			this.usuarioService.eliminarUsuario(usuario);
+			redirectAttributes.addFlashAttribute("alert", 3);
 			return "redirect:/listaUsuario";
 			
 		}else {
 			
 			
 			this.alumnoService.eliminaAlumnoById(alumno.getId());
+			redirectAttributes.addFlashAttribute("alert", 3);
 			return "redirect:/listaUsuario";
 		}
 		
@@ -182,24 +187,27 @@ public class UserController {
 	}
 
 	@GetMapping(value = "/usuariosNoAceptados")
-	public String usuariosNoAceptados(Model model) {
+	public String usuariosNoAceptados(Model model,@ModelAttribute("alert") final Object alert) {
 
 		List<Usuario> usuarios = this.usuarioService.findAllUsuarios().stream()
 				.filter(x -> x.getRol().equals(Roles.ROLE_REGISTRADO)).collect(Collectors.toList());
 
 		model.addAttribute("usuarios", usuarios);
+		model.addAttribute("alert", alert);
 
 		return "usuario/usuarioListNoAceptados";
 	}
 
 	@GetMapping(value = "/aceptarUsuario/{usuarioId}")
-	public String aceptarUsuario(@PathVariable("usuarioId") final long usuarioId, Model model) throws MailjetException, MailjetSocketTimeoutException {
+	public String aceptarUsuario(@PathVariable("usuarioId") final long usuarioId, Model model
+			,RedirectAttributes redirectAttributes) throws MailjetException, MailjetSocketTimeoutException {
 
 		Usuario usuario = this.usuarioService.findById(usuarioId);
 
 		usuario.setRol(Roles.ROLE_MIEMBRO);
 		this.usuarioService.save(usuario);
 		this.mailService.emailAceptadoMiembro(usuario);
+		redirectAttributes.addFlashAttribute("alert", 1);
 		
 
 		return "redirect:/usuariosNoAceptados";
@@ -207,7 +215,8 @@ public class UserController {
 
 	@PostMapping(value = "/denegarUsuario")
 	public String denegarUsuario(@RequestParam("usuarioId") Long usuarioId,
-			@RequestParam(required = false, name = "motivo") String motivo, Model model) throws MailjetException, MailjetSocketTimeoutException {
+			@RequestParam(required = false, name = "motivo") String motivo, Model model
+			,RedirectAttributes redirectAttributes) throws MailjetException, MailjetSocketTimeoutException {
 
 		Usuario usuario = this.usuarioService.findById(usuarioId);
 		usuario.setRol(Roles.ROLE_DENEGADO);
@@ -219,6 +228,7 @@ public class UserController {
 		this.usuarioService.save(usuario);
 		
 		this.mailService.emailRechazoMiembro(usuario);
+		redirectAttributes.addFlashAttribute("alert", 2);
 
 		return "redirect:/usuariosNoAceptados";
 	}

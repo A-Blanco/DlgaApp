@@ -1,0 +1,63 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" th:href="@{/estilos/form.css}" />
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
+
+</head>
+<body>
+
+
+
+<body>
+
+     
+   	<div th:fragment="infoModal" th:if="${incidenciaUpdateInfo != null}" th:id="ModalActualizacionIncidenciaInfo" class="modal fade"
+		tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true" data-keyboard="false" data-backdrop="static">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="ModalTitle">Introducir Información
+						contrastada</h5>
+						
+				</div>
+				<form th:action="@{/incidenciaUpdateInfo}" th:object="${incidenciaUpdateInfo}"
+					method="post">
+					<div class="modal-body">
+
+						<input th:field="*{id}" type="hidden" name="id" /> <input
+							th:field="*{titulo}" type="hidden" name="titulo" /> <input
+							th:field="*{descripcion}" type="hidden" name="descripcion" /> <input
+							th:field="*{alumno}" type="hidden" name="alumno" /> <input
+							th:field="*{profesor}" type="hidden" name="profesor" /> <input
+							th:field="*{miembro}" type="hidden" name="miembro" /> <input
+							th:field="*{asignatura}" type="hidden" name="asignatura" /> <input
+							th:field="*{estado}" type="hidden" name="estado" />
+
+						<div class="form-group">
+							<label>Información Contrastada</label>
+							<textarea th:field="*{informacionContrastada}"
+								class="form-control" placeholder="Descripción de la Información"
+								name="informacionContrastada"></textarea>
+							<p class="alert alert-danger" role="alert"
+								th:errors="*{informacionContrastada}"></p>
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						<a class="btn btn-secondary"
+							th:href="@{/detallesIncidencia/} + ${incidenciaUpdateInfo.id}">Cerrar</a>
+						<button type="submit" class="btn btn-primary">Añadir
+							Información</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

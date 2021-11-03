@@ -1,169 +1,135 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">
 
 <head>
 <meta charset="UTF-8">
+<title>Grupos</title>
+<link rel="icon" href="img/Simbolo.png">
 <object th:replace="recursos/base :: boot"></object>
 <link rel="stylesheet" th:href="@{/estilos/base.css}" />
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#grupoList').DataTable({
 			"responsive" : true,
-			"language" : idioma
+			"language" : idioma,
+			"columnDefs" :
+
+			[ {
+				"searchable" : false,
+				"targets" : 1
+			}, {
+				"searchable" : false,
+				"targets" : 2
+			}, {
+				"searchable" : false,
+				"targets" : 3
+			},
+			{
+				"searchable" : false,
+				"targets" : 4
+			},
+
+			]
 		}).draw(true).columns.adjust();
 	});
 </script>
 <script type="text/javascript">
-$( document ).ready(function() {
-		  
-	  var grupo = "[[${grupo}]]";
-	  var grupoId = "[[${idGrupoSeleccionado}]]";
-	  
-	  if(grupo!=""){
-		  $('#ModalGrupoCreate').modal()
-	  }
-	  
-	  if(grupoId!=""){
-		  $('#ModalGrupoDelete').modal()
-	  }
+	$(document).ready(function() {
 
-})
+		var grupo = "[[${grupo}]]";
+		var grupoId = "[[${idGrupoSeleccionado}]]";
+
+		if (grupo != "") {
+			$('#ModalGrupoCreate').modal()
+		}
+
+		if (grupoId != "") {
+			$('#ModalGrupoDelete').modal()
+		}
+
+	})
 </script>
 <script th:replace="recursos/idiomaTable :: idiomaTable"
 	type="text/javascript"></script>
 </head>
 <body>
 	<header th:replace="recursos/base :: navbar"></header>
-	<h2>Lista de Grupos</h2>
 
-	<div class="container">
-		<div class="mx-auto">
-			<div class="table-responsive">
-				<table id="grupoList"
-					class="table table-bordered table-hover table-striped">
-					<thead class="thead-light">
-						<tr>
-							<th>Titulacion</th>
-							<th>Curso</th>
-							<th>Grupo</th>
-							<th sec:authorize="hasRole('ADMIN')"></th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
+<script type="text/javascript"> 
+        setTimeout(function () {
+  
+            // Closing the alert
+             $('.alerta').alert('close');
+        }, 5000);
+    </script> 
 
-						<tr th:each="grupo : ${grupos}">
-							<td th:text="${grupo.titulacion.nombre}"></td>
-							<td th:text="${grupo.curso}"></td>
-							<td th:text="${grupo.numerogrupo}"></td>
-							<td sec:authorize="hasRole('ADMIN')"><a class="btn btn-danger" th:href="@{eliminarGrupoSeguridad/} + ${grupo.id}">Eliminar
-									grupo</a></td>
-									
-							<td><a class="btn btn-primary" th:href="@{delegados/} + ${grupo.id}">Ver
-									delegados</a></td>
-							
-						</tr>
+	<div class="container-fluid">
 
-					</tbody>
-				</table>
-			</div>
+		<div  th:if="${alert == 1}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos del grupo se han guardado correctamente</strong>
 		</div>
-	</div>
-	
-	<a class="btn btn-primary" sec:authorize="hasAnyRole('ADMIN')"  
-th:href="@{/crearGrupo} ">Crear Grupo</a>
-
-
-<div th:if="${grupo!= null}" class="modal fade" data-keyboard="false" data-backdrop="static"
-		th:id="ModalGrupoCreate" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="ModalTitle">Crear Grupo</h5>
-
-
-				</div>
-				<form id="formUpdate" class="col-12"
-					th:object="${grupo}"
-					th:action="@{crearGrupo}" method="post">
-
-					<input  th:field="*{id}" type="hidden" name="id" />
-					
-					<div class="form-group" >
-
-					 <label for="titulacion">Titulación del Grupo</label>
-						<select id="titulacion"
-							th:field="*{titulacion.id}" class="form-control" name="titulacion">
-							<option  th:each="opcionTitulacion : ${titulaciones}" th:value="${opcionTitulacion.id}" 
-							th:text="${opcionTitulacion.nombre}"
-							th:selected="*{titulacion.id}"></option>
-					
-						</select>
-						<p class="alert alert-danger" role="alert"
-							th:errors="*{titulacion.id}"></p>
-							
-					</div>
-					
-					<div class="form-group" id="nombre-group">
-                     <label for="numerogrupo">Número del Grupo</label>
-                        <input id="numerogrupo" th:field="*{numerogrupo}" type="number" class="form-control" name="numerogrupo"/>
-                       <p class="alert alert-danger" role="alert" th:errors="*{numerogrupo}"></p>
-                    </div>
-                    
-
-					<div class="form-group" id="nombre-group">
-                     <label for="curso">Curso</label>
-                        <input id="curso" th:field="*{curso}" type="number" class="form-control" name="curso"/>
-                       <p class="alert alert-danger" role="alert" th:errors="*{curso}"></p>
-                    </div>
-                    
-                    <div class="form-group" id="nombre-group">
-                     <label> Marca la casilla si es un grupo de Inglés</label> <input
-				type="checkbox" th:field="*{esingles}">
-		<p  th:errors="*{esingles}"></p>
 		
-                    </div>
-                   <div  class="alert alert-danger" role="alert" th:errors="${grupo}"> </div> 
-					
-					
-					<div class="modal-footer">
+		
+		<div  th:if="${alert == 3}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos del grupo se han eliminado correctamente</strong>
+		</div>
+		<div class="row justify-content-center">
+			<div class="col-11">
+				<h2 class="tituloTablas">Lista de Grupos</h2>
 
-						<a th:href="@{/grupoList}" class="btn btn-secondary">Cerrar</a>
-						<button type="submit" class="btn btn-primary">Confirmar</button>
+				<div class="mx-auto">
+					<div class="table-responsive">
+						<table id="grupoList"
+							class="table table-bordered table-hover table-striped tablaDatos">
+							<thead class="thead-light">
+								<tr>
+									<th>Titulacion</th>
+									<th>Curso</th>
+									<th>Grupo</th>
+									<th>Bilingüe</th>
+									<th>Opciones</th>
+								</tr>
+							</thead>
+							<tbody>
+
+								<tr th:each="grupo : ${grupos}">
+									<td th:text="${grupo.titulacion.nombre}"></td>
+									<td th:text="${grupo.curso}"></td>
+									<td th:text="${grupo.numerogrupo}"></td>
+									<td><img th:if="${grupo.esingles}" width="40px" src="/img/reino-unido.png" ></td>
+									<td>
+
+										<div class="opcionesTabla">
+											<a class="btn btn-primary"
+												th:href="@{delegados/} + ${grupo.id}">Ver delegados</a>
+										</div>
+										<div class="opcionesTabla" sec:authorize="hasRole('ADMIN')">
+											<a class="btn btn-danger"
+												th:href="@{eliminarGrupoSeguridad/} + ${grupo.id}">Eliminar
+												grupo</a>
+										</div>
+
+									</td>
+
+								</tr>
+
+							</tbody>
+						</table>
+						<a class="btn btn-success botonesDespuesTabla"
+							sec:authorize="hasAnyRole('ADMIN')" th:href="@{/crearGrupo} ">Crear
+							Grupo</a>
 					</div>
-				</form>
+				</div>
 			</div>
 		</div>
 	</div>
+
+	<div th:replace="grupo/deleteGrupoModal :: deleteModal"></div>
+	<div th:replace="grupo/createGrupoModal :: createModal"></div>
+
 	
-	<div class="modal fade" th:id="ModalGrupoDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="ModalTitle">Aviso Importante</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-       
-      <div class="modal-body">
-       
-          <div >
-            <p>Usted va a eliminar los datos del Grupo seleccionado, esto conlleva la eliminación de ciertos datos relacionados con el grupo.
-            ¿Está segur@?
-            </p>
-          </div>
-        
-      </div>
-      <div class="modal-footer">
-       <a th:href="@{/grupoList}" class="btn btn-secondary">Cerrar</a>
-       <a  th:href="@{/eliminarGrupo/} + ${idGrupoSeleccionado}" class="btn btn-danger">Eliminar</a>
-      </div>
-    
-    </div>
-  </div>
-</div>   
+	
 
 </body>
 </html>

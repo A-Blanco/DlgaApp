@@ -1,94 +1,131 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
+<title>Alumnos</title>
+<link rel="icon" href="img/Simbolo.png">
 <object th:replace="recursos/base :: boot"></object>
 <link rel="stylesheet" th:href="@{/estilos/form.css}" />
 <link rel="stylesheet" th:href="@{/estilos/base.css}" />
 <title>Alumno</title>
+<link rel="icon" href="img/Simbolo.png">
+
 </head>
 <body>
-<header th:replace="recursos/base :: navbar"></header>
+	<header th:replace="recursos/base :: navbar"></header>
 
-<body>
-    <div class="modal-dialog text-center">
-        <div class="col-sm-8 main-section">
-            <div class="modal-content">
-                <div class="col-12 user-img">
-                    <img src="img/userIcon.png"/>
-                </div>
-                <form class="col-12" th:action="@{crearAlumno}" th:object="${alumno}" method="post">
-                    <div class="form-group" id="nombre-group">
-                        <input th:field="*{nombre}" type="text" class="form-control" placeholder="Nombre del alumno" name="nombre"/>
-                        <p class="alert alert-danger" role="alert" th:errors="*{nombre}"></p>
-                    </div>
-                    <div class="form-group" id="apellidos-group">
-                    
-                        <input th:field="*{apellidos}" type="text" class="form-control" placeholder="Apellidos" name="apellidos">
-                        
-                        
-                        <p class="alert alert-danger" role="alert" th:errors="*{apellidos}"></p>
-                    </div>
-<!--                     <div class="form-group" id="edad-group"> -->
-<!--                         <input th:field="*{edad}" type="number" class="form-control" placeholder="Edad" name="edad"/> -->
-<!--                         <p class="alert alert-danger" role="alert" th:errors="*{edad}"></p> -->
-<!--                     </div> -->
 
-						<div class="form-group" id="edad-group">
-                        <input th:field="*{fechaNacimiento}" type="date" class="form-control" placeholder="Fecha de Nacimiento" name="fechaNacimiento"/>
-                        <p class="alert alert-danger" role="alert" th:errors="*{fechaNacimiento}"></p>
-                    </div>
-                    <div class="form-group" id="email-group">
-                        <input th:field="*{email}" type="text" class="form-control" placeholder="Email" name="email"/>
-                        <p class="alert alert-danger" role="alert" th:errors="*{email}"></p>
-                    </div>
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i>  Registrar Alumno </button>
-                </form>
-                <div class="col-12 forgot">
-                    <a th:href="@{/}">Cancelar Registro</a>
-               
-  <button th:if="${#session.getAttribute('usuario') != null}" type="button" class="btn btn-danger" data-toggle="modal"
-				 th:attr="data-target='#ModalAlumnoRegistrado'">¿Tus datos están ya registrados?</button>
-				 
-				          
-            </div>
-        </div>
-    </div>
-     </div>
-     
-     <div class="modal fade" th:id="ModalAlumnoRegistrado" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="ModalTitle">Introduzca su email</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-       <form action="/crearUsuarioRegistrado" method="get">
-      <div class="modal-body">
-       
-          <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Email</label>
-            <input required="required" type="text" class="form-control" name="email"></input>
-          </div>
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        	 <button type="submit" class="btn btn-primary">Enviar</button>
-      </div>
-      </form>
-    </div>
-  </div>
-</div>    
-     
-     <div th:if="${noAlumno == 1}" class="alert alert-danger" role="alert">
-  El email introducido no existe en la base de datos, por favor, comprueba los datos introducidos o rellene los daos como nuevo Alumno
-</div>
- <div th:if="${siUsuario == 1}" class="alert alert-danger" role="alert">
-  El email introducido ya existe en la base de datos y tiene un usuario registrado.
-</div>
+<script type="text/javascript">
+        setTimeout(function () {
+  
+            // Closing the alert
+            $('.alert').alert('close');
+        }, 5000);
+    </script>
+
+	<div class="container-fluid">
+
+		<div   th:if="${noAlumno == 1}" class="alert alert-danger" role="alert">
+			El email introducido no existe en la base de datos, por favor,
+			comprueba los datos introducidos o rellene los datos como nuevo Alumno
+		</div>
+		<div   th:if="${siUsuario == 1}" class="alert alert-danger" role="alert">
+			El email introducido ya existe en la base de datos y tiene un usuario
+			registrado.</div>
+
+		<div class="row">
+			<div class="col-3">
+
+				<a class="twitter-timeline" data-height="700"
+					href="https://twitter.com/delegaETSII?ref_src=twsrc%5Etfw">Tweets
+					by delegaETSII</a>
+				<script async src="https://platform.twitter.com/widgets.js"
+					charset="utf-8"></script>
+
+			</div>
+			<div class="col-6">
+				<div class="row justify-content-center">
+					<div class="col-10 text-center">
+						<div class="formAlumno main-section">
+							<div class="modal-content">
+								<div class="col-12 user-img">
+									<img src="img/userIcon.png" />
+								</div>
+								<form class="col-12" th:action="@{crearAlumno}"
+									th:object="${alumno}" method="post">
+									<div class="form-group" id="nombre-group">
+										<input th:field="*{nombre}" type="text" class="form-control"
+											placeholder="Nombre del alumno" name="nombre" />
+										<p class="alert alert-danger" role="alert"
+											th:errors="*{nombre}"></p>
+									</div>
+									<div class="form-group" id="apellidos-group">
+
+
+										<input th:field="*{apellidos}" type="text"
+											class="form-control" placeholder="Apellidos" name="apellidos">
+										<p class="alert alert-danger" role="alert"
+											th:errors="*{apellidos}"></p>
+									</div>
+
+
+									<div class="form-group" id="edad-group">
+										<label class="fechaAlumno" for="fechaNacimiento">Fecha
+											de Nacimiento</label> <input th:field="*{fechaNacimiento}"
+											type="date" class="form-control"
+											placeholder="Fecha de Nacimiento" name="fechaNacimiento" />
+										<p class="alert alert-danger" role="alert"
+											th:errors="*{fechaNacimiento}"></p>
+									</div>
+									<div class="form-group" id="email-group">
+
+										<input th:field="*{email}" type="text" class="form-control"
+											placeholder="Email" name="email" />
+										<p class="alert alert-danger" role="alert"
+											th:errors="*{email}"></p>
+									</div>
+
+
+									<button type="submit"
+										class="col-12 btn btn-primary opcionesTabla">
+										<i class="fas fa-sign-in-alt"></i> Registrar Alumno
+									</button>
+									<button th:if="${#session.getAttribute('usuario') != null}"
+										type="button" class="col-12 btn btn-danger opcionesTabla"
+										data-toggle="modal"
+										th:attr="data-target='#ModalAlumnoRegistrado'">¿Tus
+										datos están ya registrados?</button>
+
+									<div class="col-12 forgot opcionesTabla">
+										<a th:href="@{/}">Cancelar Registro</a>
+									</div>
+								</form>
+
+
+
+
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div th:replace="alumno/alumnoRegistradoModal :: registradoModal"></div>
+			
+
+			<div class="col-3">
+				<a class="twitter-timeline" data-height="700"
+					href="https://twitter.com/etsii?ref_src=twsrc%5Etfw"> Tweets by
+					etsii</a>
+				<script async src="https://platform.twitter.com/widgets.js"
+					charset="utf-8"></script>
+
+			</div>
+		</div>
+	</div>
+
 
 </body>
 </html>

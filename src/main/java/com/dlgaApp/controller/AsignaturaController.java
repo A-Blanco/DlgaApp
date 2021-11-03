@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dlgaApp.entity.Alumno;
 import com.dlgaApp.entity.Asignatura;
@@ -52,9 +53,11 @@ public class AsignaturaController {
 
 
 	@GetMapping(value = "/asignaturaList")
-	public String asignaturaList(Model model) {
+	public String asignaturaList(Model model,@ModelAttribute("alert") final Object alert) {
 		List<Asignatura> asignaturas = this.asignaturaService.asignaturaList();
 		model.addAttribute("asignaturas", asignaturas);
+		model.addAttribute("alert", alert);
+		
 		return "asignatura/asignaturaList";
 	}
 	
@@ -63,15 +66,19 @@ public class AsignaturaController {
 	public String detallesAsignatura(@PathVariable("asignaturaId") final long asignaturaId, Model model) {
 		
 		Asignatura asignatura = this.asignaturaService.findById(asignaturaId);
+		List<Asignatura> asignaturas = this.asignaturaService.asignaturaList();
+		model.addAttribute("asignaturas", asignaturas);
 		
-		model.addAttribute("asignatura", asignatura);
-		return "asignatura/asignaturaDetails";
+		model.addAttribute("asignaturaDetalles", asignatura);
+		return "asignatura/asignaturaList";
 	}
 	
 	@GetMapping(value = "/asignaturaDelete/{asignaturaId}")
-	public String asignaturaDelete(Model model, @PathVariable("asignaturaId") final long asignaturaId, HttpServletRequest request) {
+	public String asignaturaDelete(Model model, @PathVariable("asignaturaId") final long asignaturaId, HttpServletRequest request,
+			RedirectAttributes redirectAttributes) {
 
 		this.asignaturaService.deleteAsignaturaByID(asignaturaId);
+		redirectAttributes.addFlashAttribute("alert", 3);
 
 		return "redirect:/asignaturaList";
 
@@ -99,7 +106,7 @@ public class AsignaturaController {
 	
 	@PostMapping(value = "/asignaturaUpdate")
 	public String asignaturaUpdate(@Valid @ModelAttribute("asignaturaSeleccionado") Asignatura asignatura, BindingResult result,
-			Model model, HttpServletRequest request) {
+			Model model, HttpServletRequest request,RedirectAttributes redirectAttributes) {
 
 		this.validarAsignatura(asignatura, result, true);
 
@@ -119,6 +126,7 @@ public class AsignaturaController {
 		} else {
 
 			this.asignaturaService.saveAsignatura(asignatura);
+			redirectAttributes.addFlashAttribute("alert", 2);
 
 			return "redirect:/asignaturaList";
 		}
@@ -148,7 +156,7 @@ public class AsignaturaController {
 	
 	@PostMapping(value = "/asignaturaCreate")
 	public String asignaturaCreatePost(@Valid @ModelAttribute("asignaturaCreada") Asignatura asignatura, BindingResult result,
-			Model model, HttpServletRequest request) {
+			Model model, HttpServletRequest request,RedirectAttributes redirectAttributes) {
 
 		this.validarAsignatura(asignatura, result, false);
 
@@ -168,6 +176,7 @@ public class AsignaturaController {
 		} else {
 
 			this.asignaturaService.saveAsignatura(asignatura);
+			redirectAttributes.addFlashAttribute("alert", 1);
 
 			return "redirect:/asignaturaList";
 		}
@@ -201,29 +210,29 @@ public class AsignaturaController {
 }
 		
 		if(asignatura.getCaracter().trim().equals("") || !nombresCaracters.contains(asignatura.getCaracter())) {
-			result.rejectValue("caracter", "caracter", "El valor indicado no es corrector");
+			result.rejectValue("caracter", "caracter", "El valor indicado no es correcto");
 		}
 		
 		if(asignatura.getDuracion().trim().equals("") || !nombresDuracions.contains(asignatura.getDuracion())) {
-			result.rejectValue("duracion", "duracion", "El valor indicado no es corrector");
+			result.rejectValue("duracion", "duracion", "El valor indicado no es correcto");
 		}
 		
 		if(asignatura.getCreditos().trim().equals("") || !nombresCreditos.contains(asignatura.getCreditos())) {
-			result.rejectValue("creditos", "creditos", "El valor indicado no es corrector");
+			result.rejectValue("creditos", "creditos", "El valor indicado no es correcto");
 		}
 		
 		if(asignatura.getAno().trim().equals("") || !nombresAños.contains(asignatura.getAno())) {
-			result.rejectValue("ano", "ano", "El valor indicado no es corrector");
+			result.rejectValue("ano", "ano", "El valor indicado no es correcto");
 		}
 		
 		if(asignatura.getDepartamento() == null ||
 				!idsDepartamentos.contains(asignatura.getDepartamento().getId())) {
-			result.rejectValue("departamento.id", "departamento.id", "El valor indicado no es corrector");
+			result.rejectValue("departamento.id", "departamento.id", "El valor indicado no es correcto");
 		}
 		
 		if( asignatura.getTitulacion() == null|| asignatura.getTitulacion().getId()  == null ||
 				!idsTitulaciones.contains(asignatura.getTitulacion().getId())) {
-			result.rejectValue("titulacion.id", "titulacion.id", "El valor indicado no es corrector");
+			result.rejectValue("titulacion.id", "titulacion.id", "El valor indicado no es correcto");
 		}
 		
 		if(!result.hasErrors()) {

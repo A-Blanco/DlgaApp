@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dlgaApp.entity.Alumno;
 import com.dlgaApp.entity.Asignatura;
@@ -91,19 +92,19 @@ public class IncidenciaController {
 			opcionesProfesores.put(prof.getId().toString(), prof.getNombre() );
 		}
 		
-		model.addAttribute("incidencia", incidencia);
+		model.addAttribute("incidenciaCreate", incidencia);
 		model.addAttribute("opcionesAlumnos", opcionesAlumnos);
 		model.addAttribute("opcionesProfesores", opcionesProfesores);
 		model.addAttribute("opcionesAsignaturas", opcionesAsignatura);
 		
 		
-		return "incidencia/formIncidencia";
+		return "recursos/index";
 		
 	}
 	
 	@PostMapping(value = "/incidenciaCreate")
-	public String createIncidenciaPost(@Valid @ModelAttribute("incidencia") Incidencia incidencia,
-			BindingResult result,Model model, HttpServletRequest request) {
+	public String createIncidenciaPost(@Valid @ModelAttribute("incidenciaCreate") Incidencia incidencia,
+			BindingResult result,Model model, HttpServletRequest request,RedirectAttributes redirectAttributes) {
 		
 		validateIncidencia(incidencia, result,0);
 		
@@ -131,19 +132,20 @@ public class IncidenciaController {
 			opcionesProfesores.put(prof.getId().toString(), prof.getNombre() );
 		}
 		
-		model.addAttribute("incidencia", incidencia);
+		model.addAttribute("incidenciaCreate", incidencia);
 		model.addAttribute("opcionesAlumnos", opcionesAlumnos);
 		model.addAttribute("opcionesProfesores", opcionesProfesores);
 		model.addAttribute("opcionesAsignaturas", opcionesAsignatura);
 		
 		
-		return "incidencia/formIncidencia";
+		return "recursos/index";
 		
 		}else {
 			
 			incidencia.setFechaCreacion(new Date());
 			
 			this.incidenciaService.save(incidencia);
+			redirectAttributes.addFlashAttribute("alert", 1);
 			
 			return "redirect:";
 			
@@ -152,7 +154,7 @@ public class IncidenciaController {
 	}
 	
 	@GetMapping(value = "/incidenciaList")
-	public String incidenciaList(Model model) {
+	public String incidenciaList(Model model,@ModelAttribute("alert") final Object alert) {
 		
 		List<Incidencia> incidencias = this.incidenciaService.finfAll();
 		
@@ -161,12 +163,13 @@ public class IncidenciaController {
 		
 		model.addAttribute("incidencias", incidencias);
 		model.addAttribute("modo", "ajeno");
+		model.addAttribute("alert", alert);
 		return "incidencia/incidenciaList";
 		
 	}
 	
 	@GetMapping(value = "/incidenciaPersonalList")
-	public String incidenciaPersonalList(Model model) {
+	public String incidenciaPersonalList(Model model,@ModelAttribute("alert") final Object alert) {
 		
 		List<Incidencia> incidencias = this.incidenciaService.finfAll();
 		
@@ -175,6 +178,7 @@ public class IncidenciaController {
 		
 		model.addAttribute("incidencias", incidencias);
 		model.addAttribute("modo", "personal");
+		model.addAttribute("alert", alert);
 
 		return "incidencia/incidenciaList";
 		
@@ -182,34 +186,46 @@ public class IncidenciaController {
 	
 	
 	@GetMapping(value = "/gestionIncidencias")
-	public String gestionIncidencias(Model model) {
+	public String gestionIncidencias(Model model,@ModelAttribute("alert") final Object alert) {
 		
 		List<Incidencia> incidencias = this.incidenciaService.finfAll();
 		
 		model.addAttribute("incidencias", incidencias);
 		model.addAttribute("modo", "gestion");
+		model.addAttribute("alert", alert);
 
 		return "incidencia/incidenciaList";
 		
 	}
 	
 	@GetMapping(value = "/detallesIncidencia/{incidenciaId}")
-	public String detallesIncidencia(@PathVariable("incidenciaId") final long incidenciaId, Model model) {
+	public String detallesIncidencia(@PathVariable("incidenciaId") final long incidenciaId, Model model,
+			@ModelAttribute("alert") final Object alert) {
 		
 		Incidencia incidencia = this.incidenciaService.findIncidenciaById(incidenciaId);
 		
-		model.addAttribute("incidencia", incidencia);
-		return "incidencia/incidenciaDetails";
+		model.addAttribute("incidenciaDetalles", incidencia);
+		model.addAttribute("alert", alert);
+		return "incidencia/incidenciaList";
+	}
+	
+	@GetMapping(value = "/incidenciaUpdateInfo/{incidenciaId}")
+	public String incidenciaUpdateInfoGet(@PathVariable("incidenciaId") final long incidenciaId, Model model) {
+		
+		Incidencia incidencia = this.incidenciaService.findIncidenciaById(incidenciaId);
+		
+		model.addAttribute("incidenciaUpdateInfo", incidencia);
+		return "incidencia/incidenciaList";
 	}
 	
 	@PostMapping(value = "/incidenciaUpdateInfo")
-	public String incidenciaUpdateInfo(@Valid @ModelAttribute("incidencia") Incidencia incidencia, BindingResult result,
-			Model model, HttpServletRequest request) throws JSONException, MailjetException, MailjetSocketTimeoutException, IOException {
+	public String incidenciaUpdateInfo(@Valid @ModelAttribute("incidenciaUpdateInfo") Incidencia incidencia, BindingResult result,
+			Model model, HttpServletRequest request,RedirectAttributes redirectAttributes) throws JSONException, MailjetException, MailjetSocketTimeoutException, IOException {
 
 		this.validateIncidencia(incidencia, result,1);
 
 		if (result.hasErrors()) {
-			model.addAttribute("incidencia", incidencia);
+			model.addAttribute("incidenciaUpdateInfo", incidencia);
 			if(result.hasFieldErrors("informacionContrastada")) {
 				model.addAttribute("errorInfo", "errorInfo");
 			}
@@ -219,7 +235,7 @@ public class IncidenciaController {
 			}
 			
 
-			return "incidencia/incidenciaDetails";
+			return "incidencia/incidenciaList";
 		} else {
 			
 			if(incidencia.getEstado() == EstadosIncidencia.BusquedaInformacion) {
@@ -229,20 +245,30 @@ public class IncidenciaController {
 			this.incidenciaService.save(incidencia);
 			
 			this.mailService.emailInfoIncidencia(incidencia);
+			redirectAttributes.addFlashAttribute("alert", 2);
 
 			return "redirect:/detallesIncidencia/" + incidencia.getId();
 		}
 
 	}
 	
+	@GetMapping(value = "/incidenciaUpdateAcuerdo/{incidenciaId}")
+	public String incidenciaUpdateAcuerdoGet(@PathVariable("incidenciaId") final long incidenciaId, Model model) {
+		
+		Incidencia incidencia = this.incidenciaService.findIncidenciaById(incidenciaId);
+		
+		model.addAttribute("incidenciaUpdateAcuerdo", incidencia);
+		return "incidencia/incidenciaList";
+	}
+	
 	@PostMapping(value = "/incidenciaUpdateAcuerdo")
-	public String incidenciaUpdateAcuerdo(@Valid @ModelAttribute("incidencia") Incidencia incidencia, BindingResult result,
-			Model model, HttpServletRequest request) throws JSONException, MailjetException, MailjetSocketTimeoutException, IOException {
+	public String incidenciaUpdateAcuerdo(@Valid @ModelAttribute("incidenciaUpdateAcuerdo") Incidencia incidencia, BindingResult result,
+			Model model, HttpServletRequest request,RedirectAttributes redirectAttributes) throws JSONException, MailjetException, MailjetSocketTimeoutException, IOException {
 
 		this.validateIncidencia(incidencia, result,2);
 
 		if (result.hasErrors()) {
-			model.addAttribute("incidencia", incidencia);
+			model.addAttribute("incidenciaUpdateAcuerdo", incidencia);
 			if(result.hasFieldErrors("informacionContrastada")) {
 				model.addAttribute("errorInfo", "errorInfo");
 			}
@@ -252,7 +278,7 @@ public class IncidenciaController {
 			}
 			
 
-			return "incidencia/incidenciaDetails";
+			return "incidencia/incidenciaList";
 		} else {
 			
 			 if(incidencia.getEstado() == EstadosIncidencia.BusquedaAcuerdo) {
@@ -262,6 +288,7 @@ public class IncidenciaController {
 			this.incidenciaService.save(incidencia);
 			
 			this.mailService.emailFinalizacionIncidencia(incidencia);
+			redirectAttributes.addFlashAttribute("alert", 21);
 			
 			return "redirect:/detallesIncidencia/" + incidencia.getId();
 		}
@@ -292,7 +319,7 @@ public class IncidenciaController {
 	
 	@GetMapping(value = "/incidenciaDelete/{incidenciaId}")
 	public String incidenciaDelete(Model model, @PathVariable("incidenciaId") final long incidenciaId,@RequestParam(required = false, name = "modo") String modo,
-			HttpServletRequest request) {
+			HttpServletRequest request,RedirectAttributes redirectAttributes) {
 		
 		Incidencia incidencia = this.incidenciaService.findIncidenciaById(incidenciaId);
 		
@@ -303,10 +330,13 @@ public class IncidenciaController {
 		
 		
 		if(modo.equals("ajeno")) {
+			redirectAttributes.addFlashAttribute("alert", 3);
 			return "redirect:/incidenciaList";
 		}if(modo.equals("personal")) {
+			redirectAttributes.addFlashAttribute("alert", 3);
 			return "redirect:/incidenciaPersonalList";
 		}if(modo.equals("gestion")) {
+			redirectAttributes.addFlashAttribute("alert", 3);
 			return "redirect:/gestionIncidencias";
 		}else {
 			
@@ -324,15 +354,6 @@ public class IncidenciaController {
 			result.rejectValue("descripcion", "descripcion", "La descripción debe ser válida");
 		}
 		
-//		if(incidencia.getEstado()==EstadosIncidencia.BusquedaAcuerdo && incidencia.getInformacionContrastada().trim().equals("")) {
-//			result.rejectValue("informacionContrastada", "informacionContrastada", 
-//					"En el estado que se encuentra la incidencia, debe tener la información contrastadada");
-//		}
-//		
-//		if(incidencia.getEstado()==EstadosIncidencia.Finalizada && incidencia.getAcuerdo().trim().equals("")) {
-//			result.rejectValue("acuerdo", "acuerdo", 
-//					"En el estado que se encuentra la incidencia, debe tener el acuerdo alcanzado");
-//		}
 		
 		
 		if(update == 1 && (incidencia.getEstado() == EstadosIncidencia.BusquedaInformacion || incidencia.getEstado() == EstadosIncidencia.BusquedaAcuerdo)

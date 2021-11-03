@@ -1,7 +1,10 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
+<title>Alumnos</title>
+<link rel="icon" href="img/Simbolo.png">
 <object th:replace="recursos/base :: boot"></object>
 <link rel="stylesheet" th:href="@{/estilos/base.css}" />
 <script onselect="filtro" type="text/javascript">
@@ -64,167 +67,143 @@
 </script>
 
 <script type="text/javascript">
-$( document ).ready(function() {
-	
+	$(document).ready(function() {
+		
+		
+		var alumnoDetalles = "[[${alumnoDetalles}]]";
+		var alumno = "[[${alumnoSeleccionado}]]";
+		var alumnoId = "[[${idAlumnoSeleccionado}]]";
 
-	  
-	  var alumno = "[[${alumnoSeleccionado}]]";
-	  var alumnoId = "[[${idAlumnoSeleccionado}]]";
-	  
-	  if(alumno!=""){
-		  $('#ModalAlumnoUpdate').modal()
-	  }
-	  
-	  if(alumnoId!=""){
-		  $('#ModalAlumnoDelete').modal()
-	  }
-	 
-	
-})
+		if (alumno != "") {
+			$('#ModalAlumnoUpdate').modal()
+		}
 
+		if (alumnoId != "") {
+			$('#ModalAlumnoDelete').modal()
+		}
+		
+		if (alumnoDetalles != "") {
+			$('#ModalAlumnoDetalles').modal()
+		}
 
+	})
 </script>
 
-<script th:replace="recursos/idiomaTable :: idiomaTable" type="text/javascript"></script>
+<script th:replace="recursos/idiomaTable :: idiomaTable"
+	type="text/javascript"></script>
 </head>
 <body>
-<header th:replace="recursos/base :: navbar"></header>
-	<h2>Lista de Alumnos</h2>
+	<header th:replace="recursos/base :: navbar"></header>
 	
-	<div class="col-md-4 ml-auto" >
-				<select title="Filtrar: " onchange="decideFiltro(this.value)" id="selectFiltro"
-					name="filtro">
-					<option disabled selected>Filtros de Búsqueda</option>
-					<option value="nombre" id="selectNombre">Nombre</option>
-					<option value="email" id="selectId">Email</option>
-				</select>
-				</div>
+ 	<script type="text/javascript"> 
+        setTimeout(function () {
+  
+            // Closing the alert
+             $('.alerta').alert('close');
+        }, 5000);
+    </script> 
 
-<div class="container">
-		<div class="mx-auto">
-			<div class="table-responsive">
-				<table id="alumnoList" class="table table-bordered table-hover table-striped">
-					<thead class="thead-light">
-			<tr>
-				<th>Nombre</th>
-				<th>Email</th>
-				<th  th:if="${#session.getAttribute('grupoId') != null}"></th>
-				<th sec:authorize="hasRole('ADMIN')" th:if="${#session.getAttribute('grupoId') == null}"></th>
-				<th sec:authorize="hasRole('ADMIN')" th:if="${#session.getAttribute('grupoId') == null}"></th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
+	<div class="container-fluid">
 
-			<tr th:each="alumno : ${alumnos}">
-				<td th:text="${alumno.nombre}"></td>
-				<td th:text="${alumno.email}"></td>
-				<td th:if="${#session.getAttribute('grupoId') != null}"><a th:if="${ alumno.grupoDelegado == null}"
-					th:href="@{/agregarDelegado/} + ${alumno.id}">Añadir</a>
-					<p th:if="${ alumno.grupoDelegado != null}">Este Alumno ya es
-						delegado de un grupo</p></td>
-				
-				<td sec:authorize="hasRole('ADMIN')" th:if="${#session.getAttribute('grupoId') == null}">
-				<form th:action="@{alumnoUpdate}"  method="get">
-				<input type="hidden" th:value="${alumno.id}" name="alumnoId"></input>
-				<button type="submit" class="btn btn-primary">Modificar datos</button>
-				</form>
-				
-				</td>
- 
- 
-					<td sec:authorize="hasRole('ADMIN')" th:if="${#session.getAttribute('grupoId') == null}"><a 
-					 class="btn btn-danger" th:href="@{/alumnoDeleteSeguridad/} + ${alumno.id}">Eliminar</a></td>
-				<td><a
-					 class="btn btn-dark" th:href="@{/detallesAlumno/} + ${alumno.id}">Ver detalles Alumno</a></td>
-			</tr>
+		<div  th:if="${alert == 1}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos del alumno se han guardado correctamente</strong>
+		</div>
+		
+		<div  th:if="${alert == 2}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos del alumno se han actualizado correctamente</strong>
+		</div>
+		
+		<div  th:if="${alert == 3}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos del alumno se han eliminado correctamente</strong>
+		</div>
+		
+		
+		<div class="row justify-content-center">
+			<div class="col-11">
 
-		</tbody>
-	</table>
-	</div>
-	</div>
-	</div>
+				<h2 class="tituloTablas">Lista de Alumnos</h2>
 
-<a class="btn btn-primary" sec:authorize="hasAnyRole('ADMIN', 'DEVELOPER')" th:if="${#session.getAttribute('grupoId') == null}" 
-th:href="@{/crearAlumno} ">Crear Alumno</a>
-
-
-
-<div th:if="${alumnoSeleccionado != null}" class="modal fade" th:id="ModalAlumnoUpdate" data-keyboard="false" data-backdrop="static" tabindex="-1"
-		role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="ModalTitle">Editar Alumno</h5>
-					
-						
-				</div>
-				<form id="formUpdate" class="col-12" th:object="${alumnoSeleccionado}"  th:action="@{alumnoUpdate}"  method="post">
-                     
-                      <input th:field="*{id}" type="hidden"  name="id"/>
-                     
-                     <div class="form-group" id="nombre-group">
-                     
-                     <label for="nombre">Nombre</label>
-                     
-                        <input id="nombre" th:field="*{nombre}" type="text" class="form-control" placeholder="Nombre del alumno" name="nombre"/>
-                       <p class="alert alert-danger" role="alert" th:errors="*{nombre}"></p>
-                    </div>
-                    <div class="form-group" id="apellidos-group">
-                    
-                    <label for="apellidos">Apellidos</label>
-                        <input id="apellidos" th:field="*{apellidos}" type="text" class="form-control" placeholder="Apellidos" name="apellidos">
-                  		<p class="alert alert-danger" role="alert" th:errors="*{apellidos}"></p>
-                    </div>
-                    
-                    
-                    <label for="edad">Fecha de Nacimiento</label>
-                    <div class="form-group" id="edad-group">
-                        <input th:field="*{fechaNacimiento}" type="date" class="form-control" placeholder="Fecha de Nacimiento" name="fechaNacimiento"/>
-                        <p class="alert alert-danger" role="alert" th:errors="*{fechaNacimiento}"></p>
-                    </div>
-                    <div class="form-group" id="email-group">
-                    	<label for="email">Email</label>
-                        <input id="email" th:field="*{email}" type="text" class="form-control" placeholder="Email" name="email"/>
-                        <p class="alert alert-danger" role="alert" th:errors="*{email}"></p>
-                    </div>
-                    <div class="modal-footer">
-                    
-						<a th:href="@{/listAlumnos}" class="btn btn-secondary">Cerrar</a>
-						<button type="submit" class="btn btn-primary">Actualizar</button>
+				<div class="input-group mb-3 justify-content-end filtros">
+					<div class="input-group-prepend">
+						<label class="input-group-text" for="selectFiltro">Filtros
+							de Búsqueda</label>
 					</div>
-                </form>
+					<select class="col-2" title="Filtrar: "
+						onchange="decideFiltro(this.value)" id="selectFiltro"
+						name="filtro">
+						<option disabled selected>-</option>
+						<option value="nombre" id="selectNombre">Nombre</option>
+						<option value="email" id="selectId">Email</option>
+					</select>
+				</div>
+
+				<div class="mx-auto">
+					<div class="table-responsive">
+						<table id="alumnoList"
+							class="table table-bordered table-hover table-striped tablaDatos">
+							<thead class="thead-light">
+								<tr>
+									<th>Nombre</th>
+									<th>Email</th>
+									<th>Opciones</th>
+								</tr>
+							</thead>
+							<tbody>
+
+								<tr th:each="alumno : ${alumnos}">
+									<td th:text="${alumno.nombre + ' ' + alumno.apellidos}"></td>
+									<td th:text="${alumno.email}"></td>
+									<td><div class="opcionesTabla"
+											th:if="${#session.getAttribute('grupoId') != null}">
+											<a class="btn btn-success opcionesTabla" th:if="${ alumno.grupoDelegado == null}"
+												th:href="@{/agregarDelegado/} + ${alumno.id}">Añadir</a>
+											<p class="btn btn-info opcionesTabla" th:if="${ alumno.grupoDelegado != null}">Este Alumno
+												ya es delegado de un grupo</p>
+										</div>
+										
+										<div class="opcionesTabla">
+											<a class="btn btn-dark"
+												th:href="@{/detallesAlumno/} + ${alumno.id}">Ver
+												detalles Alumno</a>
+										</div>
+										
+										<div class="opcionesTabla" sec:authorize="hasRole('ADMIN')"
+											th:if="${#session.getAttribute('grupoId') == null}">
+											<form th:action="@{alumnoUpdate}" method="get">
+												<input type="hidden" th:value="${alumno.id}" name="alumnoId"></input>
+												<button type="submit" class="btn btn-primary">Modificar
+													datos</button>
+											</form>
+
+										</div>
+
+
+										<div class="opcionesTabla" sec:authorize="hasRole('ADMIN')"
+											th:if="${#session.getAttribute('grupoId') == null}">
+											<a class="btn btn-danger"
+												th:href="@{/alumnoDeleteSeguridad/} + ${alumno.id}">Eliminar</a>
+										</div>
+										</td>
+								</tr>
+
+							</tbody>
+						</table>
+						<a class="btn btn-success botonesDespuesTabla"
+							sec:authorize="hasAnyRole('ADMIN', 'DEVELOPER')"
+							th:if="${#session.getAttribute('grupoId') == null}"
+							th:href="@{/crearAlumno} ">Crear Alumno</a>
+					</div>
+				</div>
 			</div>
+
+
+
 		</div>
 	</div>
-	
-	 <div class="modal fade" th:id="ModalAlumnoDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="ModalTitle">Aviso Importante</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-     
-      <div class="modal-body">
-       
-          <div >
-            <p>Usted va a eliminar los datos del alumno seleccionado, esto conlleva la eliminación de el usuario relacionado en el caso de que lo tenga.
-            ¿Está segur@?
-            </p>
-          </div>
-        
-      </div>
-      <div class="modal-footer">
-       <a th:href="@{/listAlumnos}" class="btn btn-secondary">Cerrar</a>
-       <a  th:href="@{/alumnoDelete/} + ${idAlumnoSeleccionado}" class="btn btn-danger">Eliminar</a>
-      </div>
-    
-    </div>
-  </div>
-</div>    
-    
+
+	<div th:replace="alumno/alumnoDetallesModal :: detallesModal"></div>
+	<div th:replace="alumno/alumnoUpdateModal :: updateModal"></div>
+	<div th:replace="alumno/alumnoDeleteModal :: deleteModal"></div>
+
 </body>
 </html>

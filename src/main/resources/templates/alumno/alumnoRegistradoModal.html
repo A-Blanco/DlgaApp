@@ -1,0 +1,45 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+<!-- registradoModal -->
+<!-- ModalAlumnoRegistrado -->
+
+
+<div th:fragment="registradoModal" 
+		class="modal fade" data-keyboard="false" data-backdrop="static"
+		th:id="ModalAlumnoRegistrado" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="ModalTitle">Introduza su Email</h5>
+
+
+				</div>
+				<form action="/crearUsuarioRegistrado" method="get">
+					<div class="modal-body">
+
+						<div >
+							
+							<input class="form-control" required="required" type="text" 
+								name="email"></input>
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Cerrar</button>
+						<button type="submit" class="btn btn-primary">Enviar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+</html>

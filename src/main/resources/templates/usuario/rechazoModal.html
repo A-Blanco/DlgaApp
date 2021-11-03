@@ -1,0 +1,46 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" th:href="@{/estilos/form.css}" />
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
+</head>
+<body>
+
+
+
+<body>
+
+
+     
+  <div th:fragment="rechazoModal" class="modal fade" th:id="*{'ModalDenegado'+{usuario.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+				 	data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalTitle">Motivo del rechazo</h5>
+        
+      </div>
+       <form action="/denegarUsuario" method="post">
+      <div class="modal-body">
+       
+          <div class="form-group">
+           <input type="hidden" th:value="*{usuario.id}" class="form-control" name="usuarioId">
+            <label for="recipient-name" class="col-form-label">Motivo:</label>
+            <textarea  placeholder="Si dejas este campo vacío, el alumno no tendrá información respecto a su rechazo"  class="form-control textMotivo" name="motivo"></textarea>
+          </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        	 <button type="submit" class="btn btn-primary">Enviar</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

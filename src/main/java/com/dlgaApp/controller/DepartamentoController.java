@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dlgaApp.entity.Alumno;
 import com.dlgaApp.entity.Asignatura;
@@ -56,9 +57,10 @@ public class DepartamentoController {
 	}
 
 	@GetMapping(value = "/listDepartamentos")
-	public String listDepartamentos(Model model) {
+	public String listDepartamentos(Model model, @ModelAttribute("alert") final Object alert) {
 
 		model.addAttribute("departamentos", departamentoService.listaDepartamento());
+		model.addAttribute("alert", alert);
 
 		return "departamento/listDepartamentos";
 	}
@@ -67,16 +69,25 @@ public class DepartamentoController {
 	public String detallesDepartamento(@PathVariable("departamentoId") final long departamentoId, Model model) {
 
 		Departamento departamento = this.departamentoService.getDepartamentoById(departamentoId);
-
-		model.addAttribute("departamento", departamento);
-		return "departamento/detallesDepartamento";
+		
+		model.addAttribute("departamentos", departamentoService.listaDepartamento());
+		model.addAttribute("departamentoDetalles", departamento);
+		String detallesAsignatura = "";
+		for(Asignatura a: departamento.getAsignaturas()) {
+			detallesAsignatura = detallesAsignatura + "- " + a.getNombre() + " (" 
+		+ a.getTitulacion().getNombre() + ")\n";
+		}
+		model.addAttribute("detallesAsignatura", detallesAsignatura);
+		
+		return "departamento/listDepartamentos";
 	}
 
 	@GetMapping(value = "/departamentoDelete/{departamentoId}")
 	public String departamentoDelete(Model model, @PathVariable("departamentoId") final long departamentoId,
-			HttpServletRequest request) {
+			HttpServletRequest request,RedirectAttributes redirectAttributes) {
 
 		this.departamentoService.removeDepartamentoById(departamentoId);
+		redirectAttributes.addFlashAttribute("alert", 3);
 
 		return "redirect:/listDepartamentos";
 
@@ -132,7 +143,7 @@ public class DepartamentoController {
 
 	@PostMapping(value = "/departamentoUpdate")
 	public String departamentoUpdate(@Valid @ModelAttribute("departamentoSeleccionado") Departamento departamento,
-			BindingResult result, Model model, HttpServletRequest request) {
+			BindingResult result, Model model, HttpServletRequest request,RedirectAttributes redirectAttributes) {
 
 		this.validarDepartamento(departamento, result);
 
@@ -214,7 +225,8 @@ public class DepartamentoController {
 			}
 
 			this.departamentoService.save(departamento);
-
+			redirectAttributes.addFlashAttribute("alert", 2);
+			
 			return "redirect:/listDepartamentos";
 		}
 
@@ -269,7 +281,7 @@ public class DepartamentoController {
 
 	@PostMapping(value = "/departamentoCreate")
 	public String departamentoCretePost(@Valid @ModelAttribute("departamentoCreada") Departamento departamento,
-			BindingResult result, Model model, HttpServletRequest request) {
+			BindingResult result, Model model, HttpServletRequest request,RedirectAttributes redirectAttributes) {
 
 		this.validarDepartamento(departamento, result);
 
@@ -331,7 +343,7 @@ public class DepartamentoController {
 				p.setDepartamento(departamento);
 				this.profesorService.save(p);
 			}
-
+			redirectAttributes.addFlashAttribute("alert", 1);
 			return "redirect:/listDepartamentos";
 		}
 
@@ -343,7 +355,8 @@ public class DepartamentoController {
 
 		model.addAttribute("idDepartamentoSeleccionado", departamentoId);
 		model.addAttribute("departamentos", departamentoService.listaDepartamento());
-
+		
+		
 		return "departamento/listDepartamentos";
 
 	}

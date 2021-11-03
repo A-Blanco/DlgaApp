@@ -1,26 +1,105 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">
 
 <head>
 <meta charset="UTF-8">
 <object th:replace="recursos/base :: boot"></object>
 <link rel="stylesheet" th:href="@{/estilos/base.css}" />
-<script type="text/javascript">
+<script onselect="filtro" type="text/javascript">
 	$(document).ready(function() {
 		$('#usuarioList').DataTable({
 			"responsive" : true,
-			"language" : idioma
+			"language" : idioma,
+			"destroy" : true,
+			"searching" : false,
+
 		}).draw(true).columns.adjust();
 	});
+
+	function decideFiltro(val) {
+
+		if (val == "nombre") {
+			$(document).ready(function() {
+				$('#usuarioList').DataTable({
+					"responsive" : true,
+					"language" : idioma,
+					"destroy" : true,
+					"columnDefs" :
+
+					[ {
+						"searchable" : false,
+						"targets" : 0
+					}, {
+						"searchable" : false,
+						"targets" : 2
+					}, {
+						"searchable" : false,
+						"targets" : 3
+					},
+
+					]
+
+				}).draw(true).columns.adjust();
+			});
+		}
+
+		else if (val == "username") {
+			$(document).ready(function() {
+				$('#usuarioList').DataTable({
+					"responsive" : true,
+					"language" : idioma,
+					"destroy" : true,
+					"columnDefs" :
+
+					[ {
+						"searchable" : false,
+						"targets" : 1
+					}, {
+						"searchable" : false,
+						"targets" : 2
+					}, {
+						"searchable" : false,
+						"targets" : 3
+					},
+
+					]
+
+				}).draw(true).columns.adjust();
+			});
+		} else if (val == "rol") {
+			$(document).ready(function() {
+				$('#usuarioList').DataTable({
+					"responsive" : true,
+					"language" : idioma,
+					"destroy" : true,
+					"columnDefs" :
+
+					[ {
+						"searchable" : false,
+						"targets" : 0
+					}, {
+						"searchable" : false,
+						"targets" : 1
+					}, {
+						"searchable" : false,
+						"targets" : 3
+					},
+
+					]
+
+				}).draw(true).columns.adjust();
+			});
+		}
+	}
 </script>
+
 <script type="text/javascript">
-function datosModal(id) {
-	
-	$('#usuarioId').val(id);
+	function datosModal(id) {
 
-}
+		$('#usuarioId').val(id);
 
-
+	}
 </script>
 <script th:replace="recursos/idiomaTable :: idiomaTable"
 	type="text/javascript"></script>
@@ -28,47 +107,81 @@ function datosModal(id) {
 <body>
 	<header th:replace="recursos/base :: navbar"></header>
 
-	<h2>Lista de Usuarios</h2>
+<script type="text/javascript"> 
+        setTimeout(function () {
+  
+            // Closing the alert
+             $('.alerta').alert('close');
+        }, 5000);
+    </script> 
 
-	<div class="container">
-		<div class="mx-auto">
-			<div class="table-responsive">
-				<table id="usuarioList"
-					class="table table-bordered table-hover table-striped">
-					<thead class="thead-light">
-						<tr>
-							<th>Username</th>
-							<th>Nombre</th>
-							<th>Apellidos</th>
-							<th sec:authorize="hasRole('ADMIN')">Rol</th>
-							<th sec:authorize="hasRole('ADMIN')">Borrar</th>
-							<th>Ver Detalles</th>
-						</tr>
-					</thead>
-					<tbody>
+	<div class="container-fluid">
+		
+		<div  th:if="${alert == 3}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos del Usuario se han eliminado correctamente</strong>
+		</div>
+		<div class="row justify-content-center">
+			<div class="col-11">
 
-						<tr th:each="usuario : ${usuarios}">
-							<td th:text="${usuario.username}"></td>
-							<td th:text="${usuario.alumno.nombre}"></td>
-							<td th:text="${usuario.alumno.apellidos}"></td>
-							<td sec:authorize="hasRole('ADMIN')"
-								th:text="${#strings.substringAfter(usuario.rol,'ROLE_')}"></td>
-							
-							
-<td sec:authorize="hasRole('ADMIN')">
+				<h2 class="tituloTablas">Lista de Usuarios</h2>
+
+				<div class="input-group mb-3 justify-content-end filtros">
+					<div class="input-group-prepend">
+						<label class="input-group-text" for="selectFiltro">Filtros
+							de Búsqueda</label>
+					</div>
+					<select class="col-2" title="Filtrar: "
+						onchange="decideFiltro(this.value)" id="selectFiltro"
+						name="filtro">
+						<option disabled selected>-</option>
+						<option value="nombre" id="selectNombre">Nombre</option>
+						<option value="email" id="selectId">Username</option>
+						<option value="rol" id="selectRol">Rol</option>
+					</select>
+				</div>
+				<div class="mx-auto">
+					<div class="table-responsive">
+						<table id="usuarioList"
+							class="table table-bordered table-hover table-striped tablaDatos">
+							<thead class="thead-light">
+								<tr>
+									<th>Username</th>
+									<th>Nombre</th>
+									<th sec:authorize="hasRole('ADMIN')">Rol</th>
+									<th>Opciones</th>
+								</tr>
+							</thead>
+							<tbody>
+
+								<tr th:each="usuario : ${usuarios}">
+									<td th:text="${usuario.username}"></td>
+									<td
+										th:text="${usuario.alumno.nombre + ' ' +  usuario.alumno.apellidos}"></td>
+									<td sec:authorize="hasRole('ADMIN')"
+										th:text="${#strings.substringAfter(usuario.rol,'ROLE_')}"></td>
+
+									<td>
+
+										<div class="opcionesTabla">
+											<a class="btn btn-dark"
+												th:href="@{usuario/} + ${usuario.id}">Ver detalles</a>
+										</div>
+
+										<div class="opcionesTabla" sec:authorize="hasRole('ADMIN')">
 
 
-<a class="btn btn-danger" id="linkModal"
- th:attr="data-target='#ModalAlumnoDelete', data-toggle='modal'" th:onclick="'datosModal(\'' + ${usuario.id} + '\');'">Eliminar</a></td>
-									
-									
-									
-							<td><a class="btn btn-primary" th:href="@{usuario/} + ${usuario.id}">Ver
-									detalles</a></td>
-						</tr>
+											<a class="btn btn-danger" id="linkModal"
+												th:attr="data-target='#ModalAlumnoDelete', data-toggle='modal'"
+												th:onclick="'datosModal(\'' + ${usuario.id} + '\');'">Eliminar</a>
+										</div>
 
-					</tbody>
-				</table>
+									</td>
+								</tr>
+
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -92,10 +205,9 @@ function datosModal(id) {
 							<p>Está a punto de borrar este usuario, por favor marque el
 								check si desea mantener los datos del alumno asociado a dicho
 								usuario</p>
-							<input  type="checkbox" class="form-control"
-								name="checkbox"></input> 
-								<input required="required"
-								type="hidden" class="form-control" name="usuarioId" id="usuarioId" ></input>
+							<input type="checkbox" class="form-control" name="checkbox"></input>
+							<input required="required" type="hidden" class="form-control"
+								name="usuarioId" id="usuarioId"></input>
 						</div>
 
 					</div>

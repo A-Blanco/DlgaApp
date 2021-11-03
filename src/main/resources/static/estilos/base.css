@@ -1,13 +1,59 @@
 @charset "utf-8";
 
+select[disabled] > option {
+    color: black !important;
+    font-weight: bold;
+    height: 100%;
+}
+
+.alerta{
+	position:fixed !important;  
+    width: 100% !important;
+    z-index:9999 !important; 
+    border-radius:0px !important;
+    margin-bottom: 40px !important;
+}
+
+.imgError{
+	width: 200px !important;
+}
+
 body{
 background-color: #ABDFFA}
 
+.tablaDatos{
+	width: 100% !important;
+	
+}
+
+#ModalAlumnoRegistrado{
+	color: white;
+	margin-top: 50px;
+}
+
+.modal-dialog{
+	max-width : 50%;
+}
+
+table.dataTable tbody td {
+  vertical-align: middle;
+  
+}
+
 div.funcionInicio{
-	margin-left: 40px;
-	margin-right: 40px;
-	display:  inline-block;
-	width: auto;
+	
+
+	margin-top: 20px;
+	display: inline-block;
+
+}
+
+img.imgFuncion{
+	width: 100px;
+	height: 100px;
+	display:flex;
+	margin-left: auto;
+    margin-right: auto;
 }
 
 div.inicio{
@@ -16,3 +62,115 @@ div.inicio{
 	width: 400px;
 	position: relative;
 }
+
+div.col-3{
+	padding-top: 20px;
+}
+
+div.col-6{
+	padding-top: 20px;
+}
+
+.tituloInicio{
+	text-align: center;
+}
+
+.tituloInfo{
+	margin-top: 20px;
+	margin-bottom: 20px;
+	text-decoration: underline;
+}
+
+div.credenciales{
+	padding-right: 40px;
+}
+
+div.logout{
+	padding-right: 20px;
+}
+
+span.navbar-text{
+	padding-left: 10px;
+}
+
+a.nav-link{
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+span.notificacionNav{
+	margin-left: 5px;
+}
+
+img.iconoNav{
+	width: 30px;
+	height: 30px;
+	margin-right: 5px;
+}
+
+li.enlaceNav{
+	cursor: crosshair;
+}
+
+li.enlaceNav:focus,
+li.enlaceNav:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+p.textoFuncion{
+	text-align: center;
+	margin-top: 10px;
+}
+
+h2.tituloTablas{
+	text-align: center;
+	margin-top: 20px;
+	margin-bottom: 30px;
+}
+
+
+textarea.textMotivo {
+	height: 150px;
+}
+
+textarea.asignaturas {
+	height: 150px;
+}
+
+.opcionesTabla{
+	margin: 5px;
+	display: inline-block;
+	color: white !important;
+
+}
+
+.filtros{
+	margin-bottom: 20px !important;
+}
+
+.botonesDespuesTabla{
+	margin-top: 15px;
+}
+
+label{
+	font-weight: bold;
+}
+div.container-fluid{
+	margin-bottom: 50px;
+}
+
+.fechaAlumno{
+	color: white;
+
+}
+.formAlumno{
+	margin-top: 40px !important;
+	
+}
+
+.alert{
+	margin-top: 10px;
+	
+}
+
+

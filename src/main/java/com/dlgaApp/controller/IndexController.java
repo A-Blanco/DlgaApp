@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.dlgaApp.service.AsignaturaServiceImpl;
@@ -46,10 +47,14 @@ public class IndexController {
 	
 	
 	@RequestMapping("")
-	public String welcome (Model model, HttpServletRequest request) throws JSONException, MailjetException, MailjetSocketTimeoutException, IOException {
+	public String welcome (Model model, HttpServletRequest request,@ModelAttribute("alert") final Object alert) throws JSONException, MailjetException, MailjetSocketTimeoutException, IOException {
 		
 		request.getSession().removeAttribute("op");
 		request.getSession().removeAttribute("grupoId");
+		request.getSession().removeAttribute("usuario");
+		request.getSession().removeAttribute("tipo");
+		
+		model.addAttribute("alert", alert);
 		
 		
 		return "recursos/index";
@@ -61,6 +66,8 @@ public class IndexController {
 		
 		return "recursos/denegado";
 	}
+	
+	
 	
 	
 

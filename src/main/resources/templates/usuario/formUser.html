@@ -1,5 +1,6 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
 <object th:replace="recursos/base :: boot"></object>
@@ -10,13 +11,30 @@
 <body>
 	<header th:replace="recursos/base :: navbar"></header>
 <body>
-	<div class="modal-dialog text-center">
-		<div class="col-sm-8 main-section">
-			<div class="modal-content">
-				<div class="col-12 user-img">
-					<img src="img/userIcon.png" />
-				</div>
-				<form class="col-12" th:action="@{crearUsuario}"
+
+
+<div class="container-fluid">
+
+
+		<div class="row">
+			<div class="col-3">
+
+				<a class="twitter-timeline" data-height="700"
+					href="https://twitter.com/delegaETSII?ref_src=twsrc%5Etfw">Tweets
+					by delegaETSII</a>
+				<script async src="https://platform.twitter.com/widgets.js"
+					charset="utf-8"></script>
+
+			</div>
+			<div class="col-6">
+				<div class="row justify-content-center">
+					<div class="col-10 text-center">
+						<div class="formAlumno main-section">
+							<div class="modal-content">
+								<div class="col-12 user-img">
+									<img src="img/userIcon.png" />
+								</div>
+								<form class="col-12" th:action="@{crearUsuario}"
 					th:object="${usuario}" method="post">
 
 					<input type="hidden" th:field="*{id}" /> <input type="hidden"
@@ -50,13 +68,30 @@
 					</button>
 
 				</form>
-				<div class="col-12 forgot">
+
+<div class="col-12 forgot">
 					<a th:href="@{/}">Cancelar Registro</a>
-				
-				
+
+
+
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
+	</div>
+
+
+			<div class="col-3">
+				<a class="twitter-timeline" data-height="700"
+					href="https://twitter.com/etsii?ref_src=twsrc%5Etfw"> Tweets by
+					etsii</a>
+				<script async  src="https://platform.twitter.com/widgets.js"
+					charset="utf-8"></script>
+
+			</div>
 		</div>
+	
 	</div>
 
 </body>

@@ -1,0 +1,57 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" th:href="@{/estilos/form.css}" />
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
+
+</head>
+<body>
+
+
+
+<body>
+
+     
+   <div th:fragment="deleteModal" class="modal fade" th:id="ModalIncidenciaDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalTitle">Aviso Importante</h5>
+       
+          
+       
+      </div>
+       
+      <div class="modal-body">
+       
+          <div >
+            <p>Usted va a eliminar los datos de la incidencia seleccionada, esto conlleva la eliminación de ciertos datos relacionados con la incidencia.
+            ¿Desea generar el PDF de la Incidencia antes de su borrado?
+            </p>
+            
+            <a  th:href="@{/pdf/} + ${incidenciaIdDelete}" class="btn btn-success">Generar PDF</a>
+          </div>
+        
+      </div>
+      <div class="modal-footer">
+       <a th:if="${modo} == 'gestion'" th:href="@{/gestionIncidencias}" class="btn btn-secondary">Cerrar</a>
+       <a th:if="${modo} == 'personal'" th:href="@{/incidenciaPersonalList}" class="btn btn-secondary">Cerrar</a>
+       <a th:if="${modo} == 'ajeno'" th:href="@{/incidenciaList}" class="btn btn-secondary">Cerrar</a>
+       
+       
+       <form th:action="@{/incidenciaDelete/} + ${incidenciaIdDelete}" method="get">
+				<input type="hidden" th:value="${modo}" name="modo">
+				<button type="submit" class="btn btn-danger"
+								>Eliminar</button>
+				</form>
+      </div>
+      
+       </div>
+  </div>
+</div>  
+
+</body>
+</html>
