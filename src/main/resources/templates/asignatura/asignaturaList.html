@@ -100,7 +100,31 @@
 <body>
 	<header th:replace="recursos/base :: navbar"></header>
 
+
+<script type="text/javascript"> 
+        setTimeout(function () {
+  
+            // Closing the alert
+             $('.alerta').alert('close');
+        }, 5000);
+    </script> 
+
 	<div class="container-fluid">
+
+		<div  th:if="${alert == 1}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos de la asignatura se han guardado correctamente</strong>
+		</div>
+		
+		<div  th:if="${alert == 2}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos de la asignatura se han actualizado correctamente</strong>
+		</div>
+		
+		<div  th:if="${alert == 3}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos de la asignatura se han eliminado correctamente</strong>
+		</div>
+
+
+
 		<div class="row justify-content-center">
 			<div class="col-11">
 				<h2 class="tituloTablas">Lista de Asignaturas</h2>

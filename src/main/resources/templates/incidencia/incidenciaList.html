@@ -221,8 +221,36 @@
 <body>
 	<header th:replace="recursos/base :: navbar"></header>
 
+<script type="text/javascript"> 
+        setTimeout(function () {
+  
+            // Closing the alert
+             $('.alerta').alert('close');
+        }, 5000);
+        
+        setTimeout(function () {
+        	  
+            // Closing the alert
+             $('.alerta2').alert('close');
+        }, 10000);
+
+    </script> 
 
 	<div class="container-fluid">
+
+		<div  th:if="${alert == 2}" class="alert alert-success alerta alerta2" role="alert">
+			<strong>La incidencia se ha modificado correctamente, además, se ha notificado al alumn@ con los cambios realizados en su Incidencia</strong>
+		</div>
+
+		<div  th:if="${alert == 21}" class="alert alert-success alerta alerta2" role="alert">
+			<strong>La incidencia se ha finalizado correctamente, además, se ha notificado al alumn@ con los cambios realizados en su Incidencia</strong>
+		</div>
+		
+		
+		<div  th:if="${alert == 3}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos de la Incidencia se han eliminado correctamente</strong>
+		</div>
+		
 		<div class="row justify-content-center">
 			<div class="col-11">
 
@@ -275,7 +303,7 @@
 									<td th:text="${incidencia.profesor.nombre}"></td>
 									<td th:text="${incidencia.titulo}"></td>
 									<td th:text="${incidencia.estado}"></td>
-									<td><a class="btn btn-dark opcionesTabla"
+									<td><a class="btn btn-dark opcionesTabla" target="_blank"
 										th:href="@{/detallesIncidencia/} + ${incidencia.id}">Ver
 											detalles Incidencia</a>
 

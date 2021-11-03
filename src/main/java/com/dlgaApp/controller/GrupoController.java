@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dlgaApp.entity.Alumno;
 import com.dlgaApp.entity.Grupo;
@@ -50,7 +51,7 @@ public class GrupoController {
 
 	@PostMapping(value = "/crearGrupo")
 	public String crearGrupo(@Valid @ModelAttribute("grupo") Grupo grupo, BindingResult result, Model model,
-			HttpServletRequest request) {
+			HttpServletRequest request,RedirectAttributes redirectAttributes) {
 
 		validarGrupo(grupo, result);
 
@@ -68,16 +69,17 @@ public class GrupoController {
 			grupoService.save(grupo);
 
 		}
-
+		redirectAttributes.addFlashAttribute("alert", 1);
 		return "redirect:/grupoList";
 
 	}
 
 	@GetMapping(value = "/grupoList")
-	public String grupoList(Model model) {
+	public String grupoList(Model model, @ModelAttribute("alert") final Object alert) {
 
 		List<Grupo> l = this.grupoService.findAll();
 		model.addAttribute("grupos", l);
+		model.addAttribute("alert", alert);
 
 		return "grupo/grupoList";
 
@@ -151,7 +153,7 @@ public class GrupoController {
 	}
 
 	@RequestMapping(value = "eliminarGrupo/{grupoId}")
-	public String deleteGrupo(Model model, @PathVariable("grupoId") final long grupoId) {
+	public String deleteGrupo(Model model, @PathVariable("grupoId") final long grupoId,RedirectAttributes redirectAttributes) {
 
 		Grupo grupo = this.grupoService.findById(grupoId);
 
@@ -163,6 +165,7 @@ public class GrupoController {
 		}
 
 		this.grupoService.deleteById(grupoId);
+		redirectAttributes.addFlashAttribute("alert", 3);
 
 		return "redirect:/grupoList";
 

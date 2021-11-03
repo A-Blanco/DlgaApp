@@ -31,9 +31,23 @@
 <body>
 <header th:replace="recursos/base :: navbar"></header>
 
-	
+<script type="text/javascript"> 
+        setTimeout(function () {
+  
+            // Closing the alert
+             $('.alerta').alert('close');
+        }, 5000);
+    </script> 
 
-<div class="container-fluid">
+	<div class="container-fluid">
+
+		<div  th:if="${alert == 1}" class="alert alert-secondary alerta" role="alert">
+			<strong>Se ha notificado al Alumno su incorporación a la Delegación de Alumno</strong>
+		</div>
+		
+		<div  th:if="${alert == 2}" class="alert alert-secondary alerta" role="alert">
+			<strong>Se ha notificado al alumno su rechazo a DlgaApp</strong>
+		</div>
 <div class="row justify-content-center">
   <div class="col-11">
   <h2 class="tituloTablas">Solicitudes de Acceso</h2>

@@ -94,8 +94,30 @@
 </head>
 <body>
 	<header th:replace="recursos/base :: navbar"></header>
+	
+ 	<script type="text/javascript"> 
+        setTimeout(function () {
+  
+            // Closing the alert
+             $('.alerta').alert('close');
+        }, 5000);
+    </script> 
 
 	<div class="container-fluid">
+
+		<div  th:if="${alert == 1}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos del alumno se han guardado correctamente</strong>
+		</div>
+		
+		<div  th:if="${alert == 2}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos del alumno se han actualizado correctamente</strong>
+		</div>
+		
+		<div  th:if="${alert == 3}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos del alumno se han eliminado correctamente</strong>
+		</div>
+		
+		
 		<div class="row justify-content-center">
 			<div class="col-11">
 
@@ -129,7 +151,7 @@
 							<tbody>
 
 								<tr th:each="alumno : ${alumnos}">
-									<td th:text="${alumno.nombre}"></td>
+									<td th:text="${alumno.nombre + ' ' + alumno.apellidos}"></td>
 									<td th:text="${alumno.email}"></td>
 									<td><div class="opcionesTabla"
 											th:if="${#session.getAttribute('grupoId') != null}">

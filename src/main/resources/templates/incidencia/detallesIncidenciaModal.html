@@ -3,6 +3,8 @@
 	xmlns:sec="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
+<title>Incidencias</title>
+<link rel="icon" href="img/Simbolo.png">
 <object th:replace="recursos/base :: boot"></object>
 <link rel="stylesheet" th:href="@{/estilos/form.css}" />
 <link rel="stylesheet" th:href="@{/estilos/base.css}" />
@@ -130,7 +132,15 @@
 							th:href="@{/incidenciaUpdateAcuerdo/} + ${incidenciaDetalles.id}">
 							Añadir Acuerdo</a>
 
-						<a th:href="@{/}" class="btn btn-secondary opcionesTabla">Cerrar</a>
+						<a href="javascript:close_tab();" class="btn btn-secondary opcionesTabla">Cerrar</a>
+						
+						<script type="text/javascript">
+						function close_tab() {
+							  
+							    window.close();
+							  
+							}
+						</script>
 
 			</div>
 

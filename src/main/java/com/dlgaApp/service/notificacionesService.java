@@ -82,5 +82,16 @@ public class notificacionesService {
 			return us;
 
 		}
+	 
+	 public Integer numeroMiembros() {
+		 
+		 return (int) this.userSevice.findAllUsers().stream().count();
+	 }
+	 
+	 public Integer numeroIncidenciasActivas() {
+		 
+		 return (int) this.incidenciaSevice.finfAll().stream().
+				 filter(x->!x.getEstado().equals(EstadosIncidencia.Finalizada)).count();
+	 }
 	
 }

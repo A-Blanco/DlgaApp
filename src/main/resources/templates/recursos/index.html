@@ -31,8 +31,25 @@ $(function(){
 </script>
 
 	<header  th:replace="recursos/base :: navbar"></header>
+	
+<script type="text/javascript"> 
+        setTimeout(function () {
+  
+            // Closing the alert
+             $('.alerta').alert('close');
+        }, 5000);
+    </script> 
 
-<div class="container-fluid">
+	<div class="container-fluid">
+		
+		
+		<div  th:if="${alert == 1}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos de la Incidencia se han guardado correctamente</strong>
+		</div>
+		
+		<div  th:if="${alert == 11}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos del nuevo Miebro de Delegación de Alumnos se han guardado correctamente</strong>
+		</div>
   <div class="row">
   <div class="col-3">
   

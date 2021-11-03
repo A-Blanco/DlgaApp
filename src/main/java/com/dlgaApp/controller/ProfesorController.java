@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dlgaApp.entity.Asignatura;
 import com.dlgaApp.entity.Departamento;
@@ -49,9 +50,10 @@ public class ProfesorController {
 	}
 	
 	@GetMapping(value = "/profesorList")
-	public String profesorList(Model model) {
+	public String profesorList(Model model,@ModelAttribute("alert") final Object alert) {
 		List<Profesor> profesores = this.profesorService.profesorList();
 		model.addAttribute("profesores", profesores);
+		model.addAttribute("alert", alert);
 		return "profesor/listProfesores";
 	}
 	
@@ -76,9 +78,11 @@ public class ProfesorController {
 	}
 	
 	@GetMapping(value = "/profesorDelete/{profesorId}")
-	public String profesorDelete(Model model, @PathVariable("profesorId") final long profesorId, HttpServletRequest request) {
+	public String profesorDelete(Model model, @PathVariable("profesorId") final long profesorId, HttpServletRequest request
+			,RedirectAttributes redirectAttributes) {
 
 		this.profesorService.deleteById(profesorId);
+		redirectAttributes.addFlashAttribute("alert", 3);
 
 		return "redirect:/profesorList";
 
@@ -112,7 +116,7 @@ public class ProfesorController {
 	
 	@PostMapping(value = "/profesorUpdate")
 	public String profesorUpdatePost(@Valid @ModelAttribute("profesorSeleccionado") Profesor profesor,
-			BindingResult result, Model model, HttpServletRequest request) {
+			BindingResult result, Model model, HttpServletRequest request,RedirectAttributes redirectAttributes) {
 
 		validarProfesor(profesor, result);
 		
@@ -163,7 +167,7 @@ public class ProfesorController {
 				}
 				
 			}
-			
+			redirectAttributes.addFlashAttribute("alert", 2);
 			
 			
 			return "redirect:/profesorList";
@@ -202,7 +206,7 @@ public class ProfesorController {
 	
 	@PostMapping(value = "/profesorCreate")
 	public String profesorCreatePost(@Valid @ModelAttribute("profesorCreado") Profesor profesor,
-			BindingResult result, Model model, HttpServletRequest request) {
+			BindingResult result, Model model, HttpServletRequest request,RedirectAttributes redirectAttributes) {
 
 		validarProfesor(profesor, result);
 		
@@ -236,7 +240,7 @@ public class ProfesorController {
 				this.asignaturaService.saveAsignatura(a);
 				
 			}
-			
+			redirectAttributes.addFlashAttribute("alert", 1);
 			return "redirect:/profesorList";
 		}
 

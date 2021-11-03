@@ -6,10 +6,17 @@ select[disabled] > option {
     height: 100%;
 }
 
-#alert{
-	z-index: 2;
+.alerta{
+	position:fixed !important;  
+    width: 100% !important;
+    z-index:9999 !important; 
+    border-radius:0px !important;
+    margin-bottom: 40px !important;
 }
 
+.imgError{
+	width: 200px !important;
+}
 
 body{
 background-color: #ABDFFA}
@@ -30,6 +37,7 @@ background-color: #ABDFFA}
 
 table.dataTable tbody td {
   vertical-align: middle;
+  
 }
 
 div.funcionInicio{
@@ -63,8 +71,14 @@ div.col-6{
 	padding-top: 20px;
 }
 
-h1.tituloInicio{
+.tituloInicio{
 	text-align: center;
+}
+
+.tituloInfo{
+	margin-top: 20px;
+	margin-bottom: 20px;
+	text-decoration: underline;
 }
 
 div.credenciales{

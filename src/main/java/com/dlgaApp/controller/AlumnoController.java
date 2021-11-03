@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dlgaApp.entity.Alumno;
 import com.dlgaApp.entity.Grupo;
@@ -65,7 +66,7 @@ public class AlumnoController {
 	}
 
 	@GetMapping(value = "/listAlumnos")
-	public String listAlumnos(Model model) {
+	public String listAlumnos(Model model, @ModelAttribute("alert") final Object alert) {
 
 		List<Alumno> alumnos = this.alumnoService.findAll();
 		Usuario usuarioActual = usuarioActual();
@@ -75,6 +76,7 @@ public class AlumnoController {
 		model.addAttribute("alumnos", alumnos);
 
 		model.addAttribute("prueba", "prueba");
+		model.addAttribute("alert", alert);
 
 		return "alumno/alumnoList";
 
@@ -82,7 +84,7 @@ public class AlumnoController {
 
 	@PostMapping(value = "/crearAlumno")
 	public String crearAlumno(@Valid @ModelAttribute("alumno") Alumno alumno, BindingResult result, Model model,
-			HttpServletRequest request) {
+			HttpServletRequest request,RedirectAttributes redirectAttributes) {
 
 		validarAlumno(alumno, result, false);
 
@@ -126,7 +128,7 @@ public class AlumnoController {
 
 			}
 		}
-
+		redirectAttributes.addFlashAttribute("alert", 1);
 		return "redirect:/listAlumnos";
 
 	}
@@ -180,9 +182,11 @@ public class AlumnoController {
 	}
 
 	@GetMapping(value = "/alumnoDelete/{alumnoId}")
-	public String alumnoDelete(Model model, @PathVariable("alumnoId") final long alumnoId, HttpServletRequest request) {
+	public String alumnoDelete(Model model, @PathVariable("alumnoId") final long alumnoId, HttpServletRequest request,
+			RedirectAttributes redirectAttributes) {
 
 		this.alumnoService.eliminaAlumnoById(alumnoId);
+		redirectAttributes.addFlashAttribute("alert", 3);
 
 		return "redirect:/listAlumnos";
 
@@ -208,7 +212,7 @@ public class AlumnoController {
 
 	@PostMapping(value = "/alumnoUpdate")
 	public String alumnoUpdate(@Valid @ModelAttribute("alumnoSeleccionado") Alumno alumno, BindingResult result,
-			Model model, HttpServletRequest request) {
+			Model model, HttpServletRequest request,RedirectAttributes redirectAttributes) {
 
 		this.validarAlumno(alumno, result, true);
 
@@ -225,6 +229,7 @@ public class AlumnoController {
 		} else {
 
 			this.alumnoService.saveAlumno(alumno);
+			redirectAttributes.addFlashAttribute("alert", 2);
 
 			return "redirect:/listAlumnos";
 		}

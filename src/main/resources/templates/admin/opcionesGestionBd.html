@@ -10,54 +10,106 @@
 <link rel="stylesheet" th:href="@{/estilos/base.css}" />
 </head>
 
+<!-- <body> -->
+
+<!-- 	<header th:replace="recursos/base :: navbar"></header> -->
+
+<!-- 	<h1>Tablas</h1> -->
+	
+	
+	
+
+<!-- </body> -->
+
 <body>
 
-	<header th:replace="recursos/base :: navbar"></header>
+<header  th:replace="recursos/base :: navbar"></header>
 
-	<h1>Tablas</h1>
+<div class="container-fluid">
+  <div class="row">
+  <div class="col-3">
+  <div class="row">
+  <img class="imgFuncion" src="/img/Info.svg">
+  </div>
+  
+  <div class="row">
+  <h3 class="tituloInicio col-12 tituloInfo">Nº de miembros</h3>
+  </div>
+  
+  <div class="row">
+  <h3 class="tituloInicio col-12" th:text="${@notificacionesService.numeroMiembros()}"></h3>
+  </div>
+  
+  <div class="row">
+  <h3 class="tituloInicio col-12 tituloInfo">Nº de Incidencias Activas</h3>
+  </div>
+  
+  <div class="row">
+  <h3 class="tituloInicio col-12" th:text="${@notificacionesService.numeroIncidenciasActivas()}"></h3>
+  </div>
+
+  
+  </div>
+  
+ 
+ <div class="col-6">
+ <div class="row">
+	<h1 class="tituloInicio col-12">Administración de la plataforma</h1>
 	
-	<div class="funcionInicio">
-		<a class="funcion" th:href="@{listAlumnos}"><img
-			src="/img/gruposalumnos.png" width="150"></a> <br>
-		<p>Modificar Alumnos</p>
+		
+
+	<div class="funcionInicio col-lg-4 col-sm-6">
+		<a  th:href="@{listAlumnos}"><img class="imgFuncion"
+			src="/img/alumEdit.png" ></a>
+		<p class="textoFuncion">Modificar Alumnos</p>
 	</div>
 
 
 
-	<div class="funcionInicio">
-		<a class="funcion" th:href="@{listDepartamentos}"><img
-			src="/img/departament.png" width="150"> </a> <br>
-		<p>Modificar Departamentos</p>
+	<div class="funcionInicio col-lg-4 col-sm-6">
+		<a  th:href="@{listDepartamentos}"><img class="imgFuncion"
+			src="/img/departamentoEdit.png" > </a> 
+		<p class="textoFuncion">Modificar Departamentos</p>
 	</div>
 
 
 
 
-	<div class="funcionInicio">
-		<a class="funcion" th:href="@{profesorList}"><img
-			src="/img/teacherOrange.png" width="150"></a> <br>
-		<p>Modificar Profesores</p>
+	<div class="funcionInicio col-lg-4 col-sm-6">
+		<a  th:href="@{profesorList}"><img class="imgFuncion"
+			src="/img/profesorEdit.png" ></a>
+		<p class="textoFuncion">Modificar Profesores</p>
 	</div>
 
-	<div class="funcionInicio">
-		<a class="funcion" th:href="@{asignaturaList}"><img
-			src="/img/subjectOrange.png" width="150"></a> <br>
-		<p>Modificar Asignaturas</p>
+	<div class="funcionInicio col-lg-4 col-sm-6">
+		<a  th:href="@{asignaturaList}"><img class="imgFuncion"
+			src="/img/asignaturaEdit.png" ></a>
+		<p class="textoFuncion">Modificar Asignaturas</p>
 	</div>
 
 
-	<div class="funcionInicio">
-		<a class="funcion" th:href="@{grupoList}"><img
-			src="/img/gruposalumnos.png" width="150"></a> <br>
-		<p>Modificar Grupos</p>
-	</div>
-	
-		<div class="funcionInicio">
-		<a class="funcion" th:href="@{titulacionList}"><img
-			src="/img/subjectOrange.png" width="150"></a> <br>
-		<p>Modificar Titulaciones</p>
+	<div class="funcionInicio col-lg-4 col-sm-6">
+		<a  th:href="@{grupoList}"><img class="imgFuncion"
+			src="/img/grupoEdit.png" ></a> 
+		<p class="textoFuncion">Modificar Grupos</p>
 	</div>
 	
+		<div class="funcionInicio col-lg-4 col-sm-6">
+		<a  th:href="@{titulacionList}"><img class="imgFuncion"
+			src="/img/titulacionEdit.png" ></a> 
+		<p class="textoFuncion">Modificar Titulaciones</p>
+	</div>
+	</div>
+	</div>
 
+ <div class="col-3">
+    <a class="twitter-timeline" data-height="700" href="https://twitter.com/etsii?ref_src=twsrc%5Etfw">
+    Tweets by etsii</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  
+  </div>
+  
+    </div>
+    </div>
+    
 </body>
 </html>
