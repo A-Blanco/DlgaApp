@@ -65,7 +65,7 @@ public class AdminController {
 	@RequestMapping(value = "/mantenimiento")
 	public String vistaMantenimiento(Model model,HttpServletRequest request) {
 		
-		return "recursos/denegado";
+		return "recursos/mantenimiento";
 
 	}
 	
