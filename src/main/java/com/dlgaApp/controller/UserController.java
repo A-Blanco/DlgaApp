@@ -181,7 +181,7 @@ public class UserController {
 
 		Usuario usuario = this.usuarioService.findById(usuarioId);
 
-		model.addAttribute("usuario", usuario);
+		model.addAttribute("usuarioSeleccionado", usuario);
 
 		return "usuario/detallesUsuario";
 	}

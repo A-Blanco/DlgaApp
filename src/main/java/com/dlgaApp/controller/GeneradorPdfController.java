@@ -291,7 +291,14 @@ public class GeneradorPdfController {
 		    doc.add(comb10);
 		    
 		    Text tituloDepAsig = new Text("\u2022  Departamento: ").setBold().setFontSize(13);
-		    Text departamentoAsig =  new Text(incidencia.getAsignatura().getDepartamento().getNombre()).setFont(font);
+		    
+		    Text departamentoAsig;
+		    if(incidencia.getAsignatura().getDepartamento() != null) {
+		    	 departamentoAsig =  new Text(incidencia.getAsignatura().getDepartamento().getNombre()).setFont(font);
+		    }else {
+		    	 departamentoAsig =  new Text("No disponible").setFont(font);
+		    }
+		    
 		    Paragraph comb11 =new Paragraph();  
 		    departamentoAsig.setFontSize(getMaxFontSize(font, String.valueOf(departamentoAsig), 220, 13));
 		    comb11.add(tituloDepAsig);
@@ -589,7 +596,12 @@ public class GeneradorPdfController {
 		    doc.add(comb10);
 		    
 		    Text tituloDepAsig = new Text("\u2022  Departamento: ").setBold().setFontSize(13);
-		    Text departamentoAsig =  new Text(incidencia.getAsignatura().getDepartamento().getNombre()).setFont(font);
+		    Text departamentoAsig;
+		    if(incidencia.getAsignatura().getDepartamento() != null) {
+		    	 departamentoAsig =  new Text(incidencia.getAsignatura().getDepartamento().getNombre()).setFont(font);
+		    }else {
+		    	 departamentoAsig =  new Text("No disponible").setFont(font);
+		    }
 		    Paragraph comb11 =new Paragraph();  
 		    departamentoAsig.setFontSize(getMaxFontSize(font, String.valueOf(departamentoAsig), 220, 13));
 		    comb11.add(tituloDepAsig);
@@ -870,7 +882,12 @@ public byte[] pdfStream(final long incidenciaId) throws IOException {
 		    doc.add(comb10);
 		    
 		    Text tituloDepAsig = new Text("\u2022  Departamento: ").setBold().setFontSize(13);
-		    Text departamentoAsig =  new Text(incidencia.getAsignatura().getDepartamento().getNombre()).setFont(font);
+		    Text departamentoAsig;
+		    if(incidencia.getAsignatura().getDepartamento() != null) {
+		    	 departamentoAsig =  new Text(incidencia.getAsignatura().getDepartamento().getNombre()).setFont(font);
+		    }else {
+		    	 departamentoAsig =  new Text("No disponible").setFont(font);
+		    }
 		    Paragraph comb11 =new Paragraph();  
 		    departamentoAsig.setFontSize(getMaxFontSize(font, String.valueOf(departamentoAsig), 220, 13));
 		    comb11.add(tituloDepAsig);

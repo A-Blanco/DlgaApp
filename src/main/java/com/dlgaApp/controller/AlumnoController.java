@@ -161,7 +161,7 @@ public class AlumnoController {
 	public String alumnoDetails(Model model, @PathVariable("alumnoId") final long alumnoId,
 			HttpServletRequest request) {
 
-		if (request.getSession().getAttribute("siAlumno") != null && usuarioActual()==null) {
+		if (request.getSession().getAttribute("siAlumno") != null ) {
 
 			model.addAttribute("siAlumno", 1);
 		
