@@ -1,9 +1,13 @@
 package com.dlgaApp;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.ConversionServiceFactoryBean;
+import org.springframework.core.convert.converter.Converter;
 
 @SpringBootApplication
 public class DlgaAppApplication {
@@ -14,8 +18,8 @@ public class DlgaAppApplication {
 		SpringApplication.run(DlgaAppApplication.class, args);
 		
 		
-		
-		
 	}
+	
+	
 
 }

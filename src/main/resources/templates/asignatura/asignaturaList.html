@@ -1,0 +1,213 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Asignaturas</title>
+<link rel="icon" href="img/Simbolo.png">
+<object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
+
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		var asignatura = "[[${asignaturaSeleccionado}]]";
+		var asignaturaDetalles = "[[${asignaturaDetalles}]]";
+		var asignaturacreada = "[[${asignaturaCreada}]]";
+		var asignaturaId = "[[${idAsignaturaSeleccionado}]]";
+
+		if (asignatura != "") {
+			$('#ModalAsignaturaUpdate').modal()
+		}
+		
+		if (asignaturaDetalles != "") {
+			$('#ModalAsignaturaDetalles').modal()
+		}
+
+		if (asignaturacreada != "") {
+			$('#ModalAsignaturaCreate').modal()
+		}
+
+		if (asignaturaId != "") {
+			$('#ModalAsignaturaDelete').modal()
+		}
+
+	})
+</script>
+
+<script onselect="filtro" type="text/javascript">
+	$(document).ready(function() {
+		$('#asignaturaList').DataTable({
+			"responsive" : true,
+			"language" : idioma,
+			"destroy" : true,
+			"searching" : false,
+
+		}).draw(true).columns.adjust();
+	});
+
+	function decideFiltro(val) {
+
+		if (val == "nombre") {
+			$(document).ready(function() {
+				$('#asignaturaList').DataTable({
+					"responsive" : true,
+					"language" : idioma,
+					"destroy" : true,
+					"columnDefs" :
+
+					[ {
+						"searchable" : false,
+						"targets" : 0
+					}, {
+						"searchable" : false,
+						"targets" : 2
+					},
+
+					]
+
+				}).draw(true).columns.adjust();
+			});
+		}
+
+		else if (val == "id") {
+			$(document).ready(function() {
+				$('#asignaturaList').DataTable({
+					"responsive" : true,
+					"language" : idioma,
+					"destroy" : true,
+					"columnDefs" :
+
+					[ {
+						"searchable" : false,
+						"targets" : 1
+					}, {
+						"searchable" : false,
+						"targets" : 2
+					},
+
+					]
+
+				}).draw(true).columns.adjust();
+			});
+		}
+	}
+</script>
+<script th:replace="recursos/idiomaTable :: idiomaTable"
+	type="text/javascript"></script>
+</head>
+<body>
+	<header th:replace="recursos/base :: navbar"></header>
+
+
+<script type="text/javascript"> 
+        setTimeout(function () {
+  
+            // Closing the alert
+             $('.alerta').alert('close');
+        }, 5000);
+    </script> 
+
+	<div class="container-fluid">
+
+		<div  th:if="${alert == 1}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos de la asignatura se han guardado correctamente</strong>
+		</div>
+		
+		<div  th:if="${alert == 2}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos de la asignatura se han actualizado correctamente</strong>
+		</div>
+		
+		<div  th:if="${alert == 3}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos de la asignatura se han eliminado correctamente</strong>
+		</div>
+
+
+
+		<div class="row justify-content-center">
+			<div class="col-11">
+				<h2 class="tituloTablas">Lista de Asignaturas</h2>
+
+				<div class="input-group mb-3 justify-content-end filtros">
+					<div class="input-group-prepend">
+						<label class="input-group-text" for="selectFiltro">Filtros
+							de Búsqueda</label>
+					</div>
+
+					<select class="col-2" title="Filtrar: "
+						onchange="decideFiltro(this.value)" id="selectFiltro"
+						name="filtro">
+						<option disabled selected>-</option>
+						<option value="nombre" id="selectNombre">Titulación</option>
+						<option value="id" id="selectId">Nombre</option>
+					</select>
+				</div>
+				<div class="mx-auto ">
+
+					<div class="table-responsive">
+
+
+						<table id="asignaturaList"
+							class="table table-bordered table-hover table-striped tablaDatos">
+
+							<thead class="thead-light">
+
+								<tr>
+
+									<th scope="col">Nombre</th>
+									<th scope="col">Titulación</th>
+									<th>Opciones</th>
+
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="asignatura : ${asignaturas}">
+
+									<td th:text="${asignatura.nombre}"></td>
+									<td th:text="${asignatura.titulacion.nombre}"></td>
+									<td>
+
+
+										<div class="opcionesTabla">
+											<a class="btn btn-dark"
+												th:href="@{/detallesAsignatura/} + ${asignatura.id}">Ver
+												detalles</a>
+										</div>
+										
+										<div class="opcionesTabla" sec:authorize="hasRole('ADMIN')">
+											<form th:action="@{asignaturaUpdate}" method="get">
+												<input type="hidden" th:value="${asignatura.id}"
+													name="asignaturaId"></input>
+												<button type="submit" class="btn btn-primary">Modificar
+													datos</button>
+											</form>
+											</div>
+
+										<div class="opcionesTabla" sec:authorize="hasRole('ADMIN')">
+											<a class="btn btn-danger"
+												th:href="@{/asignaturaDeleteSeguridad/} + ${asignatura.id}">Eliminar</a>
+										</div>
+
+									</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<a class="btn btn-success botonesDespuesTabla"
+							sec:authorize="hasAnyRole('ADMIN')"
+							th:href="@{/asignaturaCreate} ">Crear Asignatura</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+<div th:replace="asignatura/asignaturaDetallesModal :: detallesModal"></div>
+<div th:replace="asignatura/asignaturaDeleteModal :: deleteModal"></div>
+<div th:replace="asignatura/asignaturaUpdateModal :: updateModal"></div>
+<div th:replace="asignatura/asignaturaCreateModal :: createModal"></div>
+
+</body>
+</html>

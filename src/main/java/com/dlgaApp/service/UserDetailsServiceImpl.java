@@ -1,6 +1,8 @@
 package com.dlgaApp.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -9,8 +11,9 @@ import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.dlgaApp.entity.User;
-import com.dlgaApp.repository.UserRepository;
+import com.dlgaApp.entity.Roles;
+import com.dlgaApp.entity.Usuario;
+import com.dlgaApp.repository.UsuarioRepository;
  
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -19,38 +22,75 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	private BCryptPasswordEncoder passw;
 	
     @Autowired
-    private UserRepository userRepository;
+    private UsuarioRepository usuarioRepository;
      
     @Override
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
-        com.dlgaApp.entity.User user = userRepository.getUserByUsername(username);
+        Usuario usuario = usuarioRepository.findByUsername(username);
          
-        if (user == null) {
-            throw new UsernameNotFoundException("Could not find user");
-        }
+       if (usuario == null) {
+           throw new UsernameNotFoundException("No se puede encontrar el usuario");
+    }
          
-        return new MyUserDetails(user);
+        return usuario;
     }
     
     
     @Transactional
-    public void guardarusuario(com.dlgaApp.entity.User u) {
+    public void creaUsuario(Usuario u) {
     	
     	u.setPassword(passw.encode(u.getPassword()));
+    	u.setPassword2(passw.encode(u.getPassword2()));
     	
-    	u.setEnabled(true);
+    	usuarioRepository.save(u);
     	
-    	userRepository.save(u);
     	
-    	userRepository.añadirRolUsuario(u.getId());
     }
     
-    public List<com.dlgaApp.entity.User> findAllUsers() {
+    public List<Usuario> findAllUsers() {
 		
-    	
-    	return (List<User>) userRepository.findAll() ;
+    	return (List<Usuario>) usuarioRepository.findAll() ;
     	
     }
+    
+    public Long numeroUsuariosByUsername(String username) {
+    	
+    	long i = usuarioRepository.numeroUsuariosByUsername(username);
+    	
+    	
+    	return i;
+    }
+    
+    public Long numeroUsuariosByTelefono(String telefono) {
+		return usuarioRepository.countByTelefono(telefono);
+    	
+    }
+    
+    public List<Usuario> findAllUsuarios(){
+		
+    	List<Usuario> l = new ArrayList<Usuario>();
+    	l = (List<Usuario>) usuarioRepository.findAll();
+    	
+    	return l;
+		
+	}
+    
+    public Usuario findById(Long id) {
+    	return usuarioRepository.findById(id).orElse(null);
+    }
+    
+    public void save(Usuario u) {
+    	this.usuarioRepository.save(u);
+    }
+    
+    public Usuario findByUsername(String username) {
+    	return usuarioRepository.findByUsername(username);
+    }
+    
+    public void eliminarUsuario(Usuario u) {
+    	usuarioRepository.delete(u);
+    }
+    
    
 }

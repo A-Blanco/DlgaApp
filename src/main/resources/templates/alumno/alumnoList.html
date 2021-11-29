@@ -1,0 +1,209 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Alumnos</title>
+<link rel="icon" href="img/Simbolo.png">
+<object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
+<script onselect="filtro" type="text/javascript">
+	$(document).ready(function() {
+		$('#alumnoList').DataTable({
+			"responsive" : true,
+			"language" : idioma,
+			"destroy" : true,
+			"searching" : false,
+
+		}).draw(true).columns.adjust();
+	});
+
+	function decideFiltro(val) {
+
+		if (val == "nombre") {
+			$(document).ready(function() {
+				$('#alumnoList').DataTable({
+					"responsive" : true,
+					"language" : idioma,
+					"destroy" : true,
+					"columnDefs" :
+
+					[ {
+						"searchable" : false,
+						"targets" : 1
+					}, {
+						"searchable" : false,
+						"targets" : 2
+					},
+
+					]
+
+				}).draw(true).columns.adjust();
+			});
+		}
+
+		else if (val == "email") {
+			$(document).ready(function() {
+				$('#alumnoList').DataTable({
+					"responsive" : true,
+					"language" : idioma,
+					"destroy" : true,
+					"columnDefs" :
+
+					[ {
+						"searchable" : false,
+						"targets" : 0
+					}, {
+						"searchable" : false,
+						"targets" : 2
+					},
+
+					]
+
+				}).draw(true).columns.adjust();
+			});
+		}
+	}
+</script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		
+		
+		var alumnoDetalles = "[[${alumnoDetalles}]]";
+		var alumno = "[[${alumnoSeleccionado}]]";
+		var alumnoId = "[[${idAlumnoSeleccionado}]]";
+
+		if (alumno != "") {
+			$('#ModalAlumnoUpdate').modal()
+		}
+
+		if (alumnoId != "") {
+			$('#ModalAlumnoDelete').modal()
+		}
+		
+		if (alumnoDetalles != "") {
+			$('#ModalAlumnoDetalles').modal()
+		}
+
+	})
+</script>
+
+<script th:replace="recursos/idiomaTable :: idiomaTable"
+	type="text/javascript"></script>
+</head>
+<body>
+	<header th:replace="recursos/base :: navbar"></header>
+	
+ 	<script type="text/javascript"> 
+        setTimeout(function () {
+  
+            // Closing the alert
+             $('.alerta').alert('close');
+        }, 5000);
+    </script> 
+
+	<div class="container-fluid">
+
+		<div  th:if="${alert == 1}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos del alumno se han guardado correctamente</strong>
+		</div>
+		
+		<div  th:if="${alert == 2}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos del alumno se han actualizado correctamente</strong>
+		</div>
+		
+		<div  th:if="${alert == 3}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos del alumno se han eliminado correctamente</strong>
+		</div>
+		
+		
+		<div class="row justify-content-center">
+			<div class="col-11">
+
+				<h2 class="tituloTablas">Lista de Alumnos</h2>
+
+				<div class="input-group mb-3 justify-content-end filtros">
+					<div class="input-group-prepend">
+						<label class="input-group-text" for="selectFiltro">Filtros
+							de Búsqueda</label>
+					</div>
+					<select class="col-2" title="Filtrar: "
+						onchange="decideFiltro(this.value)" id="selectFiltro"
+						name="filtro">
+						<option disabled selected>-</option>
+						<option value="nombre" id="selectNombre">Nombre</option>
+						<option value="email" id="selectId">Email</option>
+					</select>
+				</div>
+
+				<div class="mx-auto">
+					<div class="table-responsive">
+						<table id="alumnoList"
+							class="table table-bordered table-hover table-striped tablaDatos">
+							<thead class="thead-light">
+								<tr>
+									<th>Nombre</th>
+									<th>Email</th>
+									<th>Opciones</th>
+								</tr>
+							</thead>
+							<tbody>
+
+								<tr th:each="alumno : ${alumnos}">
+									<td th:text="${alumno.nombre + ' ' + alumno.apellidos}"></td>
+									<td th:text="${alumno.email}"></td>
+									<td><div class="opcionesTabla"
+											th:if="${#session.getAttribute('grupoId') != null}">
+											<a class="btn btn-success opcionesTabla" th:if="${ alumno.grupoDelegado == null}"
+												th:href="@{/agregarDelegado/} + ${alumno.id}">Añadir</a>
+											<p class="btn btn-info opcionesTabla" th:if="${ alumno.grupoDelegado != null}">Este Alumno
+												ya es delegado de un grupo</p>
+										</div>
+										
+										<div class="opcionesTabla">
+											<a class="btn btn-dark"
+												th:href="@{/detallesAlumno/} + ${alumno.id}">Ver
+												detalles Alumno</a>
+										</div>
+										
+										<div class="opcionesTabla" sec:authorize="hasRole('ADMIN')"
+											th:if="${#session.getAttribute('grupoId') == null}">
+											<form th:action="@{alumnoUpdate}" method="get">
+												<input type="hidden" th:value="${alumno.id}" name="alumnoId"></input>
+												<button type="submit" class="btn btn-primary">Modificar
+													datos</button>
+											</form>
+
+										</div>
+
+
+										<div class="opcionesTabla" sec:authorize="hasRole('ADMIN')"
+											th:if="${#session.getAttribute('grupoId') == null}">
+											<a class="btn btn-danger"
+												th:href="@{/alumnoDeleteSeguridad/} + ${alumno.id}">Eliminar</a>
+										</div>
+										</td>
+								</tr>
+
+							</tbody>
+						</table>
+						<a class="btn btn-success botonesDespuesTabla"
+							sec:authorize="hasAnyRole('ADMIN', 'DEVELOPER')"
+							th:if="${#session.getAttribute('grupoId') == null}"
+							th:href="@{/crearAlumno} ">Crear Alumno</a>
+					</div>
+				</div>
+			</div>
+
+
+
+		</div>
+	</div>
+
+	<div th:replace="alumno/alumnoDetallesModal :: detallesModal"></div>
+	<div th:replace="alumno/alumnoUpdateModal :: updateModal"></div>
+	<div th:replace="alumno/alumnoDeleteModal :: deleteModal"></div>
+
+</body>
+</html>

@@ -2,76 +2,74 @@ package com.dlgaApp.controller;
 
 
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 
-import javax.validation.Valid;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.dlgaApp.entity.User;
-import com.dlgaApp.service.UserDetailsServiceImpl;
+import com.dlgaApp.service.AsignaturaServiceImpl;
+import com.dlgaApp.service.DepartamentoServiceImpl;
+import com.dlgaApp.service.MailService;
+import com.dlgaApp.service.ProfesorService;
+import com.mailjet.client.errors.MailjetException;
+import com.mailjet.client.errors.MailjetSocketTimeoutException;
 
 
 
 @Controller
 public class IndexController {
 	
-	
+	@Autowired
+	private MailService mailService;
 	
 	@Autowired
-	private UserDetailsServiceImpl service;
+	private GeneradorPdfController pdfController;
+	
+	
+	@RequestMapping(value = "/login")
+	public String login(Model model,HttpServletRequest request) {
+		if(request.getUserPrincipal() != null) {
+			return "403";
+		}
+		return "recursos/login";
+	}
 	
 	
 	
 	@RequestMapping("")
-	public String welcome (Model model) {
+	public String welcome (Model model, HttpServletRequest request,@ModelAttribute("alert") final Object alert) throws JSONException, MailjetException, MailjetSocketTimeoutException, IOException {
+		
+		request.getSession().removeAttribute("op");
+		request.getSession().removeAttribute("grupoId");
+		request.getSession().removeAttribute("usuario");
+		request.getSession().removeAttribute("tipo");
+		
+		model.addAttribute("alert", alert);
 		
 		
-		return "index";
+		return "recursos/index";
+	}
+	
+
+	@RequestMapping("/denegado")
+	public String denegado (Model model, HttpServletRequest request) {
+		
+		return "recursos/denegado";
 	}
 	
 	
 	
 	
-	@RequestMapping(value="/listar")
-	public String listar(Model model) {
-		
-		List<com.dlgaApp.entity.User> l = new ArrayList<>();
-		l = service.findAllUsers();
-		model.addAttribute("lista",l);
-		
-		return "lista";
-	}
-	
-	@RequestMapping(value = "/crear")
-	public String inicioCrear(Model model) {
-		
-		User u = new User();
-		
-		model.addAttribute("usuario",u);
-		
-		return "formUser";
-	}
-	
-	@RequestMapping(value = "/gUsuario")
-	public String guardarUsuario(@Valid @ModelAttribute("usuario") User us,BindingResult result,Model model) {
-		
-		if(result.hasErrors()) {
-			
-			model.addAttribute("usuario", us);
-			return "formUser";
-		}
-		service.guardarusuario(us);
-		
-		
-		return "redirect:listar";
-	}
+
 
 }

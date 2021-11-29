@@ -1,0 +1,22 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<title>Denegado</title>
+<link rel="icon" href="img/Simbolo.png">
+<object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" type="text/css" th:href="@{/estilos/base.css}" href="base.css"/>
+<title>Denegado</title>
+</head>
+<body>
+<header th:replace="recursos/base :: navbar"></header>
+
+
+<div class="modal-dialog text-center">
+<img class="imgError" src="/img/Error.svg">
+<h2>Actualmente no tiene permisos para acceder a las funciones de la web, por favor comuníquese con algún miembro de la delegación.</h2>
+</div>
+</body>
+</html>

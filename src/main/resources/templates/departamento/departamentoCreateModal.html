@@ -1,0 +1,112 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+
+
+
+	
+	<div th:fragment="createModal" th:if="${departamentoCreada != null}" class="modal fade" data-keyboard="false" data-backdrop="static"
+		th:id="ModalDepartamentoCreate" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="ModalTitle">Crear Departamento</h5>
+
+
+				</div>
+				<form id="formUpdate" class="col-12"
+					th:object="${departamentoCreada}"
+					th:action="@{departamentoCreate}" method="post">
+
+					<input  th:field="*{id}" type="hidden" name="id" />
+					
+					<div class="form-group" id="nombre-group">
+                     <label for="nombre">Nombre</label>
+                        <input id="nombre" th:field="*{nombre}" type="text" class="form-control" placeholder="Nombre del departamento" name="nombre"/>
+                       <p class="alert alert-danger" role="alert" th:errors="*{nombre}"></p>
+                    </div>
+                    
+
+					<div class="form-group">
+					
+					<label for="sede">Sede</label>
+					
+							<select  id="sede"
+							th:field="*{sede}" class="form-control" name="caracter">
+							<option value="" label="-" selected="selected"></option>
+							<option th:each="opcionSede : ${opcionesSede}" th:value="${opcionSede}" 
+							th:text="${opcionSede}" ></option>
+						</select>
+						<p class="alert alert-danger" role="alert" th:errors="*{sede}"></p>
+					</div>
+					
+					
+					<div class="form-group" id="nombre-group">
+					
+					<label for="email">Email</label>
+                     
+                        <input id="email" th:field="*{email}" type="text" class="form-control" placeholder="Email del departamento" name="email"/>
+                       <p class="alert alert-danger" role="alert" th:errors="*{email}"></p>
+                    </div>
+                    
+                    <div class="form-group" id="nombre-group">
+                     
+							<label for="telefono">Teléfono</label>                     
+                        <input id="telefono" th:field="*{telefono}" type="text" class="form-control" placeholder="Teléfono del departamento" name="telefono"/>
+                       <p class="alert alert-danger" role="alert" th:errors="*{telefono}"></p>
+                    </div>
+                    
+                     <div class="form-group" id="nombre-group">
+                     
+                     <label for="web">Web</label>
+                        <input id="web" th:field="*{web}" type="text" class="form-control" placeholder="Web del departamento" name="web"/>
+                       <p class="alert alert-danger" role="alert" th:errors="*{web}"></p>
+                    </div>
+					
+					
+					<div class="form-group">
+					
+							<label for="selectAsignaturas">Asignaturas</label>
+												
+							<select  id="selectAsignaturas" 
+							th:field="*{asignaturas}" multiple="multiple">
+							<option th:each="opcionAsignatura : ${opcionesAsignatura.entrySet()}" 
+							 th:value="${opcionAsignatura.key}"
+							th:text="${opcionAsignatura.value}" ></option>
+						</select>
+						<p class="alert alert-danger" role="alert" th:errors="*{asignaturas}"></p>
+					</div>
+					
+					<div class="form-group">
+					
+						<label for="selectProfesores">Profesores</label>
+					
+							<select  id="selectProfesores" 
+							th:field="*{profesores}" multiple="multiple">
+							<option th:each="opcionProfesor : ${opcionesProfesor.entrySet()}" 
+							 th:value="${opcionProfesor.key}"
+							th:text="${opcionProfesor.value}" ></option>
+						</select>
+						<p class="alert alert-danger" role="alert" th:errors="*{profesores}"></p>
+					</div>
+					
+					
+					
+					<div class="modal-footer">
+
+						<a th:href="@{/listDepartamentos}" class="btn btn-secondary">Cerrar</a>
+						<button type="submit" class="btn btn-primary">Confirmar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>   
+
+
+</body>
+</html>

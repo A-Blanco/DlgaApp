@@ -1,0 +1,103 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+
+
+
+	
+	<div th:fragment="detallesModal" th:if="${departamentoDetalles != null}" class="modal fade" data-keyboard="false" data-backdrop="static"
+		th:id="ModalDepartamentoDetalles" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="ModalTitle">Detalles Departamento</h5>
+
+
+				</div>
+				<form id="formUpdate" class="col-12"
+					th:object="${departamentoDetalles}"
+					>
+					
+					<div class="form-group" id="nombre-group">
+                     <label for="nombre">Nombre</label>
+                        <input disabled="disabled" id="nombre" th:field="*{nombre}" type="text" class="form-control" name="nombre"/>
+                       
+                    </div>
+                    
+
+					<div class="form-group">
+					
+					<label for="sede">Sede</label>
+					
+							<input  id="sede" disabled="disabled"
+							th:field="*{sede}" class="form-control" name="sede"/>
+	
+					</div>
+					
+					
+					<div class="form-group" id="nombre-group">
+					
+					<label for="email">Email</label>
+                     
+                        <input disabled="disabled" id="email" th:field="*{email}" type="text" class="form-control" name="email"/>
+                       
+                    </div>
+                    
+                    <div class="form-group" id="nombre-group">
+                     
+							<label for="telefono">Teléfono</label>                     
+                        <input disabled="disabled" id="telefono" th:field="*{telefono}" type="text" class="form-control"  name="telefono"/>
+                      
+                    </div>
+                    
+                     <div class="form-group" id="nombre-group">
+                     
+                     <label for="web">Web</label>
+                        <input disabled="disabled" id="web" th:field="*{web}" type="text" class="form-control" name="web"/>
+                   
+                    </div>
+					
+					
+					<div class="form-group">
+					
+							<label for="asignaturas">Asignaturas</label>
+											
+												
+							<textarea class="asignaturas col-12"   id="asignaturas" 
+							th:text="${detallesAsignatura}" disabled="disabled">
+							
+						</textarea>
+						
+					</div>
+					
+					<div class="form-group">
+					
+							<label for="profesores">Profesores</label>
+												
+							<select class="form-select col-12" size="5" multiple aria-label="multiple select example" id="profesores" 
+							th:field="*{profesores}"  disabled="disabled">
+							<option class="opcionesDetalles" th:each="profesor : *{profesores}" 
+						th:value="1"	th:text="${profesor.nombre}" ></option>
+						</select>
+						
+					</div>
+					
+					
+					
+					<div class="modal-footer">
+
+						<a th:href="@{/listDepartamentos}" class="btn btn-secondary">Cerrar</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+</html>

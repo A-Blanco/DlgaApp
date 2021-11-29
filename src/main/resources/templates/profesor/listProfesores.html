@@ -1,0 +1,146 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Profesores</title>
+<link rel="icon" href="img/Simbolo.png">
+<object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#profesorList').DataTable({
+			"responsive" : true,
+			"language" : idioma,
+			"destroy" : true,
+			"columnDefs" :
+
+			[  {
+				"searchable" : false,
+				"targets" : 1
+			},
+
+			]
+
+		}).draw(true).columns.adjust();
+	});
+</script>
+<script type="text/javascript">
+$( document ).ready(function() {
+		  
+	  var profesor = "[[${profesorSeleccionado}]]"; 
+	  var profesorCreado = "[[${profesorCreado}]]"; 
+	  var profesorId = "[[${idProfesorSeleccionado}]]"; 
+	  var profesorDetalles = "[[${profesorDetalles}]]"; 
+	  
+	  if(profesor!=""){
+		  $('#ModalProfesorUpdate').modal()
+	  }
+	  
+	  if(profesorCreado!=""){
+		  $('#ModalProfesorCreate').modal()
+	  }
+	  
+	  if(profesorId!=""){
+		  $('#ModalProfesorDelete').modal()
+	  }
+	  
+	  if(profesorDetalles!=""){
+		  $('#ModalProfesorDetalles').modal()
+	  }
+	  
+})
+
+</script>
+
+<script type="text/javascript">
+$(function(){
+	$("#selectAsignaturas").select2({ width: '100%' }); 
+	
+})
+</script>
+<script th:replace="recursos/idiomaTable :: idiomaTable"
+	type="text/javascript"></script>
+</head>
+<body>
+	<header th:replace="recursos/base :: navbar"></header>
+	
+<script type="text/javascript"> 
+        setTimeout(function () {
+  
+            // Closing the alert
+             $('.alerta').alert('close');
+        }, 5000);
+    </script> 
+
+	<div class="container-fluid">
+
+		<div  th:if="${alert == 1}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos del Profesor se han guardado correctamente</strong>
+		</div>
+		
+		<div  th:if="${alert == 2}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos del Profesor se han actualizado correctamente</strong>
+		</div>
+		
+		<div  th:if="${alert == 3}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos del Profesor se han eliminado correctamente</strong>
+		</div>
+		
+<div class="row justify-content-center">
+  <div class="col-11">
+	
+	<h2 class="tituloTablas">Lista de Profesores</h2>
+		<div class="mx-auto">
+			<div class="table-responsive">
+				<table id="profesorList"
+					class="table table-bordered table-hover table-striped tablaDatos">
+					<thead class="thead-light">
+						<tr>
+							<th>Nombre</th>						
+							<th>Opciones</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<tr th:each="profesor : ${profesores}">
+							<td th:text="${profesor.nombre}"></td>
+							<td><div class="opcionesTabla"><a class="btn btn-dark" th:href="@{/detallesProfesor/} + ${profesor.id}">Ver
+									detalles</a></div>
+									
+		
+							<div class="opcionesTabla" sec:authorize="hasRole('ADMIN')">
+								<form th:action="@{profesorUpdate}" method="get">
+									<input type="hidden" th:value="${profesor.id}"
+										name="profesorId"></input>
+									<button type="submit" class="btn btn-primary">Modificar
+										datos</button>
+								</form>
+
+							</div>
+									
+							<div class="opcionesTabla" sec:authorize="hasRole('ADMIN')"><a class="btn btn-danger"
+								th:href="@{/profesorDeleteSeguridad/} + ${profesor.id}">Eliminar</a>
+								</div></td>
+						</tr>
+
+					</tbody>
+				</table>
+				
+				<div class="botonesDespuesTabla" sec:authorize="hasRole('ADMIN')"><a class="btn btn-success"
+								th:href="@{/profesorCreate}">Crear Profesor</a></div>
+			</div>
+		</div>
+	</div>
+	</div>
+	</div>
+	
+	
+	<div th:replace="profesor/deleteProfesorModal :: deleteModal"></div>
+	<div th:replace="profesor/updateProfesorModal :: updateModal"></div>
+	<div th:replace="profesor/createProfesorModal :: createModal"></div>
+	<div th:replace="profesor/detallesProfesorModal :: detallesModal"></div>
+
+</body>
+</html>

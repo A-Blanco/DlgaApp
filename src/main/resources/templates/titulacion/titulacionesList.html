@@ -1,0 +1,121 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Titulaciones</title>
+<link rel="icon" href="img/Simbolo.png">
+<object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#departamentoList').DataTable({
+			"responsive" : true,
+			"language" : idioma
+		}).draw(true).columns.adjust();
+	});
+</script>
+<script type="text/javascript">
+$( document ).ready(function() {
+		  
+	  var titulacion = "[[${titulacionSeleccionado}]]"; 
+	  var titulacionCreado = "[[${titulacionCreado}]]"; 
+	  var titulacionCreadoId = "[[${idTitulacionSeleccionado}]]"; 
+	  
+	  
+	  if(titulacion!=""){
+		  $('#ModalTitulacionUpdate').modal()
+	  }
+	  
+	  if(titulacionCreado!=""){
+		  $('#ModalTitulacionCreate').modal()
+	  }
+	  if(titulacionCreadoId!=""){
+		  $('#ModalTitulacionDelete').modal()
+	  }
+})
+
+</script>
+
+<script type="text/javascript">
+$(function(){
+	$("#selectAsignaturas").select2({ width: '100%' }); 
+	
+})
+</script>
+<script th:replace="recursos/idiomaTable :: idiomaTable"
+	type="text/javascript"></script>
+</head>
+<body>
+	<header th:replace="recursos/base :: navbar"></header>
+	
+<script type="text/javascript"> 
+        setTimeout(function () {
+  
+            // Closing the alert
+             $('.alerta').alert('close');
+        }, 5000);
+    </script> 
+
+	<div class="container-fluid">
+
+		<div  th:if="${alert == 1}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos de la titulación se han guardado correctamente</strong>
+		</div>
+		
+		<div  th:if="${alert == 2}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos de la titulación se han actualizado correctamente</strong>
+		</div>
+		
+		<div  th:if="${alert == 3}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos de la titulación se han eliminado correctamente</strong>
+		</div>
+<div class="row justify-content-center">
+  <div class="col-11">
+	
+	<h2 class="tituloTablas">Lista de Titulaciones</h2>
+		<div class="mx-auto">
+			<div class="table-responsive">
+				<table id="departamentoList" class="table table-bordered table-hover table-striped tablaDatos">
+					<thead class="thead-light">
+						<tr>
+							<th>Nombre</th>
+							<th>Opciones</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<tr th:each="titulacion : ${titulaciones}">
+							<td th:text="${titulacion.nombre}"></td>
+							
+								<td><div class="opcionesTabla" sec:authorize="hasRole('ADMIN')">
+								<form th:action="@{titulacionUpdate}" method="get">
+									<input type="hidden" th:value="${titulacion.id}"
+										name="titulacionId"></input>
+									<button type="submit" class="btn btn-primary">Modificar
+										datos</button>
+								</form>
+
+							</div>
+							
+							<div class="opcionesTabla" sec:authorize="hasRole('ADMIN')"><a class="btn btn-danger"
+								th:href="@{/titulacionDeleteSeguridad/} + ${titulacion.id}">Eliminar</a></div></td>
+						</tr>
+
+					</tbody>
+				</table>
+				<div class="botonesDespuesTabla" sec:authorize="hasRole('ADMIN')"><a class="btn btn-primary"
+								th:href="@{/titulacionCreate}">Crear Titulacion</a></div>
+			</div>
+		</div>
+	</div>
+	</div>
+	</div>
+	
+	<div th:replace="titulacion/formTitulacionModal :: formModal"></div>
+	<div th:replace="titulacion/updateTitulacionModal :: updateModal"></div>
+	<div th:replace="titulacion/deleteTitulacionModal :: deleteModal"></div>
+
+</body>
+</html>

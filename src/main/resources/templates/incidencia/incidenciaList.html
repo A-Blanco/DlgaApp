@@ -1,0 +1,338 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Incidencias</title>
+<link rel="icon" href="img/Simbolo.png">
+<object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
+<script onselect="filtro" type="text/javascript">
+	$(document).ready(function() {
+		$('#incidenciaList').DataTable({
+			"responsive" : true,
+			"language" : idioma,
+			"destroy" : true,
+			"searching" : false,
+
+		}).draw(true).columns.adjust();
+	});
+
+	function decideFiltro(val) {
+
+		if (val == "id") {
+			$(document).ready(function() {
+				$('#incidenciaList').DataTable({
+					"responsive" : true,
+					"language" : idioma,
+					"destroy" : true,
+					"columnDefs" :
+
+					[ {
+						"searchable" : false,
+						"targets" : 1
+					}, {
+						"searchable" : false,
+						"targets" : 2
+					}, {
+						"searchable" : false,
+						"targets" : 3
+					}, {
+						"searchable" : false,
+						"targets" : 4
+					}, {
+						"searchable" : false,
+						"targets" : 5
+					}, {
+						"searchable" : false,
+						"targets" : 6
+					},
+
+					]
+
+				}).draw(true).columns.adjust();
+			});
+		}
+
+		if (val == "alumno") {
+			$(document).ready(function() {
+				$('#incidenciaList').DataTable({
+					"responsive" : true,
+					"language" : idioma,
+					"destroy" : true,
+					"columnDefs" :
+
+					[ {
+						"searchable" : false,
+						"targets" : 0
+					}, {
+						"searchable" : false,
+						"targets" : 1
+					}, {
+						"searchable" : false,
+						"targets" : 3
+					}, {
+						"searchable" : false,
+						"targets" : 4
+					}, {
+						"searchable" : false,
+						"targets" : 5
+					}, {
+						"searchable" : false,
+						"targets" : 6
+					},
+
+					]
+
+				}).draw(true).columns.adjust();
+			});
+		}
+
+		if (val == "profesor") {
+			$(document).ready(function() {
+				$('#incidenciaList').DataTable({
+					"responsive" : true,
+					"language" : idioma,
+					"destroy" : true,
+					"columnDefs" :
+
+					[ {
+						"searchable" : false,
+						"targets" : 0
+					}, {
+						"searchable" : false,
+						"targets" : 1
+					}, {
+						"searchable" : false,
+						"targets" : 2
+					}, {
+						"searchable" : false,
+						"targets" : 4
+					}, {
+						"searchable" : false,
+						"targets" : 5
+					}, {
+						"searchable" : false,
+						"targets" : 6
+					},
+
+					]
+
+				}).draw(true).columns.adjust();
+			});
+		}
+
+		if (val == "titulo") {
+			$(document).ready(function() {
+				$('#incidenciaList').DataTable({
+					"responsive" : true,
+					"language" : idioma,
+					"destroy" : true,
+					"columnDefs" :
+
+					[ {
+						"searchable" : false,
+						"targets" : 0
+					}, {
+						"searchable" : false,
+						"targets" : 1
+					}, {
+						"searchable" : false,
+						"targets" : 2
+					}, {
+						"searchable" : false,
+						"targets" : 3
+					}, {
+						"searchable" : false,
+						"targets" : 5
+					}, {
+						"searchable" : false,
+						"targets" : 6
+					},
+
+					]
+
+				}).draw(true).columns.adjust();
+			});
+		}
+
+		if (val == "estado") {
+			$(document).ready(function() {
+				$('#incidenciaList').DataTable({
+					"responsive" : true,
+					"language" : idioma,
+					"destroy" : true,
+					"columnDefs" :
+
+					[ {
+						"searchable" : false,
+						"targets" : 0
+					}, {
+						"searchable" : false,
+						"targets" : 1
+					}, {
+						"searchable" : false,
+						"targets" : 2
+					}, {
+						"searchable" : false,
+						"targets" : 3
+					}, {
+						"searchable" : false,
+						"targets" : 4
+					}, {
+						"searchable" : false,
+						"targets" : 6
+					},
+
+					]
+
+				}).draw(true).columns.adjust();
+			});
+		}
+
+	}
+</script>
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		var incidenciaIdDelete = "[[${incidenciaIdDelete}]]";
+		var incidenciaDetalles = "[[${incidenciaDetalles}]]";
+		var incidenciaUpdateInfo = "[[${incidenciaUpdateInfo}]]";
+		var incidenciaUpdateAcuerdo = "[[${incidenciaUpdateAcuerdo}]]";
+
+		if (incidenciaIdDelete != "") {
+			$('#ModalIncidenciaDelete').modal()
+		}
+		if (incidenciaDetalles != "") {
+			$('#ModalIncidenciaDetalles').modal()
+		}
+		if (incidenciaUpdateInfo != "") {
+			$('#ModalActualizacionIncidenciaInfo').modal()
+		}
+		if (incidenciaUpdateAcuerdo != "") {
+			$('#ModalActualizacionIncidenciaAcuerdo').modal()
+		}
+
+	})
+</script>
+<script th:replace="recursos/idiomaTable :: idiomaTable"
+	type="text/javascript"></script>
+</head>
+<body>
+	<header th:replace="recursos/base :: navbar"></header>
+
+<script type="text/javascript"> 
+        setTimeout(function () {
+  
+            // Closing the alert
+             $('.alerta').alert('close');
+        }, 5000);
+        
+        setTimeout(function () {
+        	  
+            // Closing the alert
+             $('.alerta2').alert('close');
+        }, 10000);
+
+    </script> 
+
+	<div class="container-fluid">
+
+		<div  th:if="${alert == 2}" class="alert alert-success alerta alerta2" role="alert">
+			<strong>La incidencia se ha modificado correctamente, además, se ha notificado al alumn@ con los cambios realizados en su Incidencia</strong>
+		</div>
+
+		<div  th:if="${alert == 21}" class="alert alert-success alerta alerta2" role="alert">
+			<strong>La incidencia se ha finalizado correctamente, además, se ha notificado al alumn@ con los cambios realizados en su Incidencia</strong>
+		</div>
+		
+		
+		<div  th:if="${alert == 3}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos de la Incidencia se han eliminado correctamente</strong>
+		</div>
+		
+		<div class="row justify-content-center">
+			<div class="col-11">
+
+
+				<h2 th:if="${modo == 'personal'}" class="tituloTablas">Incidencias
+					Personales</h2>
+				<h2 th:if="${modo != 'personal'}" class="tituloTablas">Incidencias</h2>
+
+				<div class="input-group mb-3 justify-content-end filtros">
+					<div class="input-group-prepend">
+						<label class="input-group-text" for="selectFiltro">Filtros
+							de Búsqueda</label>
+					</div>
+
+					<select class="col-2" title="Filtrar: "
+						onchange="decideFiltro(this.value)" id="selectFiltro"
+						name="filtro">
+						<option disabled selected>-</option>
+						<option value="id" id="selectId">Id</option>
+						<option value="alumno" id="selectAlumno">Alumno</option>
+						<option value="profesor" id="selectProfesor">Profesor</option>
+						<option value="titulo" id="selectAsignatura">Título</option>
+						<option value="estado" id="selectEstado">Estado</option>
+					</select>
+
+				</div>
+				<div class="mx-auto">
+					<div class="table-responsive">
+						<table id="incidenciaList"
+							class="table table-bordered table-hover table-striped tablaDatos">
+							<thead class="thead-light">
+								<tr>
+									<th>Id</th>
+									<th>Fecha Creación</th>
+									<th>Alumno</th>
+									<th>Profesor</th>
+									<th>Título</th>
+									<th>Estado</th>
+									<th>Opciones</th>
+
+								</tr>
+							</thead>
+							<tbody>
+
+								<tr th:each="incidencia : ${incidencias}">
+									<td th:text="${incidencia.id}"></td>
+									<td th:text="${incidencia.fechaCreacion}"></td>
+									<td
+										th:text="${incidencia.alumno.nombre + ' ' + incidencia.alumno.apellidos }"></td>
+									<td th:text="${incidencia.profesor.nombre}"></td>
+									<td th:text="${incidencia.titulo}"></td>
+									<td th:text="${incidencia.estado}"></td>
+									<td><a class="btn btn-dark opcionesTabla" target="_blank"
+										th:href="@{/detallesIncidencia/} + ${incidencia.id}">Ver
+											detalles Incidencia</a>
+
+
+										<form
+											th:if="${modo == 'personal' or
+				 #authentication.getPrincipal().getRol().toString() == 'ROLE_ADMIN'}"
+											th:action="@{/incidenciaDeleteSeguridad/} + ${incidencia.id}"
+											method="get">
+											<input type="hidden" th:value="${modo}" name="modo">
+
+											<button type="submit" class="btn btn-danger opcionesTabla">Eliminar</button>
+										</form></td>
+								</tr>
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+	
+	<div th:replace="incidencia/detallesIncidenciaModal :: detallesModal"></div>
+	<div th:replace="incidencia/deleteIncidenciaModal :: deleteModal"></div>
+	<div  th:if="${incidenciaUpdateAcuerdo != null}"th:replace="incidencia/updateAcuerdoIncidenciaModal :: acuerdoModal"></div>
+	<div th:if="${incidenciaUpdateInfo != null}" th:replace="incidencia/updateInfoIncidenciaModal :: infoModal"></div>
+	
+</body>
+</html>

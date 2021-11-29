@@ -1,0 +1,98 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
+<script type="text/javascript">
+	
+	$(document).ready(function() {
+		$('#usuarioNoAceptadoList').DataTable({
+			"responsive" : true,
+			"language" : idioma,
+			"destroy" : true,
+			"columnDefs" :
+
+			[ {
+				"searchable" : false,
+				"targets" : 3
+			}, 
+			]
+
+		}).draw(true).columns.adjust();
+	});
+	
+</script>
+<script th:replace="recursos/idiomaTable :: idiomaTable"
+	type="text/javascript"></script>
+</head>
+<body>
+<header th:replace="recursos/base :: navbar"></header>
+
+<script type="text/javascript"> 
+        setTimeout(function () {
+  
+            // Closing the alert
+             $('.alerta').alert('close');
+        }, 5000);
+    </script> 
+
+	<div class="container-fluid">
+
+		<div  th:if="${alert == 1}" class="alert alert-secondary alerta" role="alert">
+			<strong>Se ha notificado al Alumno su incorporación a la Delegación de Alumno</strong>
+		</div>
+		
+		<div  th:if="${alert == 2}" class="alert alert-secondary alerta" role="alert">
+			<strong>Se ha notificado al alumno su rechazo a DlgaApp</strong>
+		</div>
+<div class="row justify-content-center">
+  <div class="col-11">
+  <h2 class="tituloTablas">Solicitudes de Acceso</h2>
+		<div class="mx-auto">
+			<div class="table-responsive">
+				<table id="usuarioNoAceptadoList"
+					class="table table-bordered table-hover table-striped tablaDatos">
+					<thead class="thead-light">
+			<tr>
+				<th>Username</th>
+				<th>Nombre</th>
+				<th>Apellidos</th>
+				<th>Opciones</th>
+			</tr>
+		</thead>
+		<tbody>
+
+			<tr th:each="usuario : ${usuarios}">
+				<td th:text="${usuario.username}"></td>
+				<td th:text="${usuario.alumno.nombre}"></td>
+				<td th:text="${usuario.alumno.apellidos}"></td>
+				 <td> 
+				 
+				 
+				  <button type="button" class="btn btn-success" data-toggle="modal" th:attr="data-target='#ModalAceptado'+*{usuario.id}">Aceptar</button>
+				  
+				<div th:replace="usuario/aceptarModal :: aceptarModal"></div>
+						
+				 <button type="button" class="btn btn-danger opcionesTabla" data-toggle="modal" th:attr="data-target='#ModalDenegado'+*{usuario.id}">Rechazar</button>
+				 
+				 	<div th:replace="usuario/rechazoModal :: rechazoModal"></div>
+				 	
+				</td>
+				
+			</tr>
+			
+		</tbody>
+	</table>
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+	
+
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<title>DlgaApp</title>
+<link rel="icon" href="img/Simbolo.png">
+<object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
+<script type="text/javascript">
+$( document ).ready(function() {
+	  
+	  var incidenciaCreate = "[[${incidenciaCreate}]]";
+	  
+	  if(incidenciaCreate!=""){
+		  $('#ModalIncidenciaCreate').modal()
+	  }
+
+})
+</script>
+</head>
+
+<body>
+<script type="text/javascript">
+$(function(){
+	$("#selectAsignatura").select2({ width: '100%' }); 
+	$("#selectProfesor").select2({ width: '100%' }); 
+	$("#selectAlumno").select2({ width: '100%' }); 
+})
+</script>
+
+	<header  th:replace="recursos/base :: navbar"></header>
+	
+<script type="text/javascript"> 
+        setTimeout(function () {
+  
+            // Closing the alert
+             $('.alerta').alert('close');
+        }, 5000);
+    </script> 
+
+	<div class="container-fluid">
+		
+		
+		<div  th:if="${alert == 1}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos de la Incidencia se han guardado correctamente</strong>
+		</div>
+		
+		<div  th:if="${alert == 11}" class="alert alert-success alerta" role="alert">
+			<strong>Los datos del nuevo Miebro de Delegación de Alumnos se han guardado correctamente</strong>
+		</div>
+  <div class="row">
+  <div class="col-3">
+  
+<a class="twitter-timeline" data-height="700" href="https://twitter.com/delegaETSII?ref_src=twsrc%5Etfw">Tweets by delegaETSII</a>
+ <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  
+  </div>
+  
+ 
+ <div class="col-6">
+ <div class="row">
+	<h1 class="tituloInicio col-12">Funciones</h1>
+	
+	
+	<div class="funcionInicio col-lg-4 col-sm-6">
+		<a  th:href="@{crearUsuario}"><img class="imgFuncion"
+			src="/img/AñadirUsuario.svg" > </a>
+		<p class="textoFuncion">Crear Miembro</p>
+	</div>
+	
+	<div class="funcionInicio col-lg-4 col-sm-6">
+		<a  th:href="@{listAlumnos}"><img  class="imgFuncion"
+			src="/img/Alumno.svg" ></a>
+		<p class="textoFuncion">Alumnos</p>
+	</div>
+
+	<div class="funcionInicio col-lg-4 col-sm-6">
+		<a th:href="@{grupoList}"><img class="imgFuncion"
+			src="/img/Grupo.svg" ></a> 
+		<p class="textoFuncion" >Grupos</p>
+	</div>
+	
+
+	<div class="funcionInicio col-lg-4 col-sm-6">
+		<a  th:href="@{listDepartamentos}"><img class="imgFuncion"
+			src="/img/Departamento.svg" > </a> 
+		<p class="textoFuncion">Departamentos</p>
+	</div>
+
+
+	<div class="funcionInicio col-lg-4 col-sm-6">
+		<a  th:href="@{profesorList}"><img class="imgFuncion"
+			src="/img/Profesor.svg" ></a>
+		<p class="textoFuncion">Profesores</p>
+	</div>
+
+	<div class="funcionInicio col-lg-4 col-sm-6">
+		<a  th:href="@{asignaturaList}"><img class="imgFuncion"
+			src="/img/Asignatura.svg"></a>
+		<p class="textoFuncion">Asignaturas</p>
+	</div>
+
+
+	
+	<div class="funcionInicio col-lg-4 col-sm-6">
+		<a th:href="@{incidenciaCreate}"><img class="imgFuncion"
+			src="/img/CrearIncidencia.svg" > </a>
+		<p class="textoFuncion">Crear Incidencia</p>
+	</div>
+	
+	<div class="funcionInicio col-lg-4 col-sm-6">
+		<a  th:href="@{incidenciaList}"><img class="imgFuncion"
+			src="/img/Incidencias.svg" ></a> 
+		<p class="textoFuncion">Incidencias</p>
+	</div>
+	
+	<div class="funcionInicio col-lg-4 col-sm-6">
+		<a  th:href="@{listaUsuario}"><img class="imgFuncion"
+			src="/img/Usuarios.svg" ></a> 
+		<p class="textoFuncion">Usuarios</p>
+	</div>
+
+	 </div>
+	</div>
+
+ <div class="col-3">
+    <a class="twitter-timeline" data-height="700" href="https://twitter.com/etsii?ref_src=twsrc%5Etfw">
+    Tweets by etsii</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  
+  </div>
+  
+    </div>
+    </div>
+    
+    <div th:replace="incidencia/createIncidenciaModal :: createModal"></div>
+</body>
+</html>

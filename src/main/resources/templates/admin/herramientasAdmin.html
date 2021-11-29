@@ -1,0 +1,108 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Administración</title>
+<link rel="icon" href="img/Simbolo.png">
+<object th:replace="recursos/base :: boot"></object>
+<link rel="stylesheet" th:href="@{/estilos/base.css}" />
+<script type="text/javascript">
+	function cargaModales() {
+		$('#ModalActualizacionBd').modal('hide');
+		$('#ModalCargandoBd').modal('show');
+	}
+</script>
+<script type="text/javascript">
+	function validar(obj) {
+		var d = document.btnActualizar;
+		if (obj.checked == false) {
+			d.disabled = false;
+		} else {
+			d.disabled = true;
+		}
+	}
+</script>
+
+</head>
+<body>
+
+<header  th:replace="recursos/base :: navbar"></header>
+
+<div class="container-fluid">
+  <div class="row">
+  <div class="col-3">
+  <div class="row">
+  <img class="imgFuncion" src="/img/Info.svg">
+  </div>
+  
+  <div class="row">
+  <h3 class="tituloInicio col-12 tituloInfo">Nº de miembros</h3>
+  </div>
+  
+  <div class="row">
+  <h3 class="tituloInicio col-12" th:text="${@notificacionesService.numeroMiembros()}"></h3>
+  </div>
+  
+  <div class="row">
+  <h3 class="tituloInicio col-12 tituloInfo">Nº de Incidencias Activas</h3>
+  </div>
+  
+  <div class="row">
+  <h3 class="tituloInicio col-12" th:text="${@notificacionesService.numeroIncidenciasActivas()}"></h3>
+  </div>
+
+  
+  </div>
+  
+ 
+ <div class="col-6">
+ <div class="row">
+	<h1 class="tituloInicio col-12">Administración de la plataforma</h1>
+	
+		<div class="funcionInicio col-lg-4 col-sm-6">
+		<a href="#"  data-toggle="modal"
+			th:attr="data-target='#ModalActualizacionBd'"> 
+			<img class="imgFuncion" src="/img/BD.svg"> 
+			
+		</a> 
+		<p class="textoFuncion">Actualizar Base de Datos</p>
+	</div>
+
+	<div class="funcionInicio col-lg-4 col-sm-6">
+		<a class="funcion" th:href="@{listaUsuario}"><img class="imgFuncion"
+			src="/img/UsersConfig.svg"> </a>
+		<p class="textoFuncion">Gestionar Usuarios</p>
+	</div>
+
+	<div class="funcionInicio col-lg-4 col-sm-6">
+		<a class="funcion" th:href="@{gestionBd}"><img class="imgFuncion"
+			src="/img/Config.svg" > </a>
+		<p class="textoFuncion">Gestionar Base de Datos del Sistema</p>
+	</div>
+
+	<div class="funcionInicio col-lg-4 col-sm-6">
+		<a class="funcion" th:href="@{gestionIncidencias}"><img class="imgFuncion"
+			src="/img/Document.svg" > </a>
+		<p class="textoFuncion">Gestionar Incidencias</p>
+	</div>
+
+	<div th:replace="admin/actualizacionBDModal :: seguridadModal"></div>
+	<div th:replace="admin/actualizacionBDModal :: cargandoModal"></div>
+
+	 </div>
+	</div>
+
+ <div class="col-3">
+    <a class="twitter-timeline" data-height="700" href="https://twitter.com/etsii?ref_src=twsrc%5Etfw">
+    Tweets by etsii</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  
+  </div>
+  
+    </div>
+    </div>
+    
+<!--     <div th:replace="incidencia/createIncidenciaModal :: createModal"></div> -->
+</body>
+</html>
