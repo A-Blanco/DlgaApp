@@ -1,30 +1,16 @@
 <!DOCTYPE html >
 <html xmlns:th="http://www.thymeleaf.org"
-    xmlns:sec="http://www.thymeleaf.org">
+	xmlns:sec="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
 
-<head >
-	<meta charset="UTF-8">
-	<object th:replace="recursos/base :: boot"></object>
-<link rel="stylesheet" th:href="@{/estilos/base.css}" />
-<script type="text/javascript">
-$( document ).ready(function() {
-	
-
-	  var usuarioSeleccionado = "[[${usuarioSeleccionado}]]";
-
-	  if(usuarioSeleccionado!=""){
-		  $('#ModalUsuarioDetalles').modal()
-	  }
-
-	
-})
-</script>
 </head>
 <body>
-<header th:replace="recursos/base :: navbar"></header>
 
 
-<div  th:if="${usuarioSeleccionado != null}" class="modal fade" data-keyboard="false" data-backdrop="static"
+
+	
+	<div th:fragment="detallesModal" th:if="${usuarioModalDetalles != null}" class="modal fade" data-keyboard="false" data-backdrop="static"
 		th:id="ModalUsuarioDetalles" tabindex="-1" role="dialog"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
@@ -35,7 +21,7 @@ $( document ).ready(function() {
 
 				</div>
 				<form id="formDetalles" class="col-12"
-					th:object="${usuarioSeleccionado}"
+					th:object="${usuarioModalDetalles}"
 					>
 					
 					<div class="form-group" id="nombre-group">
@@ -46,7 +32,7 @@ $( document ).ready(function() {
 					
 					<div class="form-group" id="nombre-group">
                      <label for="nombre">Nombre</label>
-                        <input disabled="disabled" id="nombre" th:field="*{alumno.nombre}" type="text" class="form-control" name="nombre"/>
+                        <input disabled="disabled" id="nombre" th:field="*{alumno.nombre + ' ' + alumno.apellidos}" type="text" class="form-control" name="nombre"/>
                        
                     </div>
                  
@@ -54,7 +40,7 @@ $( document ).ready(function() {
 					
 					<label for="email">Email</label>
                      
-                        <input disabled="disabled" id="email" th:field="*{alumno.email}" type="text" class="form-control" name="email"/>
+                        <input disabled="disabled" id="email" th:field="*{email}" type="text" class="form-control" name="email"/>
                        
                     </div>
                     
@@ -62,7 +48,7 @@ $( document ).ready(function() {
 					
 					<label for="fecha">Fecha de Nacimiento</label>
                      
-                        <input disabled="disabled" id="fecha" th:field="*{alumno.fechaNacimiento}" type="text" class="form-control" name="fecha"/>
+                        <input disabled="disabled" id="fecha" th:field="*{fechaNacimiento}" type="text" class="form-control" name="fecha"/>
                        
                     </div>
                     
@@ -77,15 +63,13 @@ $( document ).ready(function() {
 					
 					<div class="modal-footer">
 
-						<a th:href="@{/listaUsuario}" class="btn btn-secondary">Cerrar</a>
+						<a th:href="@{listaUsuario}" class="btn btn-secondary">Cerrar</a>
 					</div>
 				</form>
 			</div>
 		</div>
 	</div>
 
-
-</body>
 
 </body>
 </html>
